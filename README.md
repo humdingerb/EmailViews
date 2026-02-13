@@ -46,7 +46,7 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 ## Requirements
 
-- Haiku (tested on R1/nightly builds)
+- 64-bit Haiku (tested on R1/nightly builds)
 - At least one email account configured in Haiku's E-mail preferences
 - `mail_daemon` running (starts automatically when email accounts are configured)
 
