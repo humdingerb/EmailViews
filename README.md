@@ -4,6 +4,8 @@ A fast, lightweight email client for [Haiku](https://www.haiku-os.org) that uses
 
 EmailViews works with Haiku's built-in `mail_daemon` and mail kit — it reads emails already stored on disk as file attributes, so there is nothing to import or sync. Just point it at your mail and go.
 
+![EmailViews screenshot](screenshot.jpeg)
+
 ## Features
 
 **Three-pane interface** — Sidebar with mail views, sortable email list, and inline preview pane. Double-click any email to open it in a full reader window.
