@@ -42,7 +42,7 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 **Dark theme support** — Respects Haiku's system colors and works with both light and dark themes.
 
-**Localization** — Includes English and Japanese translations.
+**Localization** — The app is localization ready.
 
 ## Requirements
 
