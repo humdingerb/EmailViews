@@ -81,7 +81,7 @@ On first run, EmailViews creates a `queries` directory in its settings folder (`
 ## Usage tips
 
 - **Creating custom queries**: Right-click an email in the list and choose "Add 'From' query", "Add 'To' query", or "Add 'Account' query" from the Messages menu to create a filtered view for that sender, recipient, or account.
-- **Time range filtering**: Press Cmd+Shift+T or use the View menu to toggle the time range slider, which lets you narrow results to a specific date range.
+- **Time range filtering**: Press Cmd+Shift+T to toggle the time range slider, which lets you narrow results to a specific date range.
 - **Starring emails**: Click the star column in the email list, or use the toolbar button in the reader window.
 - **Deskbar replicant**: Enable via the EmailViews menu → "Show in Deskbar". The tray icon shows the current unread count.
 - **Column customization**: Drag column headers to reorder, click to sort. Each view remembers its own column layout.
