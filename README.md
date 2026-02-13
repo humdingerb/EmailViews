@@ -1,6 +1,6 @@
 # EmailViews
 
-A fast, lightweight email client for [Haiku](https://www.haiku-os.org) that uses live queries to organize and explore your emails effortlessly.
+A native fast, lightweight email client for [Haiku](https://www.haiku-os.org) that uses live queries to organize and explore your emails effortlessly.
 
 EmailViews works with Haiku's built-in `mail_daemon` and mail kit — it reads emails already stored on disk as file attributes, so there is nothing to import or sync. Just point it at your mail and go.
 
@@ -14,15 +14,15 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 **Built-in views** — All Emails, Unread, Sent, With Attachments, Drafts, and Starred. Each view shows an unread count badge that updates in real time.
 
-**Custom queries** — Create your own views filtered by sender, recipient, or account. Custom queries are saved as standard Haiku query files and appear in the sidebar alongside built-in views.
+**Custom queries** — Create your own views filtered by subject, sender, recipient, or account. Custom queries are saved as standard Haiku query files and appear in the sidebar alongside built-in views.
 
 **Live updates** — Email views are powered by live `BQuery` objects and node monitors. New mail appears instantly without manual refresh.
 
 **Full reader and composer** — Open emails in a dedicated reader window with reply, forward, and signature support. Compose new messages with address auto-completion from People files and spell checking.
 
-**Attachment handling** — Visual attachment strip shows file icons, names, and sizes. Open attachments with their preferred application or save them to disk.
+**Attachment handling** — Visual attachment strip shows file icons, names, and sizes. Open attachments with their preferred application or save them to disk. Supports drag-and-drop.
 
-**HTML email support** — Emails with HTML content can be viewed in the default browser via a toolbar button, preserving the original formatting and character encoding.
+**HTML email support** — Emails with HTML content can be viewed in the default browser via a button in the preview pane, preserving the original formatting and character encoding.
 
 **Search and filter** — Search the current view by subject, sender, or recipient. An optional time range slider lets you narrow results to a specific date window.
 
@@ -32,7 +32,7 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 **Keyboard navigation** — Arrow keys, Page Up/Down, Home/End for list navigation. Enter to open, Delete to trash. Shift-click and Shift-arrows for multi-selection.
 
-**Trash management** — Move emails to trash, restore them to their original location, or permanently delete. The trash view shows a count badge and supports emptying all at once.
+**Trash management** — Move emails to trash, restore them to their original location, or permanently delete them. The trash view shows a count badge and supports emptying all at once.
 
 **Email backup** — Back up the current view's emails to a ZIP archive via the toolbar search bar's menu.
 
@@ -46,7 +46,7 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 ## Requirements
 
-- Haiku (tested on R1/beta5 and nightly builds)
+- Haiku (tested on R1/nightly builds)
 - At least one email account configured in Haiku's E-mail preferences
 - `mail_daemon` running (starts automatically when email accounts are configured)
 
