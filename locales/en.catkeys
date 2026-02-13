@@ -1,0 +1,323 @@
+1	English	application/x-vnd.EmailViews	1984325143
+Open attachment	ContentView		Open attachment
+Cancel	QueryNameDialog		Cancel
+From	EmailColumnHeader		From
+Delete emails in Trash	EmailViewsWindow		Delete emails in Trash
+New	EmailReaderWindow		New
+ Read 	EmailReaderWindow		 Read 
+Inconsistency occurred in the undo/redo buffer.	ContentView		Inconsistency occurred in the undo/redo buffer.
+User interface	Preferences		User interface
+Empty subject	EmailReaderWindow		Empty subject
+Deleting emails…	EmailViewsWindow		Deleting emails…
+Expert	Preferences		Expert
+Type text and press Enter…	SearchBarView		Type text and press Enter…
+Only files can be added as attachments.	EnclosuresView		Only files can be added as attachments.
+Date	EmailColumnHeader		Date
+Sorry	EmailReaderWindow		Sorry
+[Message truncated...]	EmailViewsWindow		[Message truncated...]
+Open attachment	EnclosuresView		Open attachment
+Unread emails	EmailViewsWindow		Unread emails
+Save changes to this signature?	SignatureWindow		Save changes to this signature?
+Select folder	EmailViewsWindow		Select folder
+Cut	EmailReaderWindow		Cut
+Reply to sender	EmailReaderWindow		Reply to sender
+Signatures	SignatureWindow		Signatures
+Sent emails	EmailViewsWindow		Sent emails
+Star	EmailColumnHeader		Star
+Add 'To' query	EmailViewsWindow		Add 'To' query
+Draft emails	EmailViewsWindow		Draft emails
+None	ReaderSettings		None
+%d - Date	Preferences		%d - Date
+Copy to new	EmailReaderWindow		Copy to new
+Forward	EmailViewsWindow		Forward
+[The draft has no body text to display]	EmailViewsWindow		[The draft has no body text to display]
+To	EmailColumnHeader		To
+Warn unencodable:	Preferences		Warn unencodable:
+Account	EmailColumnHeader		Account
+All people	AddressTextControl		All people
+Email preferences…	EmailViewsWindow		Email preferences…
+View HTML version	EmailViewsWindow		View HTML version
+Delete	SignatureWindow		Delete
+Signature	EmailReaderWindow		Signature
+matches	SearchBarView		matches
+Failed to start backup thread.	EmailViewsWindow		Failed to start backup thread.
+Don't save	SignatureWindow		Don't save
+Select all	SignatureWindow		Select all
+Sorry	ContentView		Sorry
+Add 'Account' query	EmailListView		Add 'Account' query
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.
+Account from mail	Preferences		Account from mail
+Check spelling	EmailReaderWindow		Check spelling
+Next	EmailViewsWindow		Next
+Undo	EmailReaderWindow		Undo
+There are no emails in the Trash.	EmailViewsWindow		There are no emails in the Trash.
+Queries	EmailViewsWindow		Queries
+Use default account	Preferences		Use default account
+An error occurred trying to save this signature.	SignatureWindow		An error occurred trying to save this signature.
+Composer	EmailReaderWindow		Composer
+Undo	SignatureWindow		Undo
+The subject is empty. Do you want to send anyway?	EmailReaderWindow		The subject is empty. Do you want to send anyway?
+There is no installed handler for URL links.	ContentView		There is no installed handler for URL links.
+Draft emails (%ld)	EmailViewsWindow		Draft emails (%ld)
+Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails?\n\nThis cannot be undone.
+Open	SignatureWindow		Open
+Include file attributes in attachments	Preferences		Include file attributes in attachments
+Message	EmailReaderWindow		Message
+New mail message	EmailReaderWindow		New mail message
+No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/
+Save attachment…	ContentView		Save attachment…
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 days
+Restore	EmailListView		Restore
+Attach attributes:	Preferences		Attach attributes:
+Attachments:	EnclosuresView		Attachments:
+Cc:	HeaderView		Cc:
+An error occurred trying to save the attachment.	ContentView		An error occurred trying to save the attachment.
+Start now	EmailReaderWindow		Start now
+Open queries folder	EmailViewsWindow		Open queries folder
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 days
+The mail_daemon could not be started:\n\t	EmailReaderWindow		The mail_daemon could not be started:\n\t
+Backup emails to ZIP file	SearchBarView		Backup emails to ZIP file
+You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 days
+Query exists	EmailViewsWindow		Query exists
+Subject:	EmailViewsWindow		Subject:
+Forward	EmailListView		Forward
+Move to Trash	EmailListView		Move to Trash
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 days
+Time range slider:	Preferences		Time range slider:
+Filter by 'Account'	EmailListView		Filter by 'Account'
+Cancel	Preferences		Cancel
+Edit	SignatureWindow		Edit
+Text wrapping:	Preferences		Text wrapping:
+Add 'From' query	EmailViewsWindow		Add 'From' query
+Reply all	EmailViewsWindow		Reply all
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 days
+Copy link location	ContentView		Copy link location
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.
+Clear search box	SearchBarView		Clear search box
+Mailing	Preferences		Mailing
+%e - E-mail address	Preferences		%e - E-mail address
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 month
+<no account found>	Preferences		<no account found>
+Remove attachment	EmailReaderWindow		Remove attachment
+Move to trash	EmailReaderWindow		Move to trash
+Mark unread	EmailViewsWindow		Mark unread
+Copy	SignatureWindow		Copy
+Decrease quote level	EmailReaderWindow		Decrease quote level
+Save	QueryNameDialog		Save
+Mark as read	EmailViewsWindow		Mark as read
+Save this message as a draft before closing?	EmailReaderWindow		Save this message as a draft before closing?
+Mark as read	EmailListView		Mark as read
+Email backup	EmailViewsWindow		Email backup
+Trash	EmailViewsWindow		Trash
+New email	EmailViewsWindow		New email
+Reply	EmailViewsWindow		Reply
+Size:	Preferences		Size:
+Time range:	EmailViewsWindow		Time range:
+Initial spell check mode:	Preferences		Initial spell check mode:
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 months
+Off	Preferences		Off
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 day
+Date:	HeaderView		Date:
+New email to sender	EmailListView		New email to sender
+Outgoing encoding:	Preferences		Outgoing encoding:
+Filter by	SearchBarView		Filter by
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 months
+Spam	EmailReaderWindow		Spam
+To	SearchBarView		To
+Signature:	SignatureWindow		Signature:
+Show in Deskbar	EmailViewsWindow		Show in Deskbar
+View	EmailReaderWindow		View
+About EmailViews…	EmailViewsWindow		About EmailViews…
+No emails match your search.	EmailViewsWindow		No emails match your search.
+A query named '%name%' already exists.	EmailViewsWindow		A query named '%name%' already exists.
+Create query based on search criteria	SearchBarView		Create query based on search criteria
+Add signature	EmailReaderWindow		Add signature
+No emails found.	EmailViewsWindow		No emails found.
+Reply	EmailListView		Reply
+Increase quote level	EmailReaderWindow		Increase quote level
+Resend	EmailReaderWindow		Resend
+Send	EmailReaderWindow		Send
+Subject	SearchBarView		Subject
+Filter by 'Sender'	EmailListView		Filter by 'Sender'
+Mark as unread	EmailViewsWindow		Mark as unread
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.
+Backup failed	EmailViewsWindow		Backup failed
+Create Person file for	EmailReaderWindow		Create Person file for
+New	SignatureWindow		New
+Previous	EmailReaderWindow		Previous
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 weeks
+OK	Preferences		OK
+Volumes	EmailViewsWindow		Volumes
+A query with the same search criteria already exists: '%name%'	EmailViewsWindow		A query with the same search criteria already exists: '%name%'
+Paste	SignatureWindow		Paste
+Reply preamble:	Preferences		Reply preamble:
+Unknown	HeaderView		Unknown
+Restore email	EmailViewsWindow		Restore email
+Send message	EmailReaderWindow		Send message
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 years
+Show raw message	EmailReaderWindow		Show raw message
+Remove attachment	EnclosuresView		Remove attachment
+Don't send	EmailReaderWindow		Don't send
+Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email?\n\nThis cannot be undone.
+Close	EmailReaderWindow		Close
+Sorry	SignatureWindow		Sorry
+Email preferences	Preferences		Email preferences
+Delete emails in Trash	TrashItemView		Delete emails in Trash
+Save backup as	EmailViewsWindow		Save backup as
+Add 'To' query	EmailListView		Add 'To' query
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 weeks
+Open query in Tracker…	QueryListView		Open query in Tracker…
+All	TimeRangeSlider	Time range slider label - keep as short as possible	All
+Cancel	SignatureWindow		Cancel
+Paste	EmailReaderWindow		Paste
+Cut	SignatureWindow		Cut
+Create anyway	EmailViewsWindow		Create anyway
+Print	EmailReaderWindow		Print
+Mark read	EmailViewsWindow		Mark read
+No file attributes, just plain data	Preferences		No file attributes, just plain data
+Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Sorry, could not find an application that supports the 'Person' data type.
+Show icons & labels	Preferences		Show icons & labels
+No emails in Trash.	EmailViewsWindow		No emails in Trash.
+%n - Full name	Preferences		%n - Full name
+Quit	EmailViewsWindow		Quit
+Automatic	EmailReaderWindow		Automatic
+Select attribute(s) to query	SearchBarView		Select attribute(s) to query
+Mark as unread	EmailListView		Mark as unread
+Subject:	HeaderView		Subject:
+Couldn't open this signature. Sorry.	SignatureWindow		Couldn't open this signature. Sorry.
+Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Attachment: %name% (Type: %type%)
+Signature	SignatureWindow		Signature
+Backup in progress…	SearchBarView		Backup in progress…
+Reply all	EmailReaderWindow		Reply all
+Remove query	QueryListView		Remove query
+Title:	SignatureWindow		Title:
+Select an email to preview its contents.	EmailViewsWindow		Select an email to preview its contents.
+With attachments	EmailViewsWindow		With attachments
+Beginner	Preferences		Beginner
+All emails	EmailViewsWindow		All emails
+Viewer	EmailReaderWindow		Viewer
+Automatically mark mail as read:	Preferences		Automatically mark mail as read:
+Forward	EmailReaderWindow		Forward
+contains	SearchBarView		contains
+(Address unavailable)	EmailReaderWindow		(Address unavailable)
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Today
+Print…	EmailReaderWindow		Print…
+Save as…	AttachmentStripView		Save as…
+Encoding	EmailReaderWindow		Encoding
+File	EmailReaderWindow		File
+Colored quotes:	Preferences		Colored quotes:
+(Date unavailable)	EmailReaderWindow		(Date unavailable)
+To:	EmailViewsWindow		To:
+OK	EnclosuresView		OK
+OK	EmailReaderWindow		OK
+Account:	EmailViewsWindow		Account:
+None	EmailReaderWindow		None
+Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails from Trash?\n\nThis cannot be undone.
+Add attachment…	EmailReaderWindow		Add attachment…
+Messages	EmailViewsWindow		Messages
+Filter by 'Subject'	EmailListView		Filter by 'Subject'
+%e wrote:\n	ReaderSettings		%e wrote:\n
+OK	AboutWindow		OK
+Edit signatures…	EmailReaderWindow		Edit signatures…
+Unread emails	QueryListView		Unread emails
+Previous	EmailViewsWindow		Previous
+Select search operator	SearchBarView		Select search operator
+that	SearchBarView		that
+From	SearchBarView		From
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 years
+%s emails	EmailViewsWindow		%s emails
+None	Preferences		None
+Status	EmailColumnHeader		Status
+E-mail draft could not be saved!	EmailReaderWindow		E-mail draft could not be saved!
+Next message, keep status	EmailReaderWindow		Next message, keep status
+Edit	EmailReaderWindow		Edit
+OK	ContentView		OK
+Delete emails	EmailViewsWindow		Delete emails
+An error occurred trying to open this signature.	ContentView		An error occurred trying to open this signature.
+Remove	AttachmentStripView		Remove
+OK	SignatureWindow		OK
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 months
+Email preferences…	EmailReaderWindow		Email preferences…
+Show header	EmailReaderWindow		Show header
+View HTML version	EmailReaderWindow		View HTML version
+Could not open email file.	EmailViewsWindow		Could not open email file.
+Add 'Account' query	EmailViewsWindow		Add 'Account' query
+Redo	EmailReaderWindow		Redo
+Subject	EmailColumnHeader		Subject
+(Name unavailable)	EmailReaderWindow		(Name unavailable)
+Failed to create query file.	EmailViewsWindow		Failed to create query file.
+Save as draft	EmailReaderWindow		Save as draft
+Attachment	EmailColumnHeader		Attachment
+<none>	HeaderView		<none>
+Star	EmailListView		Star
+Send as attachment	EmailListView		Send as attachment
+Font:	Preferences		Font:
+This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		This message is HTML formatted.\nClick below to open it in the default browser.
+Unstar	EmailListView		Unstar
+Find…	EmailReaderWindow		Find…
+Default account:	Preferences		Default account:
+Save	EmailReaderWindow		Save
+Unread	EmailReaderWindow		Unread
+Could not get email reference.	EmailViewsWindow		Could not get email reference.
+Auto signature:	Preferences		Auto signature:
+Really delete this signature? This cannot be undone.	SignatureWindow		Really delete this signature? This cannot be undone.
+Previous message	EmailReaderWindow		Previous message
+Revert	Preferences		Revert
+From:	HeaderView		From:
+Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email from Trash?\n\nThis cannot be undone.
+Forward without attachments	EmailReaderWindow		Forward without attachments
+Move to Trash	EmailViewsWindow		Move to Trash
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 week
+You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
+Don't save	EmailReaderWindow		Don't save
+Email accounts…	EmailReaderWindow		Email accounts…
+Error	EmailViewsWindow		Error
+Show icons only	Preferences		Show icons only
+Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Sorry, could not find an application that supports the 'Person' data type.
+Untitled	EmailReaderWindow		Untitled
+HTML message	EmailViewsWindow		HTML message
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 year
+Filter by 'Recipient'	EmailListView		Filter by 'Recipient'
+Page setup…	EmailReaderWindow		Page setup…
+Add	ContentView		Add
+Reply to all	EmailReaderWindow		Reply to all
+Reply all	EmailListView		Reply all
+Add 'From' query	EmailListView		Add 'From' query
+Unread emails (%ld)	EmailViewsWindow		Unread emails (%ld)
+Cc:	EmailReaderWindow		Cc:
+1 email	EmailViewsWindow		1 email
+Open	AttachmentStripView		Open
+Save	SignatureWindow		Save
+To:	HeaderView		To:
+Check email	EmailViewsWindow		Check email
+Button bar:	Preferences		Button bar:
+Create Person file for	EmailListView		Create Person file for
+On	Preferences		On
+OK	EmailViewsWindow		OK
+Reply account:	Preferences		Reply account:
+Delete	EmailViewsWindow		Delete
+Trash	EmailReaderWindow		Trash
+Find	FindWindow		Find
+No matches	ContentView		No matches
+Delete permanently	EmailListView		Delete permanently
+Copy	EmailReaderWindow		Copy
+Reply	EmailReaderWindow		Reply
+Next message	EmailReaderWindow		Next message
+Emails in Trash	TrashItemView		Emails in Trash
+Attach	EmailReaderWindow		Attach
+Bcc:	HeaderView		Bcc:
+Next	EmailReaderWindow		Next
+\\n - Newline	Preferences		\\n - Newline
+Select all	EmailReaderWindow		Select all
+Email accounts…	EmailViewsWindow		Email accounts…
+Cancel	EmailReaderWindow		Cancel
+Open this link	ContentView		Open this link
+Account	SearchBarView		Account
+Need Tracker to move items to trash	EmailReaderWindow		Need Tracker to move items to trash
+Cancel	EmailViewsWindow		Cancel
+%d emails selected.	EmailViewsWindow		%d emails selected.
+Send this message before closing?	EmailReaderWindow		Send this message before closing?
+Find again	EmailReaderWindow		Find again
+Previous message, keep status	EmailReaderWindow		Previous message, keep status
+Starred emails	EmailViewsWindow		Starred emails
