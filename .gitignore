@@ -1,0 +1,12 @@
+# Build artifacts
+objects*/
+EmailViews
+
+# Backup files
+*.bak
+*._
+*.cpp_
+
+# Haiku-specific
+_APP_
+_BEOS_*

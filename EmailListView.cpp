@@ -1,0 +1,3944 @@
+/*
+ * EmailListView.cpp - High-performance email list view implementation
+ * Distributed under the terms of the MIT License.
+ * 
+ * Architecture overview:
+ * - EmailListView is a BGroupView containing a column header, a scrollable
+ *   ContentView (draws rows), scrollbars, and a status label with loading dots.
+ * - Only visible rows are drawn (virtual scrolling via _FirstVisibleIndex).
+ * - A HashMap (node_ref → index) provides O(1) lookup. During loading,
+ *   the HashMap may have stale indices for shifted items (see AddEmailSorted).
+ * - Node monitors (B_WATCH_ATTR) track only the ~30-50 visible rows to stay
+ *   within the system-wide 4096 monitor limit.
+ *
+ * Two-phase query loading:
+ *   Phase 1: Recent emails (last 30 days) loaded with sorted insertion.
+ *            Live queries start at end of Phase 1 so new mail appears immediately.
+ *   Phase 2: Older emails loaded at low priority into the same list.
+ *            HashMap rebuilt at Phase 2 completion.
+ *   Single-phase: Queries involving MAIL:draft skip the time split because
+ *            draft emails may lack MAIL:when.
+ *
+ * Threading model:
+ *   Loader thread creates EmailRef objects (disk I/O) and posts batches to
+ *   the window thread via BMessenger. The window thread inserts items into
+ *   the list. A shared_ptr<volatile bool> stop flag allows safe cancellation.
+ */
+
+#include "EmailColumnHeader.h"
+#include "EmailListView.h"
+#include "EmailAccountMap.h"
+
+#include <Box.h>
+#include <Bitmap.h>
+#include <Catalog.h>
+#include <ControlLook.h>
+#include <DateFormat.h>
+#include <DateTimeFormat.h>
+#include <Directory.h>
+#include <Entry.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <GroupLayout.h>
+#include <GroupView.h>
+#include <IconUtils.h>
+#include <LayoutBuilder.h>
+#include <MenuItem.h>
+#include <Node.h>
+#include <NodeInfo.h>
+#include <NodeMonitor.h>
+#include <Path.h>
+#include <PopUpMenu.h>
+#include <Resources.h>
+#include <Roster.h>
+#include <StringView.h>
+#include <Volume.h>
+#include <VolumeRoster.h>
+#include <Window.h>
+
+#include <MessageRunner.h>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <memory>
+#include <vector>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "EmailListView"
+
+// Message for loading dots animation
+static const uint32 kMsgDotsPulse = 'dtpl';
+
+static const int32 kDotCount = 3;
+
+
+// ============================================================================
+// LoadingDots - animated dot sequence loading indicator
+// ============================================================================
+
+class LoadingDots : public BView {
+public:
+    LoadingDots(const char* name)
+        : BView(name, B_WILL_DRAW),
+          fActive(false),
+          fCurrentDot(0),
+          fRunner(NULL)
+    {
+        SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+    }
+
+    ~LoadingDots()
+    {
+        delete fRunner;
+    }
+
+    void Start()
+    {
+        if (fActive)
+            return;
+        fActive = true;
+        fCurrentDot = 0;
+
+        delete fRunner;
+        BMessage msg(kMsgDotsPulse);
+        fRunner = new BMessageRunner(BMessenger(this), &msg, 450000);
+        Invalidate();
+    }
+
+    void Stop()
+    {
+        fActive = false;
+        fCurrentDot = 0;
+        delete fRunner;
+        fRunner = NULL;
+        Invalidate();
+    }
+
+    void Draw(BRect updateRect)
+    {
+        BRect bounds = Bounds();
+        rgb_color bg = ui_color(B_PANEL_BACKGROUND_COLOR);
+        SetHighColor(bg);
+        FillRect(bounds);
+
+        if (!fActive)
+            return;
+
+        rgb_color dimColor = tint_color(bg, B_DARKEN_2_TINT);
+        rgb_color litColor = ui_color(B_STATUS_BAR_COLOR);
+
+        float dotSize = floorf(bounds.Height() * 0.35f);
+        float spacing = dotSize * 1.8f;
+        float totalWidth = kDotCount * dotSize + (kDotCount - 1) * (spacing - dotSize);
+        float startX = bounds.left + (bounds.Width() - totalWidth) / 2.0f;
+        float centerY = bounds.top + bounds.Height() / 2.0f;
+
+        for (int32 i = 0; i < kDotCount; i++) {
+            float cx = startX + i * spacing + dotSize / 2.0f;
+            SetHighColor(i == fCurrentDot ? litColor : dimColor);
+            FillEllipse(BPoint(cx, centerY), dotSize / 2.0f, dotSize / 2.0f);
+        }
+    }
+
+    void MessageReceived(BMessage* message)
+    {
+        if (message->what == kMsgDotsPulse && fActive) {
+            fCurrentDot = (fCurrentDot + 1) % kDotCount;
+            Invalidate();
+        } else {
+            BView::MessageReceived(message);
+        }
+    }
+
+private:
+    bool            fActive;
+    int32           fCurrentDot;
+    BMessageRunner* fRunner;
+};
+
+// Internal message codes for loader thread → window thread communication.
+// kMsgLoaderBatch carries a batch of EmailRef pointers.
+// kMsgPhase1Done / kMsgPhase2Done signal phase completion (trigger next phase or finalize).
+static const uint32 kMsgLoaderBatch = 'ldbh';
+static const uint32 kMsgLoaderDone = 'lddn';
+static const uint32 kMsgPhase1Done = 'ph1d';
+static const uint32 kMsgPhase2Done = 'ph2d';
+// Icon resource IDs (must match .rdef)
+static const int32 kResStarred = 402;
+static const int32 kResAttachment = 401;
+static const int32 kResAttachmentWhite = 403;
+
+// Cached icons (loaded once, shared by all instances)
+static BBitmap* sStarIcon = NULL;
+static BBitmap* sAttachmentIcon = NULL;
+static BBitmap* sAttachmentWhiteIcon = NULL;
+static bool sIconsLoaded = false;
+
+
+// Background item disposal to avoid UI stalls when clearing large lists.
+// Deleting 20,000+ EmailItem/EmailRef objects plus clearing a large HashMap
+// can take >1s on the UI thread. This moves both costs to a background thread.
+struct _DisposerData {
+    EmailItem** items;
+    int32       count;
+    std::unordered_map<node_ref, int32, NodeRefHash, NodeRefEqual>* hashMap;
+};
+
+static int32
+_ItemDisposerThread(void* data)
+{
+    _DisposerData* d = (_DisposerData*)data;
+    for (int32 i = 0; i < d->count; i++)
+        delete d->items[i];
+    delete[] d->items;
+    delete d->hashMap;
+    delete d;
+    return 0;
+}
+
+
+static BBitmap*
+_LoadIconFromResource(int32 resourceId, float size)
+{
+    BResources* resources = BApplication::AppResources();
+    if (resources == NULL)
+        return NULL;
+
+    size_t dataSize;
+    const void* data = resources->LoadResource('VICN', resourceId, &dataSize);
+    if (data == NULL)
+        return NULL;
+
+    BBitmap* bitmap = new BBitmap(BRect(0, 0, size - 1, size - 1), B_RGBA32);
+    if (bitmap->InitCheck() != B_OK) {
+        delete bitmap;
+        return NULL;
+    }
+
+    if (BIconUtils::GetVectorIcon((const uint8*)data, dataSize, bitmap) != B_OK) {
+        delete bitmap;
+        return NULL;
+    }
+
+    return bitmap;
+}
+
+
+static void
+_LoadIcons(float size)
+{
+    if (sIconsLoaded)
+        return;
+    sIconsLoaded = true;
+
+    sStarIcon = _LoadIconFromResource(kResStarred, size);
+    sAttachmentIcon = _LoadIconFromResource(kResAttachment, size);
+    sAttachmentWhiteIcon = _LoadIconFromResource(kResAttachmentWhite, size);
+
+    if (sStarIcon == NULL)
+        fprintf(stderr, "Warning: Star icon (resource %d) not found\n", kResStarred);
+    if (sAttachmentIcon == NULL)
+        fprintf(stderr, "Warning: Attachment icon (resource %d) not found\n", kResAttachment);
+}
+
+// Data passed to loader thread. Owns its own copies of volumes and shares
+// the stop flag with EmailListView via shared_ptr (so the flag stays alive
+// even if a new query replaces fCurrentStopFlag before this thread exits).
+struct LoaderData {
+    EmailListView*      view;
+    BMessenger          messenger;
+    BString             predicate;
+    BObjectList<BVolume, false> volumes;  // Does NOT own items - we delete manually
+    bool                showTrash;
+    bool                attachmentsOnly;
+    std::shared_ptr<volatile bool> stopFlag;  // Shared ownership with EmailListView
+    volatile int32*     currentQueryId; // Points to EmailListView::fCurrentQueryId for staleness check
+    time_t              cutoffTime;     // 30 days ago timestamp
+    int32               phase;          // 1 = recent, 2 = older
+    int32               queryId;        // Unique ID to identify this query session
+    
+    ~LoaderData() {
+        // Manually delete volumes since we set owning to false
+        for (int32 i = 0; i < volumes.CountItems(); i++) {
+            delete volumes.ItemAt(i);
+        }
+        // stopFlag shared_ptr releases automatically
+    }
+};
+
+
+// =============================================================================
+// EmailRef out-of-line method
+// Defined here (not in EmailRef.h) to break the circular dependency:
+// EmailRef.h → EmailAccountMap.h → (large include chain). Keeping EmailRef.h
+// lightweight is important because it's included everywhere.
+// =============================================================================
+
+void
+EmailRef::_ResolveAccountName(int32 accountId)
+{
+    account = EmailAccountMap::Instance().GetAccountName(accountId);
+}
+
+
+// =============================================================================
+// EmailItem implementation
+// =============================================================================
+
+EmailItem::EmailItem(EmailRef* ref)
+    :
+    fRef(ref),
+    fSelected(false),
+    fPathValid(false),
+    fDateStringValid(false)
+{
+}
+
+
+EmailItem::~EmailItem()
+{
+    delete fRef;
+}
+
+
+// === EmailViews API accessors ===
+
+const char*
+EmailItem::GetPath() const
+{
+    if (fRef == NULL)
+        return "";
+    
+    if (!fPathValid) {
+        BEntry entry(&fRef->entryRef);
+        if (entry.InitCheck() == B_OK) {
+            BPath path;
+            if (entry.GetPath(&path) == B_OK) {
+                fPath = path.Path();
+            }
+        }
+        fPathValid = true;
+    }
+    return fPath.String();
+}
+
+
+const char*
+EmailItem::GetStatus() const
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->status.String();
+}
+
+
+const char*
+EmailItem::GetAccount() const
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->account.String();
+}
+
+
+const char*
+EmailItem::GetFrom() const
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->from.String();
+}
+
+
+const char*
+EmailItem::GetTo() const
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->to.String();
+}
+
+
+const char*
+EmailItem::GetSubject() const
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->subject.String();
+}
+
+
+time_t
+EmailItem::GetWhen() const
+{
+    if (fRef == NULL)
+        return 0;
+    return fRef->when;
+}
+
+
+const timespec&
+EmailItem::GetCrtime() const
+{
+    static timespec empty = {0, 0};
+    if (fRef == NULL)
+        return empty;
+    return fRef->crtime;
+}
+
+
+const node_ref*
+EmailItem::GetNodeRef() const
+{
+    if (fRef == NULL)
+        return NULL;
+    return &fRef->nodeRef;
+}
+
+
+const entry_ref&
+EmailItem::GetEntryRef() const
+{
+    static entry_ref empty;
+    if (fRef == NULL)
+        return empty;
+    return fRef->entryRef;
+}
+
+
+bool
+EmailItem::IsRead() const
+{
+    if (fRef == NULL)
+        return true;
+    return fRef->isRead;
+}
+
+
+bool
+EmailItem::HasAttachment() const
+{
+    if (fRef == NULL)
+        return false;
+    return fRef->hasAttachment;
+}
+
+
+bool
+EmailItem::IsStarred() const
+{
+    if (fRef == NULL)
+        return false;
+    return fRef->isStarred;
+}
+
+
+void
+EmailItem::SetRead(bool read)
+{
+    if (fRef != NULL) {
+        fRef->isRead = read;
+        // Update status string to match
+        if (read && fRef->status.ICompare("New") == 0) {
+            fRef->status = "Read";
+        } else if (!read) {
+            fRef->status = "New";
+        }
+    }
+}
+
+
+void
+EmailItem::SetStatus(const char* status)
+{
+    if (fRef != NULL && status != NULL) {
+        fRef->status = status;
+        fRef->isRead = (fRef->status.ICompare("New") != 0);
+    }
+}
+
+
+void
+EmailItem::SetStarred(bool starred)
+{
+    if (fRef != NULL) {
+        fRef->isStarred = starred;
+    }
+}
+
+
+void
+EmailItem::SetHasAttachment(bool hasAttachment)
+{
+    if (fRef != NULL) {
+        fRef->hasAttachment = hasAttachment;
+    }
+}
+
+
+// === Display string methods (for drawing) ===
+
+const char*
+EmailItem::Status()
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->status.String();
+}
+
+
+const char*
+EmailItem::Subject()
+{
+    if (fRef == NULL)
+        return "(No Data)";
+    if (fRef->subject.Length() == 0)
+        return "(No Subject)";
+    return fRef->subject.String();
+}
+
+
+const char*
+EmailItem::From()
+{
+    if (fRef == NULL)
+        return "(No Data)";
+    if (fRef->from.Length() == 0)
+        return "(Unknown Sender)";
+    return fRef->from.String();
+}
+
+
+const char*
+EmailItem::To()
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->to.String();
+}
+
+
+const char*
+EmailItem::DateString()
+{
+    if (fRef == NULL)
+        return "";
+    
+    // Format date string on first access (cached in item)
+    if (!fDateStringValid) {
+        if (fRef->when > 0) {
+            BDateTimeFormat dateTimeFormat;
+            dateTimeFormat.Format(fDateString, fRef->when, 
+                                  B_SHORT_DATE_FORMAT, B_SHORT_TIME_FORMAT);
+        } else {
+            fDateString = "";
+        }
+        fDateStringValid = true;
+    }
+    return fDateString.String();
+}
+
+
+const char*
+EmailItem::Account()
+{
+    if (fRef == NULL)
+        return "";
+    return fRef->account.String();
+}
+
+
+void
+EmailItem::InvalidateCache()
+{
+    fPathValid = false;
+    fDateStringValid = false;
+}
+
+
+// =============================================================================
+// EmailListView::ContentView implementation (inner class for drawing rows)
+// =============================================================================
+
+EmailListView::ContentView::ContentView(EmailListView* parent)
+    :
+    BView("emailListContent", B_WILL_DRAW | B_FRAME_EVENTS | B_NAVIGABLE),
+    fParent(parent)
+{
+    SetViewUIColor(B_LIST_BACKGROUND_COLOR);
+    SetLowUIColor(B_LIST_BACKGROUND_COLOR);
+}
+
+
+void
+EmailListView::ContentView::Draw(BRect updateRect)
+{
+    fParent->_DrawContent(this, updateRect);
+}
+
+
+void
+EmailListView::ContentView::FrameResized(float width, float height)
+{
+    BView::FrameResized(width, height);
+    fParent->_UpdateScrollBar();
+}
+
+
+void
+EmailListView::ContentView::ScrollTo(BPoint where)
+{
+    BView::ScrollTo(where);
+    // Re-evaluate which rows need node monitors after scroll
+    fParent->_UpdateVisibleWatches();
+    // Keep column header horizontally aligned with list content
+    if (fParent->fColumnHeader != NULL) {
+        fParent->fColumnHeader->ScrollToH(where.x);
+    }
+}
+
+
+void
+EmailListView::ContentView::MouseDown(BPoint where)
+{
+    // Make us focused on click
+    if (!IsFocus())
+        MakeFocus(true);
+    
+    fParent->_HandleMouseDown(this, where);
+}
+
+
+void
+EmailListView::ContentView::KeyDown(const char* bytes, int32 numBytes)
+{
+    fParent->_HandleKeyDown(bytes, numBytes);
+}
+
+
+void
+EmailListView::ContentView::MakeFocus(bool focus)
+{
+    BView::MakeFocus(focus);
+    // Redraw to show/hide focus indicator if needed
+    Invalidate();
+}
+
+
+void
+EmailListView::ContentView::AttachedToWindow()
+{
+    BView::AttachedToWindow();
+    SetFlags(Flags() | B_NAVIGABLE);
+}
+
+
+// =============================================================================
+// EmailListView implementation (container view)
+// =============================================================================
+
+EmailListView::EmailListView(const char* name, BWindow* target)
+    :
+    BGroupView(name, B_VERTICAL, 0),
+    fItems(20),
+    fTarget(target),
+    fRowHeight(20.0f),
+    fAnchorIndex(-1),
+    fLastClickIndex(-1),
+    fSelectionIterIndex(0),
+    fSortColumn(kSortByDate),
+    fSortOrder(kSortDescending),
+    fBulkLoading(false),
+    fShowingTrash(false),
+    fContentView(NULL),
+    fColumnHeader(NULL),
+    fScrollView(NULL),
+    fVScrollBar(NULL),
+    fHScrollBar(NULL),
+    fStatusLabel(NULL),
+    fLoadingDots(NULL),
+    fSelectionMessage(NULL),
+    fInvocationMessage(NULL),
+    fLoaderThread(-1),
+    fCurrentQueryId(0),
+    fQueryShowTrash(false),
+    fQueryAttachmentsOnly(false),
+    fQueryCutoffTime(0),
+    fLoadedCount(0),
+    fTotalCount(0)
+{
+    // Create internal components
+    
+    // 1. Column header
+    fColumnHeader = new EmailColumnHeaderView("columnHeader");
+    
+    // 2. Content view (the scrollable list)
+    fContentView = new ContentView(this);
+    
+    // 3. Scroll view WITHOUT scrollbars and NO border (outer BBox provides border)
+    //    BScrollView takes ownership of fContentView and adds it as child
+    fScrollView = new BScrollView("scrollView", fContentView,
+        B_WILL_DRAW | B_FRAME_EVENTS, false, false, B_NO_BORDER);
+    fScrollView->SetExplicitMinSize(BSize(0, 0));
+    fScrollView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
+    
+    // 4. Vertical scrollbar (separate, spans full height)
+    //    Pass NULL as target initially, then set it
+    fVScrollBar = new BScrollBar("vscroll", NULL, 0, 0, B_VERTICAL);
+    fVScrollBar->SetTarget(fContentView);
+    fVScrollBar->SetExplicitMinSize(BSize(B_V_SCROLL_BAR_WIDTH, 0));
+    fVScrollBar->SetExplicitMaxSize(BSize(B_V_SCROLL_BAR_WIDTH, B_SIZE_UNLIMITED));
+    
+    // 5. Horizontal scrollbar (separate)
+    fHScrollBar = new BScrollBar("hscroll", NULL, 0, 0, B_HORIZONTAL);
+    fHScrollBar->SetTarget(fContentView);
+    fHScrollBar->SetExplicitMinSize(BSize(0, B_H_SCROLL_BAR_HEIGHT));
+    fHScrollBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_H_SCROLL_BAR_HEIGHT));
+    
+    // 6. Status label (bottom-left)
+    fStatusLabel = new BStringView("statusLabel", "");
+    fStatusLabel->SetAlignment(B_ALIGN_LEFT);
+    
+    // Make status label font smaller
+    BFont font;
+    fStatusLabel->GetFont(&font);
+    font.SetSize(font.Size() * 0.85);
+    fStatusLabel->SetFont(&font);
+    
+    // Size label to fit "999,999 emails" (max 6 digits with comma)
+    float labelWidth = font.StringWidth("999,999 emails") + 4;
+    fStatusLabel->SetExplicitMinSize(BSize(labelWidth, B_H_SCROLL_BAR_HEIGHT));
+    fStatusLabel->SetExplicitMaxSize(BSize(labelWidth, B_H_SCROLL_BAR_HEIGHT));
+    
+    // Loading dots indicator - to the right of count
+    float dotsWidth = B_H_SCROLL_BAR_HEIGHT * 1.8f;
+    fLoadingDots = new LoadingDots("loadingDots");
+    fLoadingDots->SetExplicitMinSize(BSize(dotsWidth, B_H_SCROLL_BAR_HEIGHT));
+    fLoadingDots->SetExplicitMaxSize(BSize(dotsWidth, B_H_SCROLL_BAR_HEIGHT));
+    
+    // 7. Corner spacer
+    BView* cornerSpacer = new BView("cornerSpacer", 0);
+    cornerSpacer->SetExplicitMinSize(BSize(B_V_SCROLL_BAR_WIDTH, B_H_SCROLL_BAR_HEIGHT));
+    cornerSpacer->SetExplicitMaxSize(BSize(B_V_SCROLL_BAR_WIDTH, B_H_SCROLL_BAR_HEIGHT));
+    cornerSpacer->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+    
+    // Link column header to this list
+    fColumnHeader->SetListView(this);
+    
+    // Build layout with BBox providing the border.
+    // BScrollView's own border can't span the column header and status bar,
+    // so we use a BBox with B_FANCY_BORDER around the entire assembly:
+    // ┌─────────────────────────────────────┐
+    // │[Column Header           ][V-Scrollbar]│
+    // │[Content View            ][           ]│
+    // │[Status][H-Scrollbar     ][Corner     ]│
+    // └─────────────────────────────────────┘
+    SetExplicitMinSize(BSize(0, 0));
+    SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
+    
+    // Create a BBox with the border
+    BBox* borderBox = new BBox("border");
+    borderBox->SetBorder(B_FANCY_BORDER);
+    
+    // Create the content layout - this creates a view we can add to BBox
+    BGroupLayout* innerLayout = BLayoutBuilder::Group<>(B_HORIZONTAL, 0)
+        // Left side: header + content + bottom bar
+        .AddGroup(B_VERTICAL, 0, 1.0f)
+            .Add(fColumnHeader)
+            .Add(fScrollView, 1.0f)
+            .AddGroup(B_HORIZONTAL, 0)
+                .AddStrut(4)
+                .Add(fStatusLabel)
+                .Add(fLoadingDots)
+                .AddStrut(6)
+                .Add(fHScrollBar, 1.0f)
+            .End()
+        .End()
+        // Right side: vertical scrollbar spanning full height + corner
+        .AddGroup(B_VERTICAL, 0)
+            .Add(fVScrollBar, 1.0f)
+            .Add(cornerSpacer)
+        .End();
+    
+    // Add the layout's view to the BBox (documented pattern for BBox + layouts)
+    borderBox->AddChild(innerLayout->View());
+    
+    // Add the BBox to this GroupView
+    BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+        .Add(borderBox, 1.0f)
+        .SetInsets(0);
+}
+
+
+EmailListView::~EmailListView()
+{
+    if (fCurrentStopFlag)
+        *fCurrentStopFlag = true;
+    if (fLoaderThread >= 0) {
+        status_t result;
+        wait_for_thread(fLoaderThread, &result);
+        fLoaderThread = -1;
+    }
+    _StopLiveQueries();
+    
+    // fCurrentStopFlag shared_ptr releases automatically (thread has exited)
+    
+    // Explicitly delete all items (fItems is non-owning)
+    for (int32 i = 0; i < fItems.CountItems(); i++)
+        delete fItems.ItemAt(i);
+    
+    delete fSelectionMessage;
+    delete fInvocationMessage;
+}
+
+
+void
+EmailListView::AttachedToWindow()
+{
+    BGroupView::AttachedToWindow();
+}
+
+
+void
+EmailListView::AllAttached()
+{
+    BGroupView::AllAttached();
+    
+    // Calculate row height based on content view's font
+    if (fContentView != NULL) {
+        font_height fontHeight;
+        fContentView->GetFontHeight(&fontHeight);
+        fRowHeight = ceilf((fontHeight.ascent + fontHeight.descent 
+                            + fontHeight.leading) * 1.4f);
+        if (fRowHeight < 20.0f)
+            fRowHeight = 20.0f;
+    }
+    
+    // Set up colors from system theme
+    fBackgroundColor = ui_color(B_LIST_BACKGROUND_COLOR);
+    fSelectedColor = ui_color(B_LIST_SELECTED_BACKGROUND_COLOR);
+    fTextColor = ui_color(B_LIST_ITEM_TEXT_COLOR);
+    fSelectedTextColor = ui_color(B_LIST_SELECTED_ITEM_TEXT_COLOR);
+    _UpdateStripeColor();
+    
+    // Load icons at row height size
+    _LoadIcons(fRowHeight - 4);
+    
+    // Set header icons for icon columns
+    if (fColumnHeader != NULL) {
+        if (sStarIcon != NULL)
+            fColumnHeader->SetColumnHeaderIcon(kColumnStar, sStarIcon);
+        if (sAttachmentIcon != NULL)
+            fColumnHeader->SetColumnHeaderIcon(kColumnAttachment, sAttachmentIcon);
+    }
+    
+    _UpdateScrollBar();
+}
+
+
+void
+EmailListView::DetachedFromWindow()
+{
+    if (fCurrentStopFlag)
+        *fCurrentStopFlag = true;
+    if (fLoaderThread >= 0) {
+        status_t result;
+        wait_for_thread(fLoaderThread, &result);
+        fLoaderThread = -1;
+    }
+    _StopLiveQueries();
+    _StopAllWatches();
+    BGroupView::DetachedFromWindow();
+}
+
+
+void
+EmailListView::MakeFocus(bool focus)
+{
+    // Forward to content view
+    if (fContentView != NULL)
+        fContentView->MakeFocus(focus);
+}
+
+
+void
+EmailListView::MessageReceived(BMessage* message)
+{
+    switch (message->what) {
+        case kMsgLoaderBatch:
+        {
+            // Check if this batch is from the current query
+            int32 queryId = 0;
+            message->FindInt32("queryId", &queryId);
+            if (queryId != fCurrentQueryId) {
+                // Stale batch from old query - delete the EmailRefs and ignore
+                void* ptr;
+                int32 index = 0;
+                while (message->FindPointer("emailref", index++, &ptr) == B_OK) {
+                    delete (EmailRef*)ptr;
+                }
+                break;
+            }
+            
+            // Batch from background loader thread
+            _ProcessLoaderBatch(message);
+            break;
+        }
+        
+        case kMsgPhase1Done:
+        {
+            // Check if this is from the current query
+            int32 queryId = 0;
+            message->FindInt32("queryId", &queryId);
+            if (queryId != fCurrentQueryId) {
+                break;
+            }
+            
+            // Phase 1 complete - recent emails loaded with sorted insertion
+            fLoaderThread = -1;
+            
+            // Start live queries now so new emails appear
+            _StartLiveQueries();
+            
+            if (fQueryCutoffTime == 0) {
+                // Single-phase loading (no MAIL:when split) — we're done
+                SortItems();
+                
+                fNodeToIndex.clear();
+                for (int32 i = 0; i < fItems.CountItems(); i++) {
+                    EmailItem* item = fItems.ItemAt(i);
+                    if (item != NULL && item->Ref() != NULL)
+                        fNodeToIndex[item->Ref()->nodeRef] = i;
+                }
+                
+                _UpdateScrollBar();
+                if (fContentView != NULL) fContentView->Invalidate();
+                _SendLoadingUpdate(false, true);
+                break;
+            }
+            
+            // Notify target - phase 1 complete, user can interact
+            _SendLoadingUpdate(true, false);
+            
+            // Launch phase 2 - older emails
+            LoaderData* data = new LoaderData();
+            data->view = this;
+            data->messenger = BMessenger(this);
+            data->predicate = fQueryPredicate;
+            data->showTrash = fQueryShowTrash;
+            data->attachmentsOnly = fQueryAttachmentsOnly;
+            data->stopFlag = fCurrentStopFlag;
+            data->currentQueryId = &fCurrentQueryId;
+            data->cutoffTime = fQueryCutoffTime;
+            data->phase = 2;
+            data->queryId = fCurrentQueryId;
+            
+            for (int32 i = 0; i < fQueryVolumes.CountItems(); i++) {
+                BVolume* vol = fQueryVolumes.ItemAt(i);
+                if (vol != NULL)
+                    data->volumes.AddItem(new BVolume(*vol));
+            }
+            
+            fLoaderThread = spawn_thread(_LoaderThread, "email_loader_p2",
+                                          B_LOW_PRIORITY, data);
+            if (fLoaderThread >= 0) {
+                resume_thread(fLoaderThread);
+            } else {
+                delete data;
+                _SendLoadingUpdate(false, true);
+            }
+            break;
+        }
+        
+        case kMsgPhase2Done:
+        {
+            // Check if this is from the current query
+            int32 queryId = 0;
+            message->FindInt32("queryId", &queryId);
+            if (queryId != fCurrentQueryId) {
+                break;
+            }
+            
+            // Phase 2 complete - all emails loaded
+            fLoaderThread = -1;
+            
+            // Final sort to fix any ordering edge cases
+            SortItems();
+            
+            // Rebuild HashMap after sort
+            fNodeToIndex.clear();
+            for (int32 i = 0; i < fItems.CountItems(); i++) {
+                EmailItem* item = fItems.ItemAt(i);
+                if (item != NULL && item->Ref() != NULL) {
+                    fNodeToIndex[item->Ref()->nodeRef] = i;
+                }
+            }
+            
+            // Final UI update
+            _UpdateScrollBar();
+            if (fContentView != NULL) fContentView->Invalidate();
+            
+            // Notify target - all complete
+            _SendLoadingUpdate(false, true);
+            break;
+        }
+        
+        case kMsgLoaderDone:
+        {
+            // Legacy - kept for compatibility
+            fLoaderThread = -1;
+            EndBulkLoad();
+            SortItems();
+            _UpdateScrollBar();
+            if (fContentView != NULL) fContentView->Invalidate();
+            _StartLiveQueries();
+            _SendLoadingUpdate(false, true);
+            break;
+        }
+        
+        case kMsgAddEmails:
+        {
+            // Batch of emails from background thread (legacy)
+            entry_ref ref;
+            int32 index = 0;
+            while (message->FindRef("ref", index, &ref) == B_OK) {
+                EmailRef* emailRef = new EmailRef(ref);
+                AddEmailSorted(emailRef);
+                index++;
+            }
+            break;
+        }
+        
+        case kMsgQueryComplete:
+        {
+            // Query finished - end bulk loading mode (legacy)
+            EndBulkLoad();
+            break;
+        }
+        
+        case kMsgEmailAdded:
+        {
+            // Live query: new email arrived
+            entry_ref ref;
+            if (message->FindRef("ref", &ref) == B_OK) {
+                EmailRef* emailRef = new EmailRef(ref);
+                AddEmailSorted(emailRef);
+            }
+            break;
+        }
+        
+        case kMsgEmailRemoved:
+        {
+            // Live query: email removed
+            node_ref nodeRef;
+            dev_t device;
+            ino_t node;
+            
+            if (message->FindInt32("device", &device) == B_OK &&
+                message->FindInt64("node", &node) == B_OK) {
+                nodeRef.device = device;
+                nodeRef.node = node;
+                RemoveEmail(nodeRef);
+            }
+            break;
+        }
+        
+        case kMsgEmailChanged:
+        {
+            // Live query: email attribute changed
+            node_ref nodeRef;
+            dev_t device;
+            ino_t node;
+            
+            if (message->FindInt32("device", &device) == B_OK &&
+                message->FindInt64("node", &node) == B_OK) {
+                nodeRef.device = device;
+                nodeRef.node = node;
+                
+                // Find the item and reload from disk
+                EmailItem* item = ItemFor(nodeRef);
+                if (item != NULL) {
+                    if (item->Ref() != NULL)
+                        item->Ref()->ReloadAttributes();
+                    item->InvalidateCache();
+                    
+                    // Redraw if visible
+                    int32 index = IndexOf(nodeRef);
+                    if (index >= _FirstVisibleIndex() && index <= _LastVisibleIndex()) {
+                        if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+                    }
+                }
+            }
+            break;
+        }
+        
+        case B_NODE_MONITOR:
+        {
+            // Node monitor notification for watched visible emails
+            int32 opcode;
+            if (message->FindInt32("opcode", &opcode) != B_OK)
+                break;
+            
+            if (opcode == B_ATTR_CHANGED) {
+                node_ref nodeRef;
+                dev_t device;
+                ino_t node;
+                
+                if (message->FindInt32("device", &device) == B_OK &&
+                    message->FindInt64("node", &node) == B_OK) {
+                    nodeRef.device = device;
+                    nodeRef.node = node;
+                    
+                    // Find the item by linear scan to avoid stale HashMap
+                    // indices during Phase 2 loading
+                    int32 index;
+                    EmailItem* item = _FindItemByNodeRef(nodeRef, &index);
+                    if (item != NULL) {
+                        if (item->Ref() != NULL)
+                            item->Ref()->ReloadAttributes();
+                        item->InvalidateCache();
+                        
+                        // Redraw if visible
+                        if (index >= _FirstVisibleIndex() && index <= _LastVisibleIndex()) {
+                            if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case B_COLORS_UPDATED:
+        {
+            // Theme changed - refresh cached colors
+            fBackgroundColor = ui_color(B_LIST_BACKGROUND_COLOR);
+            fSelectedColor = ui_color(B_LIST_SELECTED_BACKGROUND_COLOR);
+            fTextColor = ui_color(B_LIST_ITEM_TEXT_COLOR);
+            fSelectedTextColor = ui_color(B_LIST_SELECTED_ITEM_TEXT_COLOR);
+            _UpdateStripeColor();
+            if (fContentView != NULL) fContentView->Invalidate();
+            break;
+        }
+        
+        case kMsgMarkAsRead:
+            _MarkSelectedAs("Read");
+            break;
+        
+        case kMsgMarkAsUnread:
+            _MarkSelectedAs("New");
+            break;
+        
+        case kMsgMarkAsSent:
+            _MarkSelectedAs("Sent");
+            break;
+        
+        case kMsgMoveToTrash:
+            _MoveSelectedToTrash();
+            break;
+        
+        case EmailColumnHeaderView::kMsgColumnClicked:
+        {
+            // Column header clicked - handle sorting
+            int32 column = 0;
+            int32 order = 0;
+            if (message->FindInt32("column", &column) == B_OK &&
+                message->FindInt32("order", &order) == B_OK) {
+                // Map EmailColumn to EmailListView sort column
+                SortColumn sortCol;
+                switch (column) {
+                    case kColumnStatus:
+                        sortCol = kSortByStatus;
+                        break;
+                    case kColumnStar:
+                        sortCol = kSortByStar;
+                        break;
+                    case kColumnAttachment:
+                        sortCol = kSortByAttachment;
+                        break;
+                    case kColumnFrom:
+                        sortCol = kSortByFrom;
+                        break;
+                    case kColumnTo:
+                        sortCol = kSortByTo;
+                        break;
+                    case kColumnSubject:
+                        sortCol = kSortBySubject;
+                        break;
+                    case kColumnDate:
+                        sortCol = kSortByDate;
+                        break;
+                    case kColumnAccount:
+                        sortCol = kSortByAccount;
+                        break;
+                    default:
+                        sortCol = kSortByDate;
+                        break;
+                }
+                
+                SortOrder sortOrder = (order == kSortAscending) 
+                    ? kSortAscending 
+                    : kSortDescending;
+                
+                SetSortColumn(sortCol, sortOrder);
+            }
+            break;
+        }
+        
+        case B_QUERY_UPDATE:
+        {
+            // Live query notification - handle entry created/removed/changed
+            int32 opcode;
+            if (message->FindInt32("opcode", &opcode) != B_OK)
+                break;
+            
+            switch (opcode) {
+                case B_ENTRY_CREATED:
+                {
+                    entry_ref ref;
+                    const char* name;
+                    ino_t directory;
+                    dev_t device;
+                    
+                    if (message->FindInt32("device", &device) != B_OK ||
+                        message->FindInt64("directory", &directory) != B_OK ||
+                        message->FindString("name", &name) != B_OK)
+                        break;
+                    
+                    ref.device = device;
+                    ref.directory = directory;
+                    ref.set_name(name);
+                    
+                    // Check if already in list. Live query initial results overlap
+                    // with loader results because both run the same predicate.
+                    // The HashMap dedup prevents duplicates.
+                    node_ref nodeRef;
+                    nodeRef.device = device;
+                    ino_t node;
+                    if (message->FindInt64("node", &node) == B_OK) {
+                        nodeRef.node = node;
+                        if (fNodeToIndex.find(nodeRef) != fNodeToIndex.end())
+                            break;  // Already have this email
+                    }
+                    
+                    // Filter by trash status. Path comparison is case-insensitive
+                    // because BFS is case-insensitive by default, and some volumes
+                    // may have mixed-case trash directory names.
+                    BPath path(&ref);
+                    if (path.InitCheck() == B_OK) {
+                        BVolume volume(device);
+                        BPath trashPath;
+                        if (find_directory(B_TRASH_DIRECTORY, &trashPath, false, &volume) == B_OK) {
+                            BString pathStr(path.Path());
+                            BString trashStr(trashPath.Path());
+                            pathStr.ToLower();
+                            trashStr.ToLower();
+                            bool inTrash = (trashStr.Length() > 0 &&
+                                           pathStr.FindFirst(trashStr) >= 0);
+                            if (fQueryShowTrash && !inTrash)
+                                break;
+                            if (!fQueryShowTrash && inTrash)
+                                break;
+                        }
+                    }
+                    
+                    // Filter by attachments if needed
+                    if (fQueryAttachmentsOnly) {
+                        EmailRef* tempRef = new EmailRef(ref);
+                        if (!tempRef->hasAttachment) {
+                            delete tempRef;
+                            break;
+                        }
+                        AddEmailSorted(tempRef);
+                    } else {
+                        EmailRef* emailRef = new EmailRef(ref);
+                        AddEmailSorted(emailRef);
+                    }
+                    
+                    // Redraw for live query additions (single items)
+                    if (fContentView != NULL)
+                        fContentView->Invalidate();
+                    
+                    // Notify parent to update email count (throttled)
+                    _NotifyCountChanged();
+                    break;
+                }
+                
+                case B_ENTRY_REMOVED:
+                {
+                    node_ref nodeRef;
+                    dev_t device;
+                    ino_t node;
+                    
+                    if (message->FindInt32("device", &device) != B_OK ||
+                        message->FindInt64("node", &node) != B_OK)
+                        break;
+                    
+                    nodeRef.device = device;
+                    nodeRef.node = node;
+                    
+                    RemoveEmail(nodeRef);
+                    
+                    // Notify parent to update email count (throttled)
+                    _NotifyCountChanged();
+                    break;
+                }
+                
+                case B_ATTR_CHANGED:
+                {
+                    node_ref nodeRef;
+                    dev_t device;
+                    ino_t node;
+                    
+                    if (message->FindInt32("device", &device) != B_OK ||
+                        message->FindInt64("node", &node) != B_OK)
+                        break;
+                    
+                    nodeRef.device = device;
+                    nodeRef.node = node;
+                    
+                    // Find the item by linear scan to avoid stale HashMap
+                    // indices during Phase 2 loading
+                    int32 index;
+                    EmailItem* item = _FindItemByNodeRef(nodeRef, &index);
+                    if (item != NULL) {
+                        // Re-read changed attributes from disk
+                        if (item->Ref() != NULL)
+                            item->Ref()->ReloadAttributes();
+                        item->InvalidateCache();
+                        
+                        if (index >= _FirstVisibleIndex()
+                            && index <= _LastVisibleIndex()) {
+                            if (fContentView != NULL)
+                                fContentView->Invalidate(_RowRect(index));
+                        }
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+        
+        default:
+            BGroupView::MessageReceived(message);
+            break;
+    }
+}
+
+
+void
+EmailListView::_DrawContent(BView* view, BRect updateRect)
+{
+    // Draw only rows that intersect updateRect
+    // Note: updateRect is in view coordinates (which scroll)
+    
+    int32 count = fItems.CountItems();
+    if (count == 0) {
+        // Empty state - just fill with background
+        view->SetHighColor(fBackgroundColor);
+        view->FillRect(updateRect);
+        return;
+    }
+    
+    // Calculate visible range based on updateRect
+    int32 firstVisible = std::max((int32)0, (int32)(updateRect.top / fRowHeight));
+    int32 lastVisible = std::min(count - 1, (int32)(updateRect.bottom / fRowHeight));
+    
+    // Fill background above first row if needed
+    float firstRowTop = firstVisible * fRowHeight;
+    if (updateRect.top < firstRowTop) {
+        BRect topRect = updateRect;
+        topRect.bottom = firstRowTop - 1;
+        if (topRect.IsValid()) {
+            view->SetHighColor(fBackgroundColor);
+            view->FillRect(topRect);
+        }
+    }
+    
+    // Draw visible rows
+    for (int32 i = firstVisible; i <= lastVisible; i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item == NULL)
+            continue;
+        
+        BRect rowRect = _RowRect(i);
+        
+        // Only draw if row intersects update rect
+        if (rowRect.Intersects(updateRect)) {
+            bool isSelected = IsSelected(i);
+            _DrawRow(view, item, rowRect, isSelected, i);
+        }
+    }
+    
+    // Fill background below last row if needed
+    float lastRowBottom = (lastVisible + 1) * fRowHeight;
+    if (lastRowBottom < updateRect.bottom) {
+        BRect bottomRect = updateRect;
+        bottomRect.top = lastRowBottom;
+        view->SetHighColor(fBackgroundColor);
+        view->FillRect(bottomRect);
+    }
+    
+    // Update node watches for visible emails
+    _UpdateVisibleWatches();
+}
+
+
+void
+EmailListView::_DrawRow(BView* view, EmailItem* item, BRect rowRect,
+    bool isSelected, int32 rowIndex)
+{
+    // Safety check
+    if (item == NULL)
+        return;
+    
+    // Draw background
+    if (isSelected) {
+        view->SetHighColor(fSelectedColor);
+    } else if (rowIndex % 2 != 0) {
+        view->SetHighColor(fStripeColor);
+    } else {
+        view->SetHighColor(fBackgroundColor);
+    }
+    view->FillRect(rowRect);
+    
+    // Draw text
+    if (isSelected) {
+        view->SetHighColor(fSelectedTextColor);
+    } else {
+        view->SetHighColor(fTextColor);
+    }
+    
+    // Get status to check if email is new/unread
+    BString statusStr(item->Status());
+    bool isNew = (statusStr == "New");
+    
+    // Set bold font for new/unread emails
+    if (isNew) {
+        BFont font;
+        view->GetFont(&font);
+        font.SetFace(B_BOLD_FACE);
+        view->SetFont(&font);
+    }
+    
+    // Calculate text position (vertically centered)
+    font_height fontHeight;
+    view->GetFontHeight(&fontHeight);
+    float textY = rowRect.top + (fRowHeight - fontHeight.ascent - fontHeight.descent) / 2.0f
+                  + fontHeight.ascent;
+    
+    float padding = 5.0f;
+    float xPos = rowRect.left;
+    
+    // Get strings safely - copy to local BStrings
+    BString fromStr(item->From());
+    BString toStr(item->To());
+    BString subjectStr(item->Subject());
+    BString dateStr(item->DateString());
+    BString accountStr(item->Account());
+    
+    // Draw columns in the order specified by the header
+    if (fColumnHeader != NULL) {
+        int32 columnCount = fColumnHeader->CountColumns();
+        for (int32 i = 0; i < columnCount; i++) {
+            EmailColumn colId = fColumnHeader->ColumnAt(i);
+            float colWidth = fColumnHeader->ColumnWidthAt(i);
+            
+            // Skip hidden columns (ColumnWidthAt returns 0 for hidden)
+            if (colWidth <= 0)
+                continue;
+            
+            switch (colId) {
+                case kColumnStatus:
+                    // Status is centered
+                    if (statusStr.Length() > 0) {
+                        float strWidth = view->StringWidth(statusStr.String());
+                        float strX = xPos + (colWidth - strWidth) / 2.0f;
+                        view->MovePenTo(strX, textY);
+                        view->DrawString(statusStr.String());
+                    }
+                    break;
+                
+                case kColumnStar:
+                {
+                    // Draw star icon if starred
+                    if (item->IsStarred() && sStarIcon != NULL) {
+                        float iconSize = sStarIcon->Bounds().Width() + 1;
+                        float iconX = xPos + (colWidth - iconSize) / 2.0f;
+                        float iconY = rowRect.top + (fRowHeight - iconSize) / 2.0f;
+                        view->SetDrawingMode(B_OP_ALPHA);
+                        view->SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
+                        view->DrawBitmap(sStarIcon, BPoint(iconX, iconY));
+                        view->SetDrawingMode(B_OP_COPY);
+                    }
+                    break;
+                }
+                
+                case kColumnAttachment:
+                {
+                    // Draw paperclip icon if has attachment
+                    if (item->HasAttachment()) {
+                        // Use white icon on dark backgrounds
+                        bool isDark = fBackgroundColor.red < 128;
+                        BBitmap* icon = (isDark && sAttachmentWhiteIcon != NULL)
+                            ? sAttachmentWhiteIcon : sAttachmentIcon;
+                        if (icon != NULL) {
+                            float iconSize = icon->Bounds().Width() + 1;
+                            float iconX = xPos + (colWidth - iconSize) / 2.0f;
+                            float iconY = rowRect.top + (fRowHeight - iconSize) / 2.0f;
+                            view->SetDrawingMode(B_OP_ALPHA);
+                            view->SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
+                            view->DrawBitmap(icon, BPoint(iconX, iconY));
+                            view->SetDrawingMode(B_OP_COPY);
+                        }
+                    }
+                    break;
+                }
+                    
+                case kColumnFrom:
+                    {
+                        BString str(fromStr);
+                        float avail = colWidth - padding * 2;
+                        view->TruncateString(&str, B_TRUNCATE_END, avail);
+                        view->MovePenTo(xPos + padding, textY);
+                        view->DrawString(str.String());
+                    }
+                    break;
+                    
+                case kColumnTo:
+                    {
+                        BString str(toStr);
+                        float avail = colWidth - padding * 2;
+                        view->TruncateString(&str, B_TRUNCATE_END, avail);
+                        view->MovePenTo(xPos + padding, textY);
+                        view->DrawString(str.String());
+                    }
+                    break;
+                    
+                case kColumnSubject:
+                    {
+                        BString str(subjectStr);
+                        float avail = colWidth - padding * 2;
+                        view->TruncateString(&str, B_TRUNCATE_END, avail);
+                        view->MovePenTo(xPos + padding, textY);
+                        view->DrawString(str.String());
+                    }
+                    break;
+                    
+                case kColumnDate:
+                    {
+                        BString str(dateStr);
+                        float avail = colWidth - padding * 2;
+                        view->TruncateString(&str, B_TRUNCATE_END, avail);
+                        view->MovePenTo(xPos + padding, textY);
+                        view->DrawString(str.String());
+                    }
+                    break;
+                    
+                case kColumnAccount:
+                    {
+                        BString str(accountStr);
+                        float avail = colWidth - padding * 2;
+                        view->TruncateString(&str, B_TRUNCATE_END, avail);
+                        view->MovePenTo(xPos + padding, textY);
+                        view->DrawString(str.String());
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            xPos += colWidth;
+        }
+    } else {
+        // Fallback to default order and proportions
+        float width = rowRect.Width();
+        float statusWidth = width * 0.05f;
+        float fromWidth = width * 0.15f;
+        float toWidth = width * 0.15f;
+        float subjectWidth = width * 0.35f;
+        float dateWidth = width * 0.15f;
+        float accountWidth = width * 0.15f;
+        
+        // Draw Status (centered in column)
+        if (statusStr.Length() > 0) {
+            float statusStrWidth = view->StringWidth(statusStr.String());
+            float statusX = xPos + (statusWidth - statusStrWidth) / 2.0f;
+            view->MovePenTo(statusX, textY);
+            view->DrawString(statusStr.String());
+        }
+        xPos += statusWidth;
+        
+        // Draw From
+        view->TruncateString(&fromStr, B_TRUNCATE_END, fromWidth - padding * 2);
+        view->MovePenTo(xPos + padding, textY);
+        view->DrawString(fromStr.String());
+        xPos += fromWidth;
+        
+        // Draw To
+        view->TruncateString(&toStr, B_TRUNCATE_END, toWidth - padding * 2);
+        view->MovePenTo(xPos + padding, textY);
+        view->DrawString(toStr.String());
+        xPos += toWidth;
+        
+        // Draw Subject
+        view->TruncateString(&subjectStr, B_TRUNCATE_END, subjectWidth - padding * 2);
+        view->MovePenTo(xPos + padding, textY);
+        view->DrawString(subjectStr.String());
+        xPos += subjectWidth;
+        
+        // Draw Date
+        view->TruncateString(&dateStr, B_TRUNCATE_END, dateWidth - padding * 2);
+        view->MovePenTo(xPos + padding, textY);
+        view->DrawString(dateStr.String());
+        xPos += dateWidth;
+        
+        // Draw Account
+        view->TruncateString(&accountStr, B_TRUNCATE_END, accountWidth - padding * 2);
+        view->MovePenTo(xPos + padding, textY);
+        view->DrawString(accountStr.String());
+    }
+    
+    // Restore regular font if we changed it
+    if (isNew) {
+        BFont font;
+        view->GetFont(&font);
+        font.SetFace(B_REGULAR_FACE);
+        view->SetFont(&font);
+    }
+    
+    // Draw separator line at bottom
+    // Use a tint that provides contrast on both light and dark themes
+    rgb_color lineColor;
+    if (fBackgroundColor.Brightness() > 127) {
+        // Light background - darken
+        lineColor = tint_color(fBackgroundColor, B_DARKEN_1_TINT);
+    } else {
+        // Dark background - lighten
+        lineColor = tint_color(fBackgroundColor, B_LIGHTEN_1_TINT);
+    }
+    view->SetHighColor(lineColor);
+    view->StrokeLine(BPoint(rowRect.left, rowRect.bottom),
+               BPoint(rowRect.right, rowRect.bottom));
+}
+
+
+BRect
+EmailListView::_RowRect(int32 index) const
+{
+    // Return the rect in the view's scrolling coordinate system
+    // Row 0 is at y=0, Row 1 is at y=fRowHeight, etc.
+    BRect rect;
+    if (fContentView != NULL)
+        rect = fContentView->Bounds();
+    else
+        rect = BRect(0, 0, 100, 100);
+    rect.top = index * fRowHeight;
+    rect.bottom = rect.top + fRowHeight - 1;
+    return rect;
+}
+
+
+int32
+EmailListView::_IndexAt(BPoint point) const
+{
+    // point is in view coordinates (which scroll with the view)
+    if (point.y < 0)
+        return -1;
+    
+    int32 index = (int32)(point.y / fRowHeight);
+    
+    if (index >= fItems.CountItems())
+        return -1;
+    
+    return index;
+}
+
+
+int32
+EmailListView::_FirstVisibleIndex() const
+{
+    if (fContentView == NULL)
+        return 0;
+    // Bounds().top is the scroll position in the view's coordinate system
+    return (int32)(fContentView->Bounds().top / fRowHeight);
+}
+
+
+int32
+EmailListView::_LastVisibleIndex() const
+{
+    if (fContentView == NULL)
+        return -1;
+    BRect bounds = fContentView->Bounds();
+    int32 lastVisible = (int32)(bounds.bottom / fRowHeight);
+    return std::min(lastVisible, fItems.CountItems() - 1);
+}
+
+
+int32
+EmailListView::_VisibleCount() const
+{
+    return _LastVisibleIndex() - _FirstVisibleIndex() + 1;
+}
+
+
+void
+EmailListView::ScrollTo(BPoint where)
+{
+    // Scroll the content view to the specified position
+    if (fContentView != NULL) {
+        fContentView->ScrollTo(where);
+    }
+}
+
+
+void
+EmailListView::_UpdateStripeColor()
+{
+    // Compute stripe color: a subtle tint of the background.
+    // Dark themes (low brightness) get a slightly lighter stripe;
+    // light themes get a slightly darker stripe.
+    int32 brightness = (fBackgroundColor.red + fBackgroundColor.green
+                        + fBackgroundColor.blue) / 3;
+    int32 shift = (brightness > 127) ? -12 : 12;
+    
+    fStripeColor.red   = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.red + shift));
+    fStripeColor.green = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.green + shift));
+    fStripeColor.blue  = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.blue + shift));
+    fStripeColor.alpha = 255;
+}
+
+
+void
+EmailListView::_UpdateScrollBar()
+{
+    if (fContentView == NULL)
+        return;
+    
+    // Vertical scrollbar
+    if (fVScrollBar != NULL) {
+        float viewHeight = fContentView->Bounds().Height();
+        float dataHeight = fItems.CountItems() * fRowHeight;
+        
+        if (dataHeight <= viewHeight) {
+            // Everything fits, no scrolling needed
+            fVScrollBar->SetRange(0, 0);
+            fVScrollBar->SetValue(0);
+        } else {
+            float maxScroll = dataHeight - viewHeight;
+            fVScrollBar->SetRange(0, maxScroll);
+            fVScrollBar->SetProportion(viewHeight / dataHeight);
+            fVScrollBar->SetSteps(fRowHeight, viewHeight - fRowHeight);
+        }
+    }
+    
+    // Horizontal scrollbar
+    if (fHScrollBar != NULL && fColumnHeader != NULL) {
+        float viewWidth = fContentView->Bounds().Width();
+        float dataWidth = fColumnHeader->TotalWidth();
+        
+        if (dataWidth <= viewWidth) {
+            // Everything fits, no scrolling needed
+            fHScrollBar->SetRange(0, 0);
+            fHScrollBar->SetValue(0);
+        } else {
+            float maxScroll = dataWidth - viewWidth;
+            fHScrollBar->SetRange(0, maxScroll);
+            fHScrollBar->SetProportion(viewWidth / dataWidth);
+            fHScrollBar->SetSteps(20, viewWidth - 20);
+        }
+    }
+}
+
+
+void
+EmailListView::_HandleMouseDown(BView* view, BPoint where)
+{
+    // Check which mouse button was pressed
+    BMessage* message = Window()->CurrentMessage();
+    int32 buttons = 0;
+    message->FindInt32("buttons", &buttons);
+    int32 clicks = 1;
+    message->FindInt32("clicks", &clicks);
+    
+    int32 index = _IndexAt(where);
+    
+    if (buttons & B_SECONDARY_MOUSE_BUTTON) {
+        // Right-click - show context menu
+        if (index >= 0) {
+            // If clicking on unselected row, select it first
+            if (!IsSelected(index)) {
+                Select(index);
+            }
+        }
+        
+        if (CountSelected() > 0) {
+            _ShowContextMenu(where);
+        }
+    } else if (index >= 0) {
+        // Left-click - handle selection
+        // On Haiku: B_COMMAND_KEY = Alt, B_OPTION_KEY = Win/Super
+        int32 mods = ::modifiers();
+        bool extend = (mods & B_SHIFT_KEY) != 0;
+        bool toggle = (mods & B_COMMAND_KEY) != 0;  // Alt for non-contiguous
+        
+        Select(index, extend, toggle);
+        
+        // Double-click - invoke
+        if (clicks == 2) {
+            _NotifyInvocation();
+        }
+    }
+}
+
+
+void
+EmailListView::_HandleKeyDown(const char* bytes, int32 numBytes)
+{
+    if (numBytes == 1) {
+        int32 mods = ::modifiers();
+        bool extend = (mods & B_SHIFT_KEY) != 0;
+        int32 current = fLastClickIndex >= 0 ? fLastClickIndex : FirstSelected();
+        
+        switch (bytes[0]) {
+            case B_UP_ARROW:
+                if (current > 0) {
+                    int32 newIndex = current - 1;
+                    if (extend) {
+                        // Extend selection to new position (preserves existing)
+                        ExtendSelectionTo(newIndex);
+                    } else {
+                        Select(newIndex);
+                    }
+                    EnsureVisible(newIndex);
+                }
+                break;
+            
+            case B_DOWN_ARROW:
+                if (current < fItems.CountItems() - 1) {
+                    int32 newIndex = current + 1;
+                    if (extend) {
+                        // Extend selection to new position (preserves existing)
+                        ExtendSelectionTo(newIndex);
+                    } else {
+                        Select(newIndex);
+                    }
+                    EnsureVisible(newIndex);
+                }
+                break;
+            
+            case B_PAGE_UP:
+            {
+                int32 pageSize = _VisibleCount();
+                int32 newIndex = std::max((int32)0, current - pageSize);
+                if (extend) {
+                    ExtendSelectionTo(newIndex);
+                } else {
+                    Select(newIndex);
+                }
+                EnsureVisible(newIndex);
+                break;
+            }
+            
+            case B_PAGE_DOWN:
+            {
+                int32 pageSize = _VisibleCount();
+                int32 maxIndex = fItems.CountItems() - 1;
+                int32 newIndex = std::min(maxIndex, current + pageSize);
+                if (extend) {
+                    ExtendSelectionTo(newIndex);
+                } else {
+                    Select(newIndex);
+                }
+                EnsureVisible(newIndex);
+                break;
+            }
+            
+            case B_HOME:
+                if (extend) {
+                    ExtendSelectionTo(0);
+                } else {
+                    Select(0);
+                }
+                EnsureVisible(0);
+                break;
+            
+            case B_END:
+            {
+                int32 lastIndex = fItems.CountItems() - 1;
+                if (lastIndex >= 0) {
+                    if (extend) {
+                        ExtendSelectionTo(lastIndex);
+                    } else {
+                        Select(lastIndex);
+                    }
+                    EnsureVisible(lastIndex);
+                }
+                break;
+            }
+            
+            case B_DELETE:
+                if (CountSelected() > 0) {
+                    _MoveSelectedToTrash();
+                }
+                break;
+            
+            case B_RETURN:
+                if (CountSelected() > 0) {
+                    _NotifyInvocation();
+                }
+                break;
+            
+            default:
+                break;
+        }
+    }
+}
+
+
+// Note: Old MakeFocus moved to constructor section
+// =============================================================================
+// Data management
+// =============================================================================
+
+void
+EmailListView::AddEmail(EmailRef* ref)
+{
+    // Simple append (unsorted)
+    EmailItem* item = new EmailItem(ref);
+    fItems.AddItem(item);
+    
+    _UpdateScrollBar();
+    
+    // Only invalidate if item is visible
+    int32 index = fItems.CountItems() - 1;
+    if (index >= _FirstVisibleIndex() && index <= _LastVisibleIndex()) {
+        if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+    }
+}
+
+
+void
+EmailListView::AddEmailSorted(EmailRef* ref)
+{
+    // Binary search for insertion point (sorted by current sort column)
+    int32 insertIndex = _FindInsertionPoint(ref);
+    
+    EmailItem* item = new EmailItem(ref);
+    fItems.AddItem(item, insertIndex);
+    
+    // Add the new entry to HashMap for dedup and node monitor lookups.
+    // During loading (fLoaderThread >= 0), we do NOT update indices for
+    // shifted items — that would be O(n) per insertion, making loading O(n²).
+    // The HashMap is fully rebuilt at loading completion.
+    // For live query additions (single items after loading), we update shifted
+    // entries to keep the HashMap accurate.
+    fNodeToIndex[ref->nodeRef] = insertIndex;
+    
+    if (fLoaderThread < 0) {
+        // Post-loading: update shifted items to keep HashMap accurate
+        for (int32 i = insertIndex + 1; i < fItems.CountItems(); i++) {
+            EmailItem* shifted = fItems.ItemAt(i);
+            if (shifted != NULL && shifted->Ref() != NULL)
+                fNodeToIndex[shifted->Ref()->nodeRef] = i;
+        }
+    }
+    
+    // Adjust selection indices if inserting before selected items
+    std::set<int32> adjustedSelection;
+    for (int32 idx : fSelectedIndices) {
+        if (idx >= insertIndex)
+            adjustedSelection.insert(idx + 1);
+        else
+            adjustedSelection.insert(idx);
+    }
+    fSelectedIndices = adjustedSelection;
+    
+    // Adjust anchor and last click indices
+    if (fAnchorIndex >= insertIndex)
+        fAnchorIndex++;
+    if (fLastClickIndex >= insertIndex)
+        fLastClickIndex++;
+    
+    _UpdateScrollBar();
+    
+    // Drawing is NOT done here — the caller (_ProcessLoaderBatch or
+    // live query handler) invalidates once after processing a batch,
+    // avoiding per-item flicker during loading.
+}
+
+
+int32
+EmailListView::_FindInsertionPoint(EmailRef* ref)
+{
+    // Binary search for correct sorted position using current sort settings.
+    // This ensures items appear in the user's chosen order during loading.
+    
+    int32 low = 0;
+    int32 high = fItems.CountItems();
+    
+    while (low < high) {
+        int32 mid = (low + high) / 2;
+        EmailItem* midItem = fItems.ItemAt(mid);
+        
+        if (midItem == NULL || midItem->Ref() == NULL) {
+            high = mid;
+            continue;
+        }
+        
+        int result = _CompareForInsertion(ref, midItem->Ref());
+        
+        if (result < 0) {
+            high = mid;  // New item comes before mid
+        } else {
+            low = mid + 1;  // New item comes after mid
+        }
+    }
+    
+    return low;
+}
+
+
+int
+EmailListView::_CompareForInsertion(const EmailRef* a, const EmailRef* b) const
+{
+    int result = 0;
+    
+    switch (fSortColumn) {
+        case kSortByStatus:
+            result = a->status.Compare(b->status);
+            break;
+        case kSortByStar:
+            result = (int)b->isStarred - (int)a->isStarred;
+            break;
+        case kSortByAttachment:
+            result = (int)b->hasAttachment - (int)a->hasAttachment;
+            break;
+        case kSortByFrom:
+            result = a->from.ICompare(b->from);
+            break;
+        case kSortByTo:
+            result = a->to.ICompare(b->to);
+            break;
+        case kSortBySubject:
+            result = a->subject.ICompare(b->subject);
+            break;
+        case kSortByAccount:
+            result = a->account.ICompare(b->account);
+            break;
+        case kSortByDate:
+        default:
+            if (a->when < b->when)
+                result = -1;
+            else if (a->when > b->when)
+                result = 1;
+            break;
+    }
+    
+    // Reverse for descending order
+    if (fSortOrder == kSortDescending)
+        result = -result;
+    
+    return result;
+}
+
+
+void
+EmailListView::RemoveEmail(const node_ref& nodeRef)
+{
+    // O(1) lookup via HashMap.
+    // Safe to call for items already removed (e.g. delete handler removes
+    // the row immediately, then B_ENTRY_REMOVED from the live query tries
+    // again — the HashMap lookup simply returns "not found").
+    auto it = fNodeToIndex.find(nodeRef);
+    if (it == fNodeToIndex.end())
+        return;
+    
+    int32 index = it->second;
+    
+    // During loading the HashMap may have stale indices for shifted items.
+    // Verify the index actually points to the right item; if not, do a
+    // linear scan to find the correct position.
+    if (index < 0 || index >= fItems.CountItems()) {
+        _FindItemByNodeRef(nodeRef, &index);
+        if (index < 0)
+            return;
+    } else {
+        EmailItem* item = fItems.ItemAt(index);
+        if (item == NULL || item->Ref() == NULL
+            || item->Ref()->nodeRef.device != nodeRef.device
+            || item->Ref()->nodeRef.node != nodeRef.node) {
+            _FindItemByNodeRef(nodeRef, &index);
+            if (index < 0)
+                return;
+        }
+    }
+    
+    // Stop watching this node if we were watching it
+    auto watchIt = fWatchedNodes.find(nodeRef);
+    if (watchIt != fWatchedNodes.end()) {
+        watch_node(&nodeRef, B_STOP_WATCHING, this);
+        fWatchedNodes.erase(watchIt);
+    }
+    
+    // Remove from HashMap
+    fNodeToIndex.erase(it);
+    
+    // Update indices for items after the removed one
+    for (int32 i = index + 1; i < fItems.CountItems(); i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL && item->Ref() != NULL) {
+            fNodeToIndex[item->Ref()->nodeRef] = i - 1;
+        }
+    }
+    
+    // Adjust selection - remove if selected, shift others
+    bool wasSelected = fSelectedIndices.erase(index) > 0;
+    
+    std::set<int32> adjustedSelection;
+    for (int32 idx : fSelectedIndices) {
+        if (idx > index)
+            adjustedSelection.insert(idx - 1);
+        else
+            adjustedSelection.insert(idx);
+    }
+    fSelectedIndices = adjustedSelection;
+    
+    // Adjust anchor and last click indices
+    if (fAnchorIndex == index)
+        fAnchorIndex = -1;
+    else if (fAnchorIndex > index)
+        fAnchorIndex--;
+    
+    if (fLastClickIndex == index)
+        fLastClickIndex = -1;
+    else if (fLastClickIndex > index)
+        fLastClickIndex--;
+    
+    // Remove and delete item
+    delete fItems.RemoveItemAt(index);
+    
+    _UpdateScrollBar();
+    if (fContentView != NULL) fContentView->Invalidate();
+    
+    // Notify parent of selection change if removed item was selected
+    if (wasSelected) {
+        // If only one item was selected (now zero selected), auto-select
+        // the item at the same position (or the last item if at the end)
+        if (fSelectedIndices.empty() && fItems.CountItems() > 0) {
+            int32 newIndex = index;
+            if (newIndex >= fItems.CountItems())
+                newIndex = fItems.CountItems() - 1;
+            Select(newIndex);
+            EnsureVisible(newIndex);
+        }
+        _NotifySelectionChanged();
+    }
+}
+
+
+int32
+EmailListView::CountItems() const
+{
+    return fItems.CountItems();
+}
+
+
+EmailItem*
+EmailListView::ItemAt(int32 index) const
+{
+    return fItems.ItemAt(index);
+}
+
+
+int32
+EmailListView::IndexOf(const node_ref& ref) const
+{
+    if (fLoaderThread >= 0) {
+        // During loading the HashMap has stale indices for shifted items.
+        // Use linear scan for correctness (only called for user-initiated
+        // lookups like Next/Previous navigation, not hot paths).
+        int32 outIndex;
+        if (_FindItemByNodeRef(ref, &outIndex) != NULL)
+            return outIndex;
+        return -1;
+    }
+    auto it = fNodeToIndex.find(ref);
+    if (it != fNodeToIndex.end())
+        return it->second;
+    return -1;
+}
+
+
+EmailItem*
+EmailListView::ItemFor(const node_ref& ref) const
+{
+    int32 index = IndexOf(ref);
+    if (index >= 0)
+        return fItems.ItemAt(index);
+    return NULL;
+}
+
+
+EmailItem*
+EmailListView::_FindItemByNodeRef(const node_ref& ref, int32* outIndex) const
+{
+    // Linear scan to find item by node_ref, returning both the item and its
+    // true index. This bypasses fNodeToIndex which may have stale indices
+    // during Phase 2 loading (AddEmailSorted intentionally skips updating
+    // shifted items for O(n) loading performance).
+    for (int32 i = 0; i < fItems.CountItems(); i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL && item->Ref() != NULL) {
+            const node_ref& itemRef = item->Ref()->nodeRef;
+            if (itemRef.device == ref.device && itemRef.node == ref.node) {
+                if (outIndex != NULL)
+                    *outIndex = i;
+                return item;
+            }
+        }
+    }
+    if (outIndex != NULL)
+        *outIndex = -1;
+    return NULL;
+}
+
+
+void
+EmailListView::BeginBulkLoad()
+{
+    fBulkLoading = true;
+}
+
+
+void
+EmailListView::EndBulkLoad()
+{
+    fBulkLoading = false;
+    
+    // Rebuild the HashMap in one pass - O(n)
+    fNodeToIndex.clear();
+    fNodeToIndex.reserve(fItems.CountItems());
+    
+    for (int32 i = 0; i < fItems.CountItems(); i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL && item->Ref() != NULL) {
+            fNodeToIndex[item->Ref()->nodeRef] = i;
+        }
+    }
+}
+
+
+// =============================================================================
+// Sorting
+// =============================================================================
+
+// Comparison context for BObjectList::SortItems
+struct SortContext {
+    EmailListView::SortColumn column;
+    EmailListView::SortOrder order;
+};
+
+// Comparison function for BObjectList::SortItems
+static int _CompareItemsForSort(const EmailItem* a, const EmailItem* b, void* context)
+{
+    SortContext* ctx = static_cast<SortContext*>(context);
+    int result = 0;
+    
+    // Need to cast away const for accessor methods (they're not const-correct)
+    EmailItem* itemA = const_cast<EmailItem*>(a);
+    EmailItem* itemB = const_cast<EmailItem*>(b);
+    
+    switch (ctx->column) {
+        case EmailListView::kSortByStatus:
+            result = strcmp(itemA->Status(), itemB->Status());
+            break;
+        case EmailListView::kSortByStar:
+            result = (int)itemB->IsStarred() - (int)itemA->IsStarred();
+            break;
+        case EmailListView::kSortByAttachment:
+            result = (int)itemB->HasAttachment() - (int)itemA->HasAttachment();
+            break;
+        case EmailListView::kSortByFrom:
+            result = strcasecmp(itemA->From(), itemB->From());
+            break;
+        case EmailListView::kSortByTo:
+            result = strcasecmp(itemA->To(), itemB->To());
+            break;
+        case EmailListView::kSortBySubject:
+            result = strcasecmp(itemA->Subject(), itemB->Subject());
+            break;
+        case EmailListView::kSortByAccount:
+            result = strcasecmp(itemA->Account(), itemB->Account());
+            break;
+        case EmailListView::kSortByDate:
+        default:
+            // Sort by MAIL:when timestamp
+            if (itemA->Ref() != NULL && itemB->Ref() != NULL) {
+                if (itemA->Ref()->when < itemB->Ref()->when)
+                    result = -1;
+                else if (itemA->Ref()->when > itemB->Ref()->when)
+                    result = 1;
+                else
+                    result = 0;
+            }
+            break;
+    }
+    
+    // Reverse for descending order
+    if (ctx->order == EmailListView::kSortDescending)
+        result = -result;
+    
+    return result;
+}
+
+
+void
+EmailListView::SetSortColumn(SortColumn column, SortOrder order)
+{
+    if (column == fSortColumn && order == fSortOrder)
+        return;  // No change
+    
+    fSortColumn = column;
+    fSortOrder = order;
+    
+    // Stop all watches before sorting
+    _StopAllWatches();
+    
+    int32 count = fItems.CountItems();
+    
+    // Use BObjectList's SortItems method
+    SortContext context = { fSortColumn, fSortOrder };
+    fItems.SortItems(_CompareItemsForSort, &context);
+    
+    // Rebuild HashMap
+    fNodeToIndex.clear();
+    for (int32 i = 0; i < fItems.CountItems(); i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL && item->Ref() != NULL) {
+            fNodeToIndex[item->Ref()->nodeRef] = i;
+        }
+    }
+    
+    // Clear selection and scroll to top to show the new ordering
+    DeselectAll();
+    fAnchorIndex = -1;
+    fLastClickIndex = -1;
+    
+    ScrollTo(BPoint(0, 0));
+    if (fContentView != NULL) fContentView->Invalidate();
+}
+
+
+// =============================================================================
+// Selection
+// =============================================================================
+
+void
+EmailListView::_NotifySelectionChanged()
+{
+    if (fSelectionMessage == NULL || fTarget == NULL)
+        return;
+    
+    BMessage msg(*fSelectionMessage);
+    msg.AddInt32("count", CountSelected());
+    if (!fSelectedIndices.empty()) {
+        int32 first = FirstSelected();
+        msg.AddInt32("index", first);
+        EmailItem* item = fItems.ItemAt(first);
+        if (item != NULL && item->Ref() != NULL) {
+            msg.AddRef("ref", &item->Ref()->entryRef);
+        }
+    }
+    
+    fTarget->PostMessage(&msg);
+}
+
+
+void
+EmailListView::_NotifyInvocation()
+{
+    if (fInvocationMessage == NULL || fTarget == NULL)
+        return;
+    
+    BMessage msg(*fInvocationMessage);
+    for (int32 index : fSelectedIndices) {
+        EmailItem* item = fItems.ItemAt(index);
+        if (item != NULL && item->Ref() != NULL) {
+            msg.AddRef("ref", &item->Ref()->entryRef);
+        }
+    }
+    
+    if (msg.HasRef("ref"))
+        fTarget->PostMessage(&msg);
+}
+
+
+void
+EmailListView::Select(int32 index, bool extend, bool toggle)
+{
+    if (index < 0 || index >= fItems.CountItems())
+        return;
+    
+    if (toggle) {
+        // Alt+click: toggle individual item
+        if (fSelectedIndices.count(index) > 0) {
+            // Deselect
+            fSelectedIndices.erase(index);
+            EmailItem* item = fItems.ItemAt(index);
+            if (item != NULL) {
+                item->SetSelected(false);
+                if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+            }
+        } else {
+            // Select
+            fSelectedIndices.insert(index);
+            EmailItem* item = fItems.ItemAt(index);
+            if (item != NULL) {
+                item->SetSelected(true);
+                if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+            }
+        }
+        fLastClickIndex = index;
+        // Don't change anchor for toggle
+    } else if (extend && fAnchorIndex >= 0) {
+        // Shift+click: extend selection from anchor
+        SelectRange(fAnchorIndex, index);
+        fLastClickIndex = index;
+    } else {
+        // Normal click: single selection, clear others
+        DeselectAll();
+        fSelectedIndices.insert(index);
+        EmailItem* item = fItems.ItemAt(index);
+        if (item != NULL) {
+            item->SetSelected(true);
+            if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+        }
+        fAnchorIndex = index;
+        fLastClickIndex = index;
+    }
+    
+    // Notify target window of selection change
+    _NotifySelectionChanged();
+}
+
+
+void
+EmailListView::SelectRange(int32 from, int32 to)
+{
+    if (from > to)
+        std::swap(from, to);
+    
+    // Clamp to valid range
+    from = std::max((int32)0, from);
+    to = std::min(to, fItems.CountItems() - 1);
+    
+    // Clear existing selection
+    DeselectAll();
+    
+    // Select range
+    for (int32 i = from; i <= to; i++) {
+        fSelectedIndices.insert(i);
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL) {
+            item->SetSelected(true);
+        }
+    }
+    
+    // Invalidate affected area
+    if (fContentView != NULL) fContentView->Invalidate(BRect(_RowRect(from).left, _RowRect(from).top,
+                     _RowRect(to).right, _RowRect(to).bottom));
+}
+
+
+void
+EmailListView::ExtendSelectionTo(int32 index)
+{
+    // Extend selection from current position to index.
+    // If target is already selected, we're reversing - deselect rows between current and target.
+    // If target is not selected, we're extending - select rows between current and target.
+    if (index < 0 || index >= fItems.CountItems())
+        return;
+    
+    int32 current = fLastClickIndex >= 0 ? fLastClickIndex : FirstSelected();
+    if (current < 0) {
+        // Nothing selected, just select the target
+        Select(index);
+        return;
+    }
+    
+    if (index == current)
+        return;
+    
+    bool targetSelected = fSelectedIndices.count(index) > 0;
+    
+    if (targetSelected) {
+        // Reversing direction - deselect from current toward index (but not index itself)
+        int32 step = (index < current) ? -1 : 1;
+        for (int32 i = current; i != index; i += step) {
+            if (fSelectedIndices.count(i) > 0) {
+                fSelectedIndices.erase(i);
+                EmailItem* item = fItems.ItemAt(i);
+                if (item != NULL) {
+                    item->SetSelected(false);
+                    if (fContentView != NULL) fContentView->Invalidate(_RowRect(i));
+                }
+            }
+        }
+    } else {
+        // Extending - select from current toward index (including index)
+        int32 start = std::min(current, index);
+        int32 end = std::max(current, index);
+        for (int32 i = start; i <= end; i++) {
+            if (fSelectedIndices.count(i) == 0) {
+                fSelectedIndices.insert(i);
+                EmailItem* item = fItems.ItemAt(i);
+                if (item != NULL) {
+                    item->SetSelected(true);
+                    if (fContentView != NULL) fContentView->Invalidate(_RowRect(i));
+                }
+            }
+        }
+    }
+    
+    fLastClickIndex = index;
+    
+    // Notify target window of selection change
+    _NotifySelectionChanged();
+}
+
+
+void
+EmailListView::Deselect()
+{
+    DeselectAll();
+}
+
+
+void
+EmailListView::DeselectAll()
+{
+    for (int32 index : fSelectedIndices) {
+        EmailItem* item = fItems.ItemAt(index);
+        if (item != NULL) {
+            item->SetSelected(false);
+            if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+        }
+    }
+    fSelectedIndices.clear();
+}
+
+
+bool
+EmailListView::IsSelected(int32 index) const
+{
+    return fSelectedIndices.count(index) > 0;
+}
+
+
+int32
+EmailListView::CountSelected() const
+{
+    return (int32)fSelectedIndices.size();
+}
+
+
+int32
+EmailListView::FirstSelected() const
+{
+    if (fSelectedIndices.empty())
+        return -1;
+    return *fSelectedIndices.begin();
+}
+
+
+int32
+EmailListView::LastSelected() const
+{
+    if (fSelectedIndices.empty())
+        return -1;
+    return *fSelectedIndices.rbegin();
+}
+
+
+void
+EmailListView::GetSelectedIndices(BList* indices) const
+{
+    if (indices == NULL)
+        return;
+    for (int32 index : fSelectedIndices) {
+        indices->AddItem((void*)(intptr_t)index);
+    }
+}
+
+
+EmailItem*
+EmailListView::SelectedItem() const
+{
+    int32 first = FirstSelected();
+    if (first >= 0 && first < fItems.CountItems()) {
+        return fItems.ItemAt(first);
+    }
+    return NULL;
+}
+
+
+void
+EmailListView::ScrollToSelection()
+{
+    int32 first = FirstSelected();
+    if (first >= 0) {
+        EnsureVisible(first);
+    }
+}
+
+
+void
+EmailListView::EnsureVisible(int32 index)
+{
+    if (index < 0 || index >= fItems.CountItems())
+        return;
+    
+    if (fContentView == NULL)
+        return;
+    
+    float rowTop = index * fRowHeight;
+    float rowBottom = rowTop + fRowHeight;
+    BRect bounds = fContentView->Bounds();
+    
+    if (rowTop < bounds.top) {
+        // Row is above visible area - scroll up
+        ScrollTo(BPoint(0, rowTop));
+    } else if (rowBottom > bounds.bottom) {
+        // Row is below visible area - scroll down
+        ScrollTo(BPoint(0, rowBottom - bounds.Height()));
+    }
+}
+
+
+void
+EmailListView::_UpdateVisibleWatches()
+{
+    if (Window() == NULL)
+        return;
+    
+    // Only monitor visible rows for attribute changes (B_WATCH_ATTR).
+    // The system-wide node monitor limit is 4096; with lists of 20,000+
+    // emails we'd exhaust it instantly if we watched everything. Watching
+    // only visible rows (~30-50) keeps us well under the limit while still
+    // showing real-time status changes (read/unread, star, etc.).
+    int32 firstVisible = _FirstVisibleIndex();
+    int32 lastVisible = _LastVisibleIndex();
+    int32 count = fItems.CountItems();
+    
+    // Clamp to valid range
+    firstVisible = std::max((int32)0, firstVisible);
+    lastVisible = std::min(count - 1, lastVisible);
+    
+    // Build set of node_refs that should be watched
+    std::unordered_set<node_ref, NodeRefHash, NodeRefEqual> shouldWatch;
+    
+    for (int32 i = firstVisible; i <= lastVisible; i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL && item->Ref() != NULL) {
+            shouldWatch.insert(item->Ref()->nodeRef);
+        }
+    }
+    
+    // Stop watching nodes that are no longer visible
+    for (auto it = fWatchedNodes.begin(); it != fWatchedNodes.end(); ) {
+        if (shouldWatch.find(*it) == shouldWatch.end()) {
+            // No longer visible - stop watching
+            watch_node(&(*it), B_STOP_WATCHING, this);
+            
+            // Invalidate cache so it reloads when visible again
+            EmailItem* item = ItemFor(*it);
+            if (item != NULL) {
+                item->InvalidateCache();
+            }
+            
+            it = fWatchedNodes.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    
+    // Start watching newly visible nodes
+    for (const auto& nodeRef : shouldWatch) {
+        if (fWatchedNodes.find(nodeRef) == fWatchedNodes.end()) {
+            // Not yet watched - start watching for attribute changes
+            status_t status = watch_node(&nodeRef, B_WATCH_ATTR, this);
+            if (status == B_OK) {
+                fWatchedNodes.insert(nodeRef);
+                
+                // Invalidate cache since attributes may have changed while not watched
+                EmailItem* item = ItemFor(nodeRef);
+                if (item != NULL) {
+                    item->InvalidateCache();
+                }
+            }
+        }
+    }
+}
+
+
+void
+EmailListView::_StopAllWatches()
+{
+    for (const auto& nodeRef : fWatchedNodes) {
+        watch_node(&nodeRef, B_STOP_WATCHING, this);
+    }
+    fWatchedNodes.clear();
+}
+
+
+void
+EmailListView::_ShowContextMenu(BPoint where)
+{
+    BPopUpMenu* menu = new BPopUpMenu("EmailContextMenu", false, false);
+    
+    if (fShowingTrash) {
+        // Trash view: only Restore and Delete permanently
+        // These forward to the parent window (EmailViewsWindow)
+        // MSG_RESTORE_EMAIL = 'rste', MSG_DELETE_EMAIL = 'edel' (defined in EmailViews.h)
+        menu->AddItem(new BMenuItem(B_TRANSLATE("Restore"), 
+            new BMessage('rste')));
+        menu->AddSeparatorItem();
+        menu->AddItem(new BMenuItem(B_TRANSLATE("Delete permanently"), 
+            new BMessage('edel')));
+        
+        // Convert to screen coordinates
+        if (fContentView != NULL)
+            fContentView->ConvertToScreen(&where);
+        else
+            ConvertToScreen(&where);
+        
+        // Target the parent window for all items
+        menu->SetTargetForItems(fTarget);
+        menu->Go(where, true, true, true);
+        return;
+    }
+    
+    // Normal view: full context menu.
+    // Message constants use raw 'xxxx' values instead of MSG_* symbols to
+    // avoid including EmailViews.h, which would create a circular dependency.
+    // The values must match those defined in EmailViews.h.
+    
+    // --- Reply / Forward section ---
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Reply"),
+        new BMessage('rply')));  // MSG_REPLY
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Reply all"),
+        new BMessage('rpla')));  // MSG_REPLY_ALL
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Forward"),
+        new BMessage('frwd')));  // MSG_FORWARD
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Send as attachment"),
+        new BMessage('saat')));  // MSG_SEND_AS_ATTACHMENT
+    
+    menu->AddSeparatorItem();
+    
+    // --- Star / Mark / Trash section ---
+    
+    // Star toggle (conditional based on selection)
+    bool hasStarred = false;
+    bool hasUnstarred = false;
+    for (int32 index : fSelectedIndices) {
+        EmailItem* selItem = fItems.ItemAt(index);
+        if (selItem == NULL)
+            continue;
+        if (selItem->IsStarred())
+            hasStarred = true;
+        else
+            hasUnstarred = true;
+    }
+    
+    if (hasUnstarred) {
+        BMessage* starMsg = new BMessage('star');  // MSG_STAR_EMAIL
+        starMsg->AddBool("starred", true);
+        menu->AddItem(new BMenuItem(B_TRANSLATE("Star"), starMsg));
+    }
+    if (hasStarred) {
+        BMessage* unstarMsg = new BMessage('star');  // MSG_STAR_EMAIL
+        unstarMsg->AddBool("starred", false);
+        menu->AddItem(new BMenuItem(B_TRANSLATE("Unstar"), unstarMsg));
+    }
+    
+    // Mark status items - enabled based on selection
+    bool hasNew = false;
+    bool hasRead = false;
+    for (int32 index : fSelectedIndices) {
+        EmailItem* item = fItems.ItemAt(index);
+        if (item == NULL)
+            continue;
+        const char* status = item->Status();
+        if (status != NULL) {
+            if (strcmp(status, "New") == 0)
+                hasNew = true;
+            else if (strcmp(status, "Read") == 0)
+                hasRead = true;
+        }
+    }
+    
+    BMenuItem* markReadItem = new BMenuItem(B_TRANSLATE("Mark as read"),
+        new BMessage('mred'));  // MSG_MARK_READ
+    markReadItem->SetEnabled(hasNew);
+    menu->AddItem(markReadItem);
+    
+    BMenuItem* markUnreadItem = new BMenuItem(B_TRANSLATE("Mark as unread"),
+        new BMessage('murd'));  // MSG_MARK_UNREAD
+    markUnreadItem->SetEnabled(hasRead);
+    menu->AddItem(markUnreadItem);
+    
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Move to Trash"),
+        new BMessage('edel')));  // MSG_DELETE_EMAIL
+    
+    menu->AddSeparatorItem();
+    
+    // --- Filter section ---
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Sender'"),
+        new BMessage('fxsn')));  // MSG_FILTER_EXACT_SENDER
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Recipient'"),
+        new BMessage('fxrp')));  // MSG_FILTER_EXACT_RECIPIENT
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Subject'"),
+        new BMessage('fxsb')));  // MSG_FILTER_EXACT_SUBJECT
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Account'"),
+        new BMessage('fxac')));  // MSG_FILTER_EXACT_ACCOUNT
+    
+    menu->AddSeparatorItem();
+    
+    // --- People / Email section ---
+    menu->AddItem(new BMenuItem(B_TRANSLATE("New email to sender"),
+        new BMessage('emsd')));  // MSG_EMAIL_SENDER
+    
+    // "Create Person file for" submenu - extract sender addresses from selection
+    BMenu* personSubMenu = new BMenu(B_TRANSLATE("Create Person file for"));
+    std::set<BString> addedAddresses;  // avoid duplicates
+    
+    for (int32 index : fSelectedIndices) {
+        EmailItem* selItem = fItems.ItemAt(index);
+        if (selItem == NULL)
+            continue;
+        
+        BFile file(selItem->GetPath(), B_READ_ONLY);
+        if (file.InitCheck() != B_OK)
+            continue;
+        
+        char fromBuffer[256] = "";
+        ssize_t size = file.ReadAttr("MAIL:from", B_STRING_TYPE, 0,
+            fromBuffer, sizeof(fromBuffer) - 1);
+        if (size <= 0)
+            continue;
+        fromBuffer[size] = '\0';
+        
+        // Extract email address and display name
+        BString fullFrom(fromBuffer);
+        BString emailAddr(fromBuffer);
+        BString displayName;
+        
+        int32 angleStart = emailAddr.FindFirst("<");
+        int32 angleEnd = emailAddr.FindFirst(">");
+        if (angleStart >= 0 && angleEnd > angleStart) {
+            // Has "Name <address>" format
+            displayName.SetTo(fromBuffer, angleStart);
+            displayName.Trim();
+            // Remove surrounding quotes if present
+            if (displayName.Length() >= 2
+                && displayName[0] == '"'
+                && displayName[displayName.Length() - 1] == '"') {
+                displayName.Remove(0, 1);
+                displayName.Truncate(displayName.Length() - 1);
+            }
+            emailAddr.Remove(0, angleStart + 1);
+            emailAddr.Truncate(angleEnd - angleStart - 1);
+        }
+        
+        // Skip if we already added this address
+        if (addedAddresses.count(emailAddr) > 0)
+            continue;
+        addedAddresses.insert(emailAddr);
+        
+        // Build label: "Name <address>" or just "address"
+        BString label;
+        if (displayName.Length() > 0)
+            label.SetToFormat("%s <%s>", displayName.String(), emailAddr.String());
+        else
+            label = emailAddr;
+        
+        BMessage* personMsg = new BMessage('crps');  // MSG_CREATE_PERSON
+        personMsg->AddString("address", emailAddr.String());
+        personMsg->AddString("name", displayName.String());
+        personSubMenu->AddItem(new BMenuItem(label.String(), personMsg));
+    }
+    
+    menu->AddItem(personSubMenu);
+    
+    menu->AddSeparatorItem();
+    
+    // --- Query section ---
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Add 'From' query"),
+        new BMessage('fbsn')));  // MSG_FILTER_BY_SENDER
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Add 'To' query"),
+        new BMessage('fbrp')));  // MSG_FILTER_BY_RECIPIENT
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Add 'Account' query"),
+        new BMessage('fbac')));  // MSG_FILTER_BY_ACCOUNT
+    
+    // Convert to screen coordinates (where is in ContentView coords)
+    if (fContentView != NULL)
+        fContentView->ConvertToScreen(&where);
+    else
+        ConvertToScreen(&where);
+    
+    // Target the parent window for all items
+    menu->SetTargetForItems(fTarget);
+    // Also target submenu items
+    personSubMenu->SetTargetForItems(fTarget);
+    menu->Go(where, true, true, true);
+}
+
+
+void
+EmailListView::_MarkSelectedAs(const char* status)
+{
+    if (status == NULL)
+        return;
+    
+    // Determine which current status is required for this operation
+    const char* requiredStatus = NULL;
+    if (strcmp(status, "Read") == 0)
+        requiredStatus = "New";      // Mark as read only applies to New emails
+    else if (strcmp(status, "New") == 0)
+        requiredStatus = "Read";     // Mark as unread only applies to Read emails
+    // Mark as sent has no restriction (requiredStatus stays NULL)
+    
+    int32 count = 0;
+    
+    // Iterate through all selected items
+    for (int32 index : fSelectedIndices) {
+        EmailItem* item = fItems.ItemAt(index);
+        if (item == NULL || item->Ref() == NULL)
+            continue;
+        
+        // Check if this email has the required status
+        if (requiredStatus != NULL) {
+            const char* currentStatus = item->Status();
+            if (currentStatus == NULL || strcmp(currentStatus, requiredStatus) != 0)
+                continue;  // Skip this email
+        }
+        
+        // Open the node and write the status attribute
+        BNode node(&item->Ref()->entryRef);
+        if (node.InitCheck() != B_OK)
+            continue;
+        
+        ssize_t written = node.WriteAttr("MAIL:status", B_STRING_TYPE, 0,
+                                          status, strlen(status) + 1);
+        if (written > 0) {
+            count++;
+            
+            // Invalidate the item's cache so it reloads the status
+            item->InvalidateCache();
+            
+            // Redraw the row
+            if (fContentView != NULL) fContentView->Invalidate(_RowRect(index));
+        }
+    }
+}
+
+
+void
+EmailListView::_MoveSelectedToTrash()
+{
+    // Delegate to parent window which handles all delete logic
+    // (move to trash, permanent delete in trash view, count updates, etc.)
+    if (fTarget)
+        BMessenger(fTarget).SendMessage('edel');  // MSG_DELETE_EMAIL
+}
+
+
+// =============================================================================
+// EmailViews Compatibility API
+// =============================================================================
+
+void
+EmailListView::AddItem(EmailItem* item)
+{
+    if (item == NULL)
+        return;
+    
+    int32 index = fItems.CountItems();
+    fItems.AddItem(item);
+    
+    // Always update HashMap
+    if (item->Ref() != NULL) {
+        fNodeToIndex[item->Ref()->nodeRef] = index;
+    }
+    
+    _UpdateScrollBar();
+    if (fContentView != NULL)
+        fContentView->Invalidate();
+}
+
+
+void
+EmailListView::RemoveRow(EmailItem* item)
+{
+    if (item == NULL)
+        return;
+    
+    // Use HashMap for O(1) lookup, with fallback to linear scan
+    int32 index = -1;
+    if (item->Ref() != NULL) {
+        auto it = fNodeToIndex.find(item->Ref()->nodeRef);
+        if (it != fNodeToIndex.end()) {
+            index = it->second;
+            // Verify the index is correct (can be stale during bulk loading)
+            if (index < 0 || index >= fItems.CountItems()
+                || fItems.ItemAt(index) != item) {
+                index = fItems.IndexOf(item);
+            }
+        }
+    }
+    if (index < 0)
+        index = fItems.IndexOf(item);
+    if (index < 0)
+        return;
+    
+    // Remove from HashMap
+    if (item->Ref() != NULL) {
+        fNodeToIndex.erase(item->Ref()->nodeRef);
+    }
+    
+    // Adjust selection indices
+    std::set<int32> newSelection;
+    for (int32 sel : fSelectedIndices) {
+        if (sel < index)
+            newSelection.insert(sel);
+        else if (sel > index)
+            newSelection.insert(sel - 1);
+        // else: sel == index, skip (removing this item)
+    }
+    fSelectedIndices = newSelection;
+    
+    // Remove and delete item
+    delete fItems.RemoveItemAt(index);
+    
+    // Rebuild HashMap indices for items after removed one.
+    // Must always do this, even during bulk loading, to keep
+    // the HashMap consistent for subsequent batch insertions.
+    for (int32 i = index; i < fItems.CountItems(); i++) {
+        EmailItem* it = fItems.ItemAt(i);
+        if (it != NULL && it->Ref() != NULL) {
+            fNodeToIndex[it->Ref()->nodeRef] = i;
+        }
+    }
+    
+    _UpdateScrollBar();
+    if (fContentView != NULL) fContentView->Invalidate();
+}
+
+
+void
+EmailListView::UpdateRow(EmailItem* item)
+{
+    if (item == NULL)
+        return;
+    
+    int32 index = fItems.IndexOf(item);
+    if (index >= 0) {
+        InvalidateItem(index);
+    }
+}
+
+
+void
+EmailListView::InvalidateItem(int32 index)
+{
+    if (index < 0 || index >= fItems.CountItems())
+        return;
+    
+    BRect rowRect = _RowRect(index);
+    if (fContentView != NULL) fContentView->Invalidate(rowRect);
+}
+
+
+void
+EmailListView::Invalidate()
+{
+    if (fContentView != NULL)
+        fContentView->Invalidate();
+}
+
+
+void
+EmailListView::Invalidate(BRect rect)
+{
+    if (fContentView != NULL)
+        fContentView->Invalidate(rect);
+}
+
+
+BRect
+EmailListView::ContentBounds() const
+{
+    if (fContentView != NULL)
+        return fContentView->Bounds();
+    return BRect();
+}
+
+
+void
+EmailListView::ColumnsResized()
+{
+    _UpdateScrollBar();
+    if (fContentView != NULL)
+        fContentView->Invalidate();
+}
+
+
+void
+EmailListView::SetShowingTrash(bool showingTrash)
+{
+    fShowingTrash = showingTrash;
+}
+
+
+EmailItem*
+EmailListView::CurrentSelection(EmailItem* lastSelected) const
+{
+    if (lastSelected == NULL) {
+        // Start iteration from beginning
+        fSelectionIterIndex = 0;
+    }
+    
+    int32 count = fItems.CountItems();
+    while (fSelectionIterIndex < count) {
+        EmailItem* item = fItems.ItemAt(fSelectionIterIndex);
+        fSelectionIterIndex++;
+        
+        if (item != NULL && item->IsSelected()) {
+            if (lastSelected == NULL || item != lastSelected) {
+                return item;
+            }
+        }
+    }
+    
+    return NULL;
+}
+
+
+void
+EmailListView::AddToSelection(EmailItem* item)
+{
+    if (item == NULL)
+        return;
+    
+    int32 index = fItems.IndexOf(item);
+    if (index >= 0) {
+        Select(index, true);  // extend = true
+    }
+}
+
+
+void
+EmailListView::SetFocusRow(EmailItem* item, bool select)
+{
+    if (item == NULL)
+        return;
+    
+    int32 index = fItems.IndexOf(item);
+    if (index >= 0) {
+        if (select) {
+            Select(index, true);  // extend selection
+        }
+        ScrollToItem(index);
+    }
+}
+
+
+EmailItem*
+EmailListView::FocusRow() const
+{
+    int32 index = FirstSelected();
+    if (index >= 0)
+        return ItemAt(index);
+    return NULL;
+}
+
+
+bool
+EmailListView::SelectNext()
+{
+    int32 count = fItems.CountItems();
+    if (count == 0)
+        return false;
+
+    int32 current = LastSelected();
+    int32 next = (current >= 0) ? current + 1 : 0;
+
+    if (next >= count)
+        return false;  // Already at end
+
+    Select(next);
+    ScrollToSelection();
+    return true;
+}
+
+
+bool
+EmailListView::SelectPrevious()
+{
+    int32 count = fItems.CountItems();
+    if (count == 0)
+        return false;
+
+    int32 current = FirstSelected();
+    int32 prev = (current >= 0) ? current - 1 : count - 1;
+
+    if (prev < 0)
+        return false;  // Already at beginning
+
+    Select(prev);
+    ScrollToSelection();
+    return true;
+}
+
+
+int32
+EmailListView::IndexOf(EmailItem* item) const
+{
+    return fItems.IndexOf(item);
+}
+
+
+void
+EmailListView::ScrollTo(EmailItem* item)
+{
+    if (item == NULL)
+        return;
+    
+    int32 index = fItems.IndexOf(item);
+    if (index >= 0) {
+        ScrollToItem(index);
+    }
+}
+
+
+void
+EmailListView::ScrollToItem(int32 index)
+{
+    EnsureVisible(index);
+}
+
+
+void
+EmailListView::SetSelectionMessage(BMessage* message)
+{
+    delete fSelectionMessage;
+    fSelectionMessage = message;
+}
+
+
+void
+EmailListView::SetInvocationMessage(BMessage* message)
+{
+    delete fInvocationMessage;
+    fInvocationMessage = message;
+}
+
+
+void
+EmailListView::MakeEmpty()
+{
+    _StopAllWatches();
+    
+    int32 count = fItems.CountItems();
+    if (count > 1000) {
+        // Large list: collect pointers and swap HashMap off-thread.
+        // The list clear is instant (non-owning), and both item deletion
+        // and HashMap deallocation happen on a background thread.
+        _DisposerData* data = new _DisposerData();
+        data->count = count;
+        data->items = new EmailItem*[count];
+        for (int32 i = 0; i < count; i++)
+            data->items[i] = fItems.ItemAt(i);
+        fItems.MakeEmpty();
+        
+        // Swap HashMap into disposer — avoids ~1s clear() on UI thread
+        data->hashMap = new std::unordered_map<node_ref, int32,
+            NodeRefHash, NodeRefEqual>(std::move(fNodeToIndex));
+        // fNodeToIndex is now empty (moved-from state)
+        
+        thread_id thread = spawn_thread(_ItemDisposerThread,
+            "item_disposer", B_LOW_PRIORITY, data);
+        if (thread >= 0) {
+            resume_thread(thread);
+        } else {
+            for (int32 i = 0; i < count; i++)
+                delete data->items[i];
+            delete[] data->items;
+            delete data->hashMap;
+            delete data;
+        }
+    } else {
+        for (int32 i = 0; i < count; i++)
+            delete fItems.ItemAt(i);
+        fItems.MakeEmpty();
+        fNodeToIndex.clear();
+    }
+    
+    fSelectedIndices.clear();
+    fAnchorIndex = -1;
+    fLastClickIndex = -1;
+    
+    _UpdateScrollBar();
+    if (fContentView != NULL)
+        fContentView->Invalidate();
+}
+
+
+int32
+EmailListView::CurrentSelectionIndex() const
+{
+    return FirstSelected();
+}
+
+
+// Sort comparison function for BObjectList::SortItems
+// state points to a SortState struct with column and order
+struct SortState {
+    EmailListView::SortColumn column;
+    EmailListView::SortOrder order;
+};
+
+static int
+CompareEmailItems(const EmailItem* a, const EmailItem* b, void* state)
+{
+    SortState* sortState = (SortState*)state;
+    return EmailListView::CompareItems(a, b, sortState->column, sortState->order);
+}
+
+
+void
+EmailListView::SortItems()
+{
+    if (fItems.CountItems() <= 1)
+        return;
+    
+    // Remember selection by node_ref so we can restore it after the sort
+    // (indices change but node_refs are stable identities)
+    std::vector<node_ref> selectedRefs;
+    for (int32 sel : fSelectedIndices) {
+        EmailItem* item = fItems.ItemAt(sel);
+        if (item != NULL && item->Ref() != NULL) {
+            selectedRefs.push_back(item->Ref()->nodeRef);
+        }
+    }
+    
+    // Sort using our comparison function
+    SortState state = { fSortColumn, fSortOrder };
+    fItems.SortItems(CompareEmailItems, &state);
+    
+    // Rebuild HashMap and restore selection
+    fNodeToIndex.clear();
+    fSelectedIndices.clear();
+    
+    for (int32 i = 0; i < fItems.CountItems(); i++) {
+        EmailItem* item = fItems.ItemAt(i);
+        if (item != NULL && item->Ref() != NULL) {
+            fNodeToIndex[item->Ref()->nodeRef] = i;
+            
+            // Check if this was selected
+            for (const auto& selRef : selectedRefs) {
+                if (selRef == item->Ref()->nodeRef) {
+                    fSelectedIndices.insert(i);
+                    item->SetSelected(true);
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (fContentView != NULL) fContentView->Invalidate();
+}
+
+
+int
+EmailListView::CompareItems(const EmailItem* a, const EmailItem* b,
+                              SortColumn column, SortOrder order)
+{
+    if (a == NULL || b == NULL)
+        return 0;
+    
+    EmailRef* refA = a->Ref();
+    EmailRef* refB = b->Ref();
+    if (refA == NULL || refB == NULL)
+        return 0;
+    
+    int result = 0;
+    
+    switch (column) {
+        case kSortByStatus:
+            result = strcasecmp(refA->status.String(), refB->status.String());
+            break;
+        case kSortByStar:
+            result = (int)refB->isStarred - (int)refA->isStarred;
+            break;
+        case kSortByAttachment:
+            result = (int)refB->hasAttachment - (int)refA->hasAttachment;
+            break;
+        case kSortByFrom:
+            result = strcasecmp(refA->from.String(), refB->from.String());
+            break;
+        case kSortByTo:
+            result = strcasecmp(refA->to.String(), refB->to.String());
+            break;
+        case kSortBySubject:
+            result = strcasecmp(refA->subject.String(), refB->subject.String());
+            break;
+        case kSortByDate:
+            if (refA->when < refB->when)
+                result = -1;
+            else if (refA->when > refB->when)
+                result = 1;
+            else
+                result = 0;
+            break;
+        case kSortByAccount:
+            result = strcasecmp(refA->account.String(), refB->account.String());
+            break;
+    }
+    
+    // Reverse for descending
+    if (order == kSortDescending)
+        result = -result;
+    
+    return result;
+}
+
+
+// =============================================================================
+// Query Execution Implementation
+// =============================================================================
+
+
+void
+EmailListView::StartQuery(const char* predicate, BObjectList<BVolume, true>* volumes,
+                          bool showTrash, bool attachmentsOnly)
+{
+    // Stop any existing query
+    StopQuery();
+    _StopLiveQueries();
+    
+    // Clear current list
+    MakeEmpty();
+    
+    // Increment query ID to invalidate any pending messages from old queries
+    fCurrentQueryId++;
+    
+    // Store query parameters
+    fQueryPredicate = predicate;
+    fQueryShowTrash = showTrash;
+    fQueryAttachmentsOnly = attachmentsOnly;
+    fLoadedCount = 0;
+    fTotalCount = 0;
+    
+    // Signal any previous loader to stop (via its own flag)
+    if (fCurrentStopFlag)
+        *fCurrentStopFlag = true;
+    
+    // Allocate a new stop flag for this query's threads.
+    // Old flag shared_ptr is released here; if a previous loader thread
+    // still holds a copy, the flag stays alive until that thread exits.
+    fCurrentStopFlag = std::make_shared<volatile bool>(false);
+    
+    // Copy volumes
+    fQueryVolumes.MakeEmpty();
+    if (volumes != NULL) {
+        for (int32 i = 0; i < volumes->CountItems(); i++) {
+            BVolume* vol = volumes->ItemAt(i);
+            if (vol != NULL)
+                fQueryVolumes.AddItem(new BVolume(*vol));
+        }
+    } else {
+        // Default: use all queryable volumes
+        BVolumeRoster roster;
+        BVolume vol;
+        while (roster.GetNextVolume(&vol) == B_OK) {
+            if (vol.KnowsQuery())
+                fQueryVolumes.AddItem(new BVolume(vol));
+        }
+    }
+    
+    // Use two-phase loading (recent first) only for queries where MAIL:when
+    // is reliably present. Draft emails lack MAIL:when entirely, so the
+    // time-split predicate (MAIL:when >= cutoff) would miss them. In that
+    // case cutoffTime stays 0 and a single-phase load is used instead.
+    BString predicateStr(predicate);
+    time_t cutoffTime = 0;
+    if (predicateStr.FindFirst("MAIL:draft") < 0)
+        cutoffTime = time(NULL) - (30 * 24 * 60 * 60);
+    
+    fQueryCutoffTime = cutoffTime;
+    
+    LoaderData* data = new LoaderData();
+    data->view = this;
+    data->messenger = BMessenger(this);
+    data->predicate = predicate;
+    data->showTrash = showTrash;
+    data->attachmentsOnly = attachmentsOnly;
+    data->stopFlag = fCurrentStopFlag;
+    data->currentQueryId = &fCurrentQueryId;
+    data->cutoffTime = cutoffTime;
+    data->phase = 1;  // Phase 1: recent emails first
+    data->queryId = fCurrentQueryId;
+    
+    // Copy volumes to loader data
+    for (int32 i = 0; i < fQueryVolumes.CountItems(); i++) {
+        BVolume* vol = fQueryVolumes.ItemAt(i);
+        if (vol != NULL)
+            data->volumes.AddItem(new BVolume(*vol));
+    }
+    
+    // Send loading started notification
+    _SendLoadingUpdate(true, false);
+    
+    // Start loader thread
+    fLoaderThread = spawn_thread(_LoaderThread, "email_loader",
+                                  B_NORMAL_PRIORITY, data);
+    if (fLoaderThread >= 0) {
+        resume_thread(fLoaderThread);
+    } else {
+        delete data;
+        _SendLoadingUpdate(false, true);
+    }
+}
+
+
+void
+EmailListView::StopQuery()
+{
+    if (fLoaderThread >= 0) {
+        if (fCurrentStopFlag)
+            *fCurrentStopFlag = true;
+        fLoaderThread = -1;
+    }
+}
+
+
+int32
+EmailListView::LoadingProgress() const
+{
+    if (fLoaderThread < 0)
+        return -1;
+    if (fTotalCount <= 0)
+        return 0;
+    return (fLoadedCount * 100) / fTotalCount;
+}
+
+
+int32
+EmailListView::_LoaderThread(void* data)
+{
+    LoaderData* loaderData = (LoaderData*)data;
+    
+    BMessenger messenger = loaderData->messenger;
+    BString basePredicate = loaderData->predicate;
+    bool showTrash = loaderData->showTrash;
+    bool attachmentsOnly = loaderData->attachmentsOnly;
+    volatile bool* stopFlag = loaderData->stopFlag.get();
+    volatile int32* currentQueryId = loaderData->currentQueryId;
+    time_t cutoffTime = loaderData->cutoffTime;
+    int32 phase = loaderData->phase;
+    int32 queryId = loaderData->queryId;
+    
+    // Helper: check if this thread is stale (stop flag set OR queryId changed)
+    #define IS_STALE() (*stopFlag || *currentQueryId != queryId)
+    
+    // Build phase-specific predicate
+    BString predicate;
+    if (cutoffTime > 0 && phase == 1) {
+        // Phase 1: Recent emails (last 30 days)
+        predicate.SetToFormat("((%s)&&(MAIL:when>=%ld))",
+                              basePredicate.String(), cutoffTime);
+    } else if (cutoffTime > 0 && phase == 2) {
+        // Phase 2: Older emails
+        predicate.SetToFormat("((%s)&&(MAIL:when<%ld))",
+                              basePredicate.String(), cutoffTime);
+    } else {
+        predicate = basePredicate;
+    }
+    
+    // Batch of fully-loaded EmailRefs to send
+    const int32 kBatchSize = 50;
+    BObjectList<EmailRef, false> batch(kBatchSize);
+    int32 totalLoaded = 0;
+    
+    // Query each volume
+    for (int32 v = 0; v < loaderData->volumes.CountItems(); v++) {
+        if (IS_STALE())
+            break;
+            
+        BVolume* volume = loaderData->volumes.ItemAt(v);
+        if (volume == NULL || !volume->KnowsQuery())
+            continue;
+        
+        char volName[B_FILE_NAME_LENGTH];
+        volume->GetName(volName);
+        
+        // Get trash path for this volume
+        BPath trashPath;
+        find_directory(B_TRASH_DIRECTORY, &trashPath, false, volume);
+        BString trashLower = trashPath.Path();
+        trashLower.ToLower();
+        
+        // Create and run query
+        BQuery query;
+        query.SetVolume(volume);
+        query.SetPredicate(predicate.String());
+        
+        if (query.Fetch() != B_OK) {
+            fprintf(stderr, "Query fetch failed on volume %s\n", volName);
+            continue;
+        }
+        
+        entry_ref ref;
+        while (query.GetNextRef(&ref) == B_OK) {
+            if (IS_STALE())
+                break;
+            
+            // Check trash status
+            BPath path(&ref);
+            BString pathLower = path.Path();
+            pathLower.ToLower();
+            bool inTrash = (trashLower.Length() > 0 && 
+                           pathLower.FindFirst(trashLower) >= 0);
+            
+            // Filter by trash mode
+            if (showTrash && !inTrash)
+                continue;
+            if (!showTrash && inTrash)
+                continue;
+            
+            // Create EmailRef - disk I/O happens here in background thread
+            EmailRef* emailRef = new EmailRef(ref);
+            
+            // Filter by attachment if needed
+            if (attachmentsOnly && !emailRef->hasAttachment) {
+                delete emailRef;
+                continue;
+            }
+            
+            // Add to batch
+            batch.AddItem(emailRef);
+            totalLoaded++;
+            
+            // Send batch when full
+            if (batch.CountItems() >= kBatchSize) {
+                if (IS_STALE()) {
+                    // Stale - delete accumulated EmailRefs and exit
+                    for (int32 i = 0; i < batch.CountItems(); i++) {
+                        delete batch.ItemAt(i);
+                    }
+                    batch.MakeEmpty();
+                    break;
+                }
+                BMessage msg(kMsgLoaderBatch);
+                msg.AddInt32("phase", phase);
+                msg.AddInt32("queryId", queryId);
+                for (int32 i = 0; i < batch.CountItems(); i++) {
+                    msg.AddPointer("emailref", batch.ItemAt(i));
+                }
+                messenger.SendMessage(&msg);
+                batch.MakeEmpty();
+                
+                // Yield briefly so the window thread can process the batch
+                // and paint. Without this, a fast disk can flood the message
+                // queue and the UI appears frozen during loading.
+                snooze(5000);
+            }
+        }
+        
+        // Flush batch after each volume so results appear without waiting
+        // for subsequent (potentially slow) volumes to be scanned
+        if (batch.CountItems() > 0 && !IS_STALE()) {
+            BMessage msg(kMsgLoaderBatch);
+            msg.AddInt32("phase", phase);
+            msg.AddInt32("queryId", queryId);
+            for (int32 i = 0; i < batch.CountItems(); i++) {
+                msg.AddPointer("emailref", batch.ItemAt(i));
+            }
+            messenger.SendMessage(&msg);
+            batch.MakeEmpty();
+        }
+    }
+    
+    // Send remaining batch only if not stale
+    if (batch.CountItems() > 0) {
+        if (IS_STALE()) {
+            // Stale - clean up unsent EmailRefs
+            for (int32 i = 0; i < batch.CountItems(); i++) {
+                delete batch.ItemAt(i);
+            }
+            batch.MakeEmpty();
+        } else {
+            BMessage msg(kMsgLoaderBatch);
+            msg.AddInt32("phase", phase);
+            msg.AddInt32("queryId", queryId);
+            for (int32 i = 0; i < batch.CountItems(); i++) {
+                msg.AddPointer("emailref", batch.ItemAt(i));
+            }
+            messenger.SendMessage(&msg);
+            batch.MakeEmpty();
+        }
+    }
+    
+    // Send phase completion message only if not stale.
+    // During shutdown, the looper may be locked or destroyed,
+    // so we must not call SendMessage.
+    if (!IS_STALE()) {
+        BMessage done(phase == 1 ? kMsgPhase1Done : kMsgPhase2Done);
+        done.AddInt32("count", totalLoaded);
+        done.AddInt32("queryId", queryId);
+        messenger.SendMessage(&done);
+    }
+    
+    #undef IS_STALE
+    
+    delete loaderData;
+    return 0;
+}
+
+
+void
+EmailListView::_ProcessLoaderBatch(BMessage* message)
+{
+    // Receive pre-loaded EmailRef pointers from background thread
+    
+    int32 phase = 1;
+    message->FindInt32("phase", &phase);
+    
+    void* ptr;
+    int32 index = 0;
+    int32 added = 0;
+    
+    // All items use sorted insertion with CopyBits optimization.
+    // Items below visible area skip drawing entirely, so this is
+    // efficient even for tens of thousands of items.
+    while (message->FindPointer("emailref", index++, &ptr) == B_OK) {
+        EmailRef* emailRef = (EmailRef*)ptr;
+        if (emailRef != NULL) {
+            AddEmailSorted(emailRef);
+            fLoadedCount++;
+            added++;
+        }
+    }
+    
+    if (added > 0) {
+        // Single invalidate for the entire batch — avoids per-item flicker
+        if (fContentView != NULL)
+            fContentView->Invalidate();
+        
+        // Force draw immediately so items appear progressively
+        if (Window() != NULL)
+            Window()->UpdateIfNeeded();
+        
+        // Throttle loading update messages
+        static bigtime_t lastUpdateTime = 0;
+        bigtime_t now = system_time();
+        
+        if ((now - lastUpdateTime) > 500000) {
+            _SendLoadingUpdate(true, false);
+            lastUpdateTime = now;
+        }
+    }
+}
+
+
+void
+EmailListView::_StartLiveQueries()
+{
+    _StopLiveQueries();
+    
+    if (fQueryPredicate.IsEmpty())
+        return;
+    
+    for (int32 i = 0; i < fQueryVolumes.CountItems(); i++) {
+        BVolume* volume = fQueryVolumes.ItemAt(i);
+        if (volume == NULL)
+            continue;
+        
+        BQuery* query = new BQuery();
+        query->SetVolume(volume);
+        query->SetPredicate(fQueryPredicate.String());
+        query->SetTarget(BMessenger(this));
+        
+        if (query->Fetch() == B_OK) {
+            fLiveQueries.AddItem(query);
+        } else {
+            delete query;
+        }
+    }
+}
+
+
+void
+EmailListView::_StartInterimLiveQueries()
+{
+    // Start live queries with a tight time window (last 60 seconds) to catch
+    // new emails arriving during phase 2 loading.  The narrow predicate keeps
+    // the initial result set tiny (all duplicates of phase 1, discarded by the
+    // HashMap dedup check in B_ENTRY_CREATED).  New emails that arrive after
+    // Fetch() are caught by the live monitoring regardless of timestamps.
+    _StopLiveQueries();
+    
+    if (fQueryPredicate.IsEmpty())
+        return;
+    
+    time_t recentCutoff = time(NULL) - 60;
+    BString interimPredicate;
+    interimPredicate.SetToFormat("((%s)&&(MAIL:when>=%ld))",
+        fQueryPredicate.String(), recentCutoff);
+    
+    for (int32 i = 0; i < fQueryVolumes.CountItems(); i++) {
+        BVolume* volume = fQueryVolumes.ItemAt(i);
+        if (volume == NULL)
+            continue;
+        
+        BQuery* query = new BQuery();
+        query->SetVolume(volume);
+        query->SetPredicate(interimPredicate.String());
+        query->SetTarget(BMessenger(this));
+        
+        if (query->Fetch() == B_OK) {
+            fLiveQueries.AddItem(query);
+        } else {
+            delete query;
+        }
+    }
+}
+
+
+void
+EmailListView::_StopLiveQueries()
+{
+    fLiveQueries.MakeEmpty();
+}
+
+
+void
+EmailListView::_SendLoadingUpdate(bool loading, bool complete)
+{
+    // Start/stop loading dots
+    if (fLoadingDots != NULL) {
+        if (loading && !complete)
+            fLoadingDots->Start();
+        else if (complete)
+            fLoadingDots->Stop();
+    }
+    
+    if (fTarget == NULL)
+        return;
+    
+    BMessage msg(kMsgLoadingUpdate);
+    msg.AddBool("loading", loading);
+    msg.AddInt32("count", fLoadedCount);
+    msg.AddBool("complete", complete);
+    
+    BMessenger(fTarget).SendMessage(&msg);
+}
+
+
+void
+EmailListView::_NotifyCountChanged()
+{
+    // Throttled notification to parent window to update email count.
+    // Called when live queries add or remove emails.
+    static bigtime_t lastNotifyTime = 0;
+    bigtime_t now = system_time();
+    
+    if (now - lastNotifyTime < 500000)  // 500ms throttle
+        return;
+    lastNotifyTime = now;
+    
+    _SendLoadingUpdate(false, false);
+}
+
+
+// =============================================================================
+// Container and status methods
+// =============================================================================
+
+void
+EmailListView::SetStatusText(const char* text)
+{
+    if (fStatusLabel != NULL) {
+        fStatusLabel->SetText(text);
+    }
+}
+
+
+status_t
+EmailListView::SaveColumnState(BMessage* into) const
+{
+    if (fColumnHeader == NULL || into == NULL)
+        return B_BAD_VALUE;
+
+    return fColumnHeader->SaveState(into);
+}
+
+
+status_t
+EmailListView::RestoreColumnState(const BMessage* from)
+{
+    if (fColumnHeader == NULL || from == NULL)
+        return B_BAD_VALUE;
+
+    status_t result = fColumnHeader->RestoreState(from);
+
+    if (result == B_OK) {
+        // Apply restored sort state to the list
+        EmailColumn sortCol = fColumnHeader->SortColumn();
+        ::SortOrder headerSortOrder = fColumnHeader->GetSortOrder();
+
+        SortColumn listSortCol;
+        switch (sortCol) {
+            case kColumnStatus:
+                listSortCol = kSortByStatus;
+                break;
+            case kColumnStar:
+                listSortCol = kSortByStar;
+                break;
+            case kColumnAttachment:
+                listSortCol = kSortByAttachment;
+                break;
+            case kColumnFrom:
+                listSortCol = kSortByFrom;
+                break;
+            case kColumnTo:
+                listSortCol = kSortByTo;
+                break;
+            case kColumnSubject:
+                listSortCol = kSortBySubject;
+                break;
+            case kColumnDate:
+                listSortCol = kSortByDate;
+                break;
+            case kColumnAccount:
+                listSortCol = kSortByAccount;
+                break;
+            default:
+                listSortCol = kSortByDate;
+                break;
+        }
+
+        SortOrder listSortOrder = (headerSortOrder == ::kSortAscending)
+            ? kSortAscending
+            : kSortDescending;
+
+        SetSortColumn(listSortCol, listSortOrder);
+    }
+
+    return result;
+}
