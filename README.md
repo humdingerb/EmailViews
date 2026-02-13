@@ -6,6 +6,8 @@ EmailViews works with Haiku's built-in `mail_daemon` and mail kit — it reads e
 
 ![EmailViews screenshot](screenshot.jpeg)
 
+EmailViews was created using AI tools and is maintained by Jorge Mare.
+
 ## Features
 
 **Three-pane interface** — Sidebar with mail views, sortable email list, and inline preview pane. Double-click any email to open it in a full reader window.
