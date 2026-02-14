@@ -826,8 +826,8 @@ EmailViewsWindow::EmailViewsWindow()
             .Add(trashScroll, 0.0f)
             .SetInsets(0, -1, 0, 0)
         .End()
-        .SetInsets(0);
-    
+        .SetInsets(0, -1, 0, -1);
+
     // Create the email list view - self-contained high-performance component
     // Includes column headers, scrollbars, status bar, query execution, live queries
     fEmailList = new EmailListView("emailList", this);
@@ -1019,7 +1019,7 @@ EmailViewsWindow::EmailViewsWindow()
         .Add(new BSeparatorView(B_HORIZONTAL, B_PLAIN_BORDER))
         .AddGroup(B_VERTICAL, 0)
             .Add(fHorizontalSplit)
-            .SetInsets(-1, 0, -1, 0)
+            .SetInsets(-1, 0, -1, -1)
         .End()
     .End();
     

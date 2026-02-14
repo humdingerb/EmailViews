@@ -760,7 +760,8 @@ EmailListView::EmailListView(const char* name, BWindow* target)
         .AddGroup(B_VERTICAL, 0)
             .Add(fVScrollBar, 1.0f)
             .Add(cornerSpacer)
-        .End();
+        .End()
+        .SetInsets(1, -1, -1, -1);
     
     // Add the layout's view to the BBox (documented pattern for BBox + layouts)
     borderBox->AddChild(innerLayout->View());
@@ -768,7 +769,7 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     // Add the BBox to this GroupView
     BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
         .Add(borderBox, 1.0f)
-        .SetInsets(0);
+        .SetInsets(0, 0 , -1, 0);
 }
 
 
