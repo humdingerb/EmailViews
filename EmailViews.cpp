@@ -779,24 +779,24 @@ EmailViewsWindow::EmailViewsWindow()
     
     // Create toolbar
     fToolBar = new ToolBarView();
-    fToolBar->AddAction(MSG_CHECK_EMAIL, this, LoadIconById(kIconCheckEmail), NULL, B_TRANSLATE("Check email"));
-    fToolBar->AddAction(MSG_NEW_EMAIL, this, LoadIconById(kIconNewEmail), NULL, B_TRANSLATE("New email"));
-    fToolBar->AddAction(MSG_REPLY, this, LoadIconById(kIconReply), NULL, B_TRANSLATE("Reply"));
+    fToolBar->AddAction(MSG_CHECK_EMAIL, this, LoadIconById(kIconCheckEmail), NULL, B_TRANSLATE_COMMENT("Check email", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_NEW_EMAIL, this, LoadIconById(kIconNewEmail), NULL, B_TRANSLATE_COMMENT("New email", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_REPLY, this, LoadIconById(kIconReply), NULL, B_TRANSLATE_COMMENT("Reply", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_REPLY, false);
-    fToolBar->AddAction(MSG_FORWARD, this, LoadIconById(kIconForward), NULL, B_TRANSLATE("Forward"));
+    fToolBar->AddAction(MSG_FORWARD, this, LoadIconById(kIconForward), NULL, B_TRANSLATE_COMMENT("Forward", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_FORWARD, false);
-    fToolBar->AddAction(MSG_MARK_READ, this, LoadIconById(kIconMarkRead), NULL, B_TRANSLATE("Mark read"));
+    fToolBar->AddAction(MSG_MARK_READ, this, LoadIconById(kIconMarkRead), NULL, B_TRANSLATE_COMMENT("Mark read", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-    fToolBar->AddAction(MSG_MARK_UNREAD, this, LoadIconById(kIconMarkUnread), NULL, B_TRANSLATE("Mark unread"));
+    fToolBar->AddAction(MSG_MARK_UNREAD, this, LoadIconById(kIconMarkUnread), NULL, B_TRANSLATE_COMMENT("Mark unread", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-    fToolBar->AddAction(MSG_DELETE_EMAIL, this, LoadIconById(kIconDelete), NULL, B_TRANSLATE("Trash"));
+    fToolBar->AddAction(MSG_DELETE_EMAIL, this, LoadIconById(kIconDelete), NULL, B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
     fToolBar->AddSeparator();
     const int32 kIconNext = 1013;
     const int32 kIconPrevious = 1012;
-    fToolBar->AddAction(MSG_NEXT_EMAIL, this, LoadIconById(kIconNext), NULL, B_TRANSLATE("Next"));
+    fToolBar->AddAction(MSG_NEXT_EMAIL, this, LoadIconById(kIconNext), NULL, B_TRANSLATE_COMMENT("Next", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
-    fToolBar->AddAction(MSG_PREV_EMAIL, this, LoadIconById(kIconPrevious), NULL, B_TRANSLATE("Previous"));
+    fToolBar->AddAction(MSG_PREV_EMAIL, this, LoadIconById(kIconPrevious), NULL, B_TRANSLATE_COMMENT("Previous", "Toolbar, short as possible"));
     fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
     fToolBar->AddGlue();  // Glue at end like reader window
     
