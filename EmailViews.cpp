@@ -3194,7 +3194,20 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             LoadTrashEmails();
             break;
         }
-        
+
+        case MSG_SELECT_ALL_EMAILS: {
+            // Ignore during loading to avoid freeze from mass selection
+            // while the loader thread is still populating the list
+            if (fEmailList->IsLoading())
+                break;
+            int32 count = fEmailList->CountItems();
+            if (count > 0) {
+                fEmailList->SelectRange(0, count - 1);
+                message->AddInt32("count", count);
+			} else
+                break;
+        }	// Intentional fall-thru
+
         case MSG_EMAIL_SELECTED: {
             // Check status of all selected emails to determine button states
             int32 selectionCount = 0;
@@ -3339,17 +3352,6 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 fEmailList->Select(index - 1);
                 fEmailList->ScrollToItem(index - 1);
             }
-            break;
-        }
-        
-        case MSG_SELECT_ALL_EMAILS: {
-            // Ignore during loading to avoid freeze from mass selection
-            // while the loader thread is still populating the list
-            if (fEmailList->IsLoading())
-                break;
-            int32 count = fEmailList->CountItems();
-            if (count > 0)
-                fEmailList->SelectRange(0, count - 1);
             break;
         }
         
