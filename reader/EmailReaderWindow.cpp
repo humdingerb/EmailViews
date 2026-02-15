@@ -2132,8 +2132,8 @@ EmailReaderWindow::Reply(entry_ref* ref, EmailReaderWindow* window, uint32 type)
 
 	fReplying = true;
 
-	// Add auto-signature before the quoted text
-	AddAutoSignature(true);
+	// Add auto-signature after the quoted text
+	AddAutoSignature(false);
 }
 
 
@@ -2212,8 +2212,8 @@ EmailReaderWindow::ComposeReplyTo(entry_ref* ref, uint32 type)
 
 	fReplying = true;
 	
-	// Add auto-signature before the quoted text
-	AddAutoSignature(true);
+	// Add auto-signature after the quoted text
+	AddAutoSignature(false);
 	
 	// Keep sourceMail alive — TTextView::fMail references it for quoted text,
 	// and it must outlive the compose window.
