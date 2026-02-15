@@ -1,0 +1,323 @@
+1	German	application/x-vnd.EmailViews	1984325143
+ Read 	EmailReaderWindow		Gelesen
+(Address unavailable)	EmailReaderWindow		(Adresse nicht verfügbar)
+(Date unavailable)	EmailReaderWindow		(Datum nicht verfügbar)
+(Name unavailable)	EmailReaderWindow		(Name nicht verfügbar)
+Add attachment…	EmailReaderWindow		Anhang hinzufügen …
+Add signature	EmailReaderWindow		Signatur hinzufügen
+Attach	EmailReaderWindow		Anhang
+Automatic	EmailReaderWindow		Automatisch
+Cancel	EmailReaderWindow		Abbrechen
+Cc:	EmailReaderWindow		Cc:
+Check spelling	EmailReaderWindow		Rechtschreibprüfung
+Close	EmailReaderWindow		Schließen
+Composer	EmailReaderWindow		Composer
+Copy	EmailReaderWindow		Kopieren
+Copy to new	EmailReaderWindow		In neue Nachricht kopieren
+Create Person file for	EmailReaderWindow		Adresse speichern
+Cut	EmailReaderWindow		Ausschneiden
+Decrease quote level	EmailReaderWindow		Eine Zitatebene höher
+Don't save	EmailReaderWindow		Verwerfen
+Don't send	EmailReaderWindow		Nicht senden
+E-mail draft could not be saved!	EmailReaderWindow		Der Entwurf konnte nicht gespeichert werden!
+Edit	EmailReaderWindow		Bearbeiten
+Edit signatures…	EmailReaderWindow		Signaturen bearbeiten …
+Email accounts…	EmailReaderWindow		Email-Konten …
+Email preferences…	EmailReaderWindow		Email-Einstellungen …
+Empty subject	EmailReaderWindow		Leeres Betreff
+Encoding	EmailReaderWindow		Zeichenkodierung
+File	EmailReaderWindow		Datei
+Find again	EmailReaderWindow		Weitersuchen
+Find…	EmailReaderWindow		Suchen …
+Forward	EmailReaderWindow		Weiterleiten
+Forward without attachments	EmailReaderWindow		Ohne Anhänge weiterleiten
+Increase quote level	EmailReaderWindow		Eine Zitatebene tiefer
+Message	EmailReaderWindow		Nachricht
+Move to trash	EmailReaderWindow		In den Papierkorb verschieben
+Need Tracker to move items to trash	EmailReaderWindow		Tracker wird benötigt, um Sachen in den Papierkorb zu verschieben.
+New	EmailReaderWindow		Neu
+New mail message	EmailReaderWindow		Nachricht verfassen
+Next	EmailReaderWindow		Nächste
+Next message	EmailReaderWindow		Nächste Nachricht
+Next message, keep status	EmailReaderWindow		Nächste Nachricht, Status beibehalten
+No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		Es wurde kein Wörterbuch gefunden.\n\nBitte eine \"words\" Datei installieren in \n/boot/system/data/spell_check/word_dictionary/
+None	EmailReaderWindow		Kein
+OK	EmailReaderWindow		OK
+Page setup…	EmailReaderWindow		Seite einrichten …
+Paste	EmailReaderWindow		Einfügen
+Previous	EmailReaderWindow		Vorherige
+Previous message	EmailReaderWindow		Vorherige Nachricht
+Previous message, keep status	EmailReaderWindow		Vorherige Nachricht, Status beibehalten
+Print	EmailReaderWindow		Drucken
+Print…	EmailReaderWindow		Drucken …
+Redo	EmailReaderWindow		Wiederholen
+Remove attachment	EmailReaderWindow		Anhang entfernen
+Reply	EmailReaderWindow		Antworten
+Reply all	EmailReaderWindow		Allen antworten
+Reply to all	EmailReaderWindow		An alle antworten
+Reply to sender	EmailReaderWindow		Antwort an Absender
+Resend	EmailReaderWindow		Nochmals senden
+Save	EmailReaderWindow		Speichern
+Save as draft	EmailReaderWindow		Als Entwurf speichern
+Save this message as a draft before closing?	EmailReaderWindow		Nachricht vor dem Schließen als Entwurf speichern?
+Select all	EmailReaderWindow		Alles auswählen
+Send	EmailReaderWindow		Senden
+Send message	EmailReaderWindow		Nachricht senden
+Send this message before closing?	EmailReaderWindow		Nachricht vor dem Schließen senden?
+Show header	EmailReaderWindow		Kopfdaten anzeigen
+Show raw message	EmailReaderWindow		Originalformat anzeigen
+Signature	EmailReaderWindow		Signatur
+Sorry	EmailReaderWindow		Mist
+Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Es konnte leider keine Anwendung gefunden werden, die den Datentyp 'Person' unterstützt.
+Spam	EmailReaderWindow		Spam
+Start now	EmailReaderWindow		Jetzt starten
+The mail_daemon could not be started:\n\t	EmailReaderWindow		Der E-Mail-Dienst (mail_daemon) konnte nicht gestartet werden:\n\t
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		Der E-Mail-Dienst (mail_daemon) läuft nicht. Die Nachricht wird versendet, sobald der Dienst wieder läuft.
+The subject is empty. Do you want to send anyway?	EmailReaderWindow		Das Betreff ist leer. Soll die Nachricht trotzdem gesendet werden?
+Trash	EmailReaderWindow		Papierkorb
+Undo	EmailReaderWindow		Rückgängig
+Unread	EmailReaderWindow		Ungelesen
+Untitled	EmailReaderWindow		Unbenannt
+View	EmailReaderWindow		Ansicht
+View HTML version	EmailReaderWindow		HTML-Version anzeigen
+Viewer	EmailReaderWindow		Viewer
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Der Text enthält %ld nicht kodierbare Zeichen. Eine andere Zeichenkodierung könnte helfen. 'Senden' klicken, um die Nachricht trotzdem zu senden (Ersatzzeichen werden für die nicht kodierbaren Zeichen verwendet), oder den Vorgang abbrechen, um das Problem zu lösen.
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Tag
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Monat
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Woche
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Jahr
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 Tage
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 Monate
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 Wochen
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 Jahre
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 Tage
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 Monate
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 Wochen
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 Tage
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 Tage
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 Jahre
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 Tage
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 Monate
+All	TimeRangeSlider	Time range slider label - keep as short as possible	Alle
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Heute
+[Message truncated...]	EmailViewsWindow		[Verkürzte Nachricht ...]
+[The draft has no body text to display]	EmailViewsWindow		[Der Entwurf enthält keinen Text]
+%d emails selected.	EmailViewsWindow		%d Emails ausgewählt.
+%s emails	EmailViewsWindow		%s Emails
+1 email	EmailViewsWindow		1 Email
+A query named '%name%' already exists.	EmailViewsWindow		Eine Query namens '%name%' existiert bereits.
+A query with the same search criteria already exists: '%name%'	EmailViewsWindow		Eine Query mit denselben Suchkriterien existiert bereits:  %name%'
+About EmailViews…	EmailViewsWindow		Über EmailViews …
+Account:	EmailViewsWindow		Konto:
+Add 'Account' query	EmailViewsWindow		Gleiches Konto
+Add 'From' query	EmailViewsWindow		Gleicher Absender
+Add 'To' query	EmailViewsWindow		Gleicher Empfänger
+All emails	EmailViewsWindow		Alle Emails
+Backup failed	EmailViewsWindow		Sicherung fehlgeschlagen
+Cancel	EmailViewsWindow		Abbrechen
+Check email	EmailViewsWindow		Email abfragen
+Could not get email reference.	EmailViewsWindow		Keine Email-Referenz bekommen.
+Could not open email file.	EmailViewsWindow		Email-Datei konnte nicht geöffnet werden.
+Create anyway	EmailViewsWindow		Trotzdem erzeugen
+Delete	EmailViewsWindow		Löschen
+Delete emails	EmailViewsWindow		Emails löschen
+Delete emails in Trash	EmailViewsWindow		Emails im Papierkorb löschen
+Deleting emails…	EmailViewsWindow		Lösche Emails …
+Draft emails	EmailViewsWindow		Entwürfe
+Draft emails (%ld)	EmailViewsWindow		Entwürfe (%ld)
+Email accounts…	EmailViewsWindow		Email-Konten …
+Email backup	EmailViewsWindow		Emails sichern
+Email preferences…	EmailViewsWindow		Email-Einstellungen …
+Error	EmailViewsWindow		Fehler
+Failed to create query file.	EmailViewsWindow		Query-Datei konnte nicht erzeugt werden.
+Failed to start backup thread.	EmailViewsWindow		Sicherungs-Thread konnte nicht erzeugt werden.
+Forward	EmailViewsWindow		Weiterleiten
+HTML message	EmailViewsWindow		HTML Nachricht
+Mark as read	EmailViewsWindow		Als gelesen markieren
+Mark as unread	EmailViewsWindow		Als ungelesen markieren
+Mark read	EmailViewsWindow		Gelesen mark.
+Mark unread	EmailViewsWindow		Ungelesen mark.
+Messages	EmailViewsWindow		Nachrichten
+Move to Trash	EmailViewsWindow		In den Papierkorb verschieben
+New email	EmailViewsWindow		Neue Email
+Next	EmailViewsWindow		Nächste
+No emails found.	EmailViewsWindow		Keine Emails gefunden.
+No emails in Trash.	EmailViewsWindow		Keine Emails im Papierkorb.
+No emails match your search.	EmailViewsWindow		Keine Emails entsprechen den Suchkriterien.
+OK	EmailViewsWindow		OK
+Open queries folder	EmailViewsWindow		Query-Ordner öffnen
+Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		%count% Emails im Papierkorb endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
+Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		%count% Emails endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
+Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Die Email im Papierkorb endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
+Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Die Email endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
+Previous	EmailViewsWindow		Vorherige
+Queries	EmailViewsWindow		Queries
+Query exists	EmailViewsWindow		Query existiert bereits
+Quit	EmailViewsWindow		Beenden
+Reply	EmailViewsWindow		Antworten
+Reply all	EmailViewsWindow		Allen antworten
+Restore email	EmailViewsWindow		Email wiederherstellen
+Save backup as	EmailViewsWindow		Sicherung speichern als
+Select an email to preview its contents.	EmailViewsWindow		Email auswählen, um einen Preview anzuzeigen.
+Select folder	EmailViewsWindow		Ordner auswählen
+Sent emails	EmailViewsWindow		Gesendete Emails
+Show in Deskbar	EmailViewsWindow		Icon in Deskbar anzeigen
+Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Es konnte leider keine Anwendung gefunden werden, die den Datentyp 'Person' unterstützt.
+Starred emails	EmailViewsWindow		Emails mit Stern
+Subject:	EmailViewsWindow		Betreff:
+There are no emails in the Trash.	EmailViewsWindow		Im Papierkorb befinden sich keine Emails.
+This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Diese Nachricht ist HTML-formatiert.\nUnten klicken, um sie im Standard-Browser zu öffnen.
+Time range:	EmailViewsWindow		Zeitspanne:
+To:	EmailViewsWindow		An:
+Trash	EmailViewsWindow		Papierkorb
+Unread emails	EmailViewsWindow		Ungelesene Emails
+Unread emails (%ld)	EmailViewsWindow		Ungelesene Emails (%ld)
+View HTML version	EmailViewsWindow		HTML-Version anzeigen
+Volumes	EmailViewsWindow		Datenträger
+With attachments	EmailViewsWindow		Mit Anhängen
+You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		%count% Nachrichten eines nicht auf diesem System angelegten Kontos, konnten nicht wiederhergestellt werden. Bitte den Zielordner für das Wiederherstellen dieser Emails wählen.
+You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Eine Nachricht eines nicht auf diesem System angelegten Kontos, konnte nicht wiederhergestellt werden. Bitte den Zielordner für das Wiederherstellen dieser Email wählen.
+\\n - Newline	Preferences		\\n - Zeilenumbruch
+%d - Date	Preferences		%d - Datum
+%e - E-mail address	Preferences		%e - E-mail Adresse
+%n - Full name	Preferences		%n - Voller Name
+<no account found>	Preferences		<kein Konto gefunden>
+Account from mail	Preferences		Konto der Nachricht
+Attach attributes:	Preferences		Attribute von Anhängen
+Auto signature:	Preferences		Automatische Signatur:
+Automatically mark mail as read:	Preferences		Nachrichten automatisch als gelesen markieren:
+Beginner	Preferences		Anfänger
+Button bar:	Preferences		Werkzeugleiste:
+Cancel	Preferences		Abbrechen
+Colored quotes:	Preferences		Farbige Zitate:
+Default account:	Preferences		Standardkonto:
+Email preferences	Preferences		Email-Einstellungen
+Expert	Preferences		Experte
+Font:	Preferences		Schriftart:
+Include file attributes in attachments	Preferences		Dateiattribute von Anhängen mitsenden
+Initial spell check mode:	Preferences		Rechtschreibprüfung:
+Mailing	Preferences		Nachrichten
+No file attributes, just plain data	Preferences		Keine Dateiattribute, nur reine Daten
+None	Preferences		Keine
+Off	Preferences		Aus
+OK	Preferences		OK
+On	Preferences		Ein
+Outgoing encoding:	Preferences		Zeichenkodierung:
+Reply account:	Preferences		Konto zum Beantworten:
+Reply preamble:	Preferences		Einleitung bei Antworten:
+Revert	Preferences		Anfangswerte
+Show icons & labels	Preferences		Icons und Beschriftung anzeigen
+Show icons only	Preferences		Nur Icons zeigen
+Size:	Preferences		Größe:
+Text wrapping:	Preferences		Zeilenumbruch:
+Time range slider:	Preferences		Zeitraum Schieberegler:
+Use default account	Preferences		Standardkonto:
+User interface	Preferences		Programmoberfläche
+Warn unencodable:	Preferences		Warnung bei nicht-kodierbaren Zeichen:
+%e wrote:\n	ReaderSettings		%e schrieb:\n
+None	ReaderSettings		Keine
+<none>	HeaderView		<kein>
+Bcc:	HeaderView		Bcc:
+Cc:	HeaderView		Cc:
+Date:	HeaderView		Datum:
+From:	HeaderView		Von:
+Subject:	HeaderView		Betreff:
+To:	HeaderView		An:
+Unknown	HeaderView		Unbekannt
+Account	EmailColumnHeader		Konto
+Attachment	EmailColumnHeader		Anhang
+Date	EmailColumnHeader		Datum
+From	EmailColumnHeader		Absender
+Star	EmailColumnHeader		Stern
+Status	EmailColumnHeader		Status
+Subject	EmailColumnHeader		Betreff
+To	EmailColumnHeader		Empfänger
+Account	SearchBarView		Konto
+Backup emails to ZIP file	SearchBarView		Emails als ZIP Archiv sichern
+Backup in progress…	SearchBarView		Sicherung läuft …
+Clear search box	SearchBarView		Suchfeld leeren
+contains	SearchBarView		enthält
+Create query based on search criteria	SearchBarView		Query mit diesen Suchkriterien erstellen
+Filter by	SearchBarView		Filtern nach
+From	SearchBarView		Absender
+matches	SearchBarView		ist
+Select attribute(s) to query	SearchBarView		Attribut der Query wählen
+Select search operator	SearchBarView		Suchmodus wählen
+Subject	SearchBarView		Betreff
+that	SearchBarView		das
+To	SearchBarView		Empfänger
+Type text and press Enter…	SearchBarView		Text eingeben und Enter drücken …
+Add	ContentView		Hinzu
+An error occurred trying to open this signature.	ContentView		Beim Öffnen dieser Signatur ist ein Fehler aufgetreten.
+An error occurred trying to save the attachment.	ContentView		Beim Speichern des Anhangs ist ein Fehler aufgetreten.
+Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Anhang: %name% (Typ: %type%)
+Copy link location	ContentView		Linkadresse kopieren
+Inconsistency occurred in the undo/redo buffer.	ContentView		Es ist ein Fehler im Rückgängig/Wiederherstellen-Puffer aufgetreten.
+No matches	ContentView		No matchesNo matches
+OK	ContentView		OK
+Open attachment	ContentView		Anhang öffnen
+Open this link	ContentView		Link öffnen
+Save attachment…	ContentView		Anhang speichern …
+Sorry	ContentView		Mist
+There is no installed handler for URL links.	ContentView		URL-Verweisen ist keine Anwendung zugeordnet.
+Add 'Account' query	EmailListView		Gleiches Konto
+Add 'From' query	EmailListView		Gleicher Absender
+Add 'To' query	EmailListView		Gleicher Empfänger
+Create Person file for	EmailListView		Adresse speichern
+Delete permanently	EmailListView		Endgültig löschen
+Filter by 'Account'	EmailListView		Nach 'Konto' filtern
+Filter by 'Recipient'	EmailListView		Nach 'Empfänger' filtern
+Filter by 'Sender'	EmailListView		Nach 'Absender' filtern
+Filter by 'Subject'	EmailListView		Nach 'Betreff' filtern
+Forward	EmailListView		Weiterleiten
+Mark as read	EmailListView		Als gelesen markieren
+Mark as unread	EmailListView		Als ungelesen markieren
+Move to Trash	EmailListView		In den Papierkorb verschieben
+New email to sender	EmailListView		Neue Email an den Absender
+Reply	EmailListView		Antworten
+Reply all	EmailListView		Allen antworten
+Restore	EmailListView		Wiederherstellen
+Send as attachment	EmailListView		Als Anhang schicken
+Star	EmailListView		Mit Stern markieren
+Unstar	EmailListView		Stern entfernen
+All people	AddressTextControl		Alle Kontakte
+An error occurred trying to save this signature.	SignatureWindow		Beim Speichern dieser Signatur ist ein Fehler aufgetreten.
+Cancel	SignatureWindow		Abbrechen
+Copy	SignatureWindow		Kopieren
+Couldn't open this signature. Sorry.	SignatureWindow		Diese Signatur konnte leider nicht geöffnet werden.
+Cut	SignatureWindow		Ausschneiden
+Delete	SignatureWindow		Löschen
+Don't save	SignatureWindow		Verwerfen
+Edit	SignatureWindow		Bearbeiten
+New	SignatureWindow		Neu
+OK	SignatureWindow		OK
+Open	SignatureWindow		Öffnen
+Paste	SignatureWindow		Einfügen
+Really delete this signature? This cannot be undone.	SignatureWindow		Diese Signatur tatsächlich löschen? Das kann nicht rückgängig gemacht werden.
+Save	SignatureWindow		Speichern
+Save changes to this signature?	SignatureWindow		Änderungen an der Signatur speichern?
+Select all	SignatureWindow		Alles auswählen
+Signature	SignatureWindow		Signatur
+Signature:	SignatureWindow		Signatur:
+Signatures	SignatureWindow		Signaturen
+Sorry	SignatureWindow		Mist
+Title:	SignatureWindow		Titel:
+Undo	SignatureWindow		Rückgängig
+Attachments:	EnclosuresView		Anhänge:
+OK	EnclosuresView		OK
+Only files can be added as attachments.	EnclosuresView		Nur Dateien können als Anhang hinzugefügt werden.
+Open attachment	EnclosuresView		Anhang öffnen
+Remove attachment	EnclosuresView		Anhang entfernen
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Anhänge von weitergeleiteten Nachrichten zu entfernen wird noch nicht unterstützt.\nEs wird nicht richtig funktionieren.
+Cancel	QueryNameDialog		Abbrechen
+Save	QueryNameDialog		Speichern
+Delete emails in Trash	TrashItemView		Emails im Papierkorb löschen
+Emails in Trash	TrashItemView		Emails im Papierkorb
+Find	FindWindow		Suchen
+OK	AboutWindow		OK
+Open	AttachmentStripView		Öffnen
+Remove	AttachmentStripView		Entfernen
+Save as…	AttachmentStripView		Speichern unter …
+Open query in Tracker…	QueryListView		Query im Tracker öffnen …
+Remove query	QueryListView		Query entfernen
+Unread emails	QueryListView		Ungelesene Emails
