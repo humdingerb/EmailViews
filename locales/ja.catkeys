@@ -1,0 +1,333 @@
+1	Japanese	application/x-vnd.EmailViews	1175271525
+ Read 	EmailReaderWindow	Toolbar, short as possible	既読
+(Address unavailable)	EmailReaderWindow		（アドレスはありません）
+(Date unavailable)	EmailReaderWindow		（日時はありません）
+(Name unavailable)	EmailReaderWindow		（名前はありません）
+Add attachment…	EmailReaderWindow		添付ファイル追加…
+Add signature	EmailReaderWindow		署名を追加
+Attach	EmailReaderWindow	Toolbar, short as possible	添付
+Automatic	EmailReaderWindow		自動
+Cancel	EmailReaderWindow		中止
+Cc:	EmailReaderWindow		Cc:
+Check spelling	EmailReaderWindow		スペルチェック
+Close	EmailReaderWindow		閉じる
+Composer	EmailReaderWindow		作成ウィンドウ
+Copy	EmailReaderWindow		コピー
+Copy to new	EmailReaderWindow		新規メッセージへコピー
+Create Person file for	EmailReaderWindow		Person ファイルを作成
+Cut	EmailReaderWindow		切り取り
+Decrease quote level	EmailReaderWindow		引用レベルを下げる
+Don't save	EmailReaderWindow		保存しない
+Don't send	EmailReaderWindow		送信しない
+E-mail draft could not be saved!	EmailReaderWindow		下書きを保存できませんでした！
+Edit	EmailReaderWindow		編集
+Edit signatures…	EmailReaderWindow		署名を編集…
+Email accounts…	EmailReaderWindow		メールアカウント…
+Email preferences…	EmailReaderWindow		メール環境設定…
+Empty subject	EmailReaderWindow		件名未記入
+Encoding	EmailReaderWindow		エンコーディング
+File	EmailReaderWindow		ファイル
+Find again	EmailReaderWindow		次を検索
+Find…	EmailReaderWindow		検索…
+Forward	EmailReaderWindow		転送
+Forward	EmailReaderWindow	Toolbar, short as possible	転送
+Forward without attachments	EmailReaderWindow		添付ファイルなしで転送
+Increase quote level	EmailReaderWindow		引用レベルを上げる
+Message	EmailReaderWindow		メッセージ
+Move to trash	EmailReaderWindow		ごみ箱へ移動
+Need Tracker to move items to trash	EmailReaderWindow		メールをゴミ箱に移動するために Tracker が必要です。
+New	EmailReaderWindow	Toolbar, short as possible	新規メール
+New mail message	EmailReaderWindow		新規メール
+Next	EmailReaderWindow	Toolbar, short as possible	次へ
+Next message	EmailReaderWindow		次のメッセージ
+Next message, keep status	EmailReaderWindow		次へ、ステータス維持
+No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		スペルチェック辞書は見つかりません.\n\n下記フォルダに \"words\" ファイルをインストールしてください：\n/boot/system/data/spell_check/word_dictionary/
+None	EmailReaderWindow		なし
+OK	EmailReaderWindow		OK
+Page setup…	EmailReaderWindow		ページ設定…
+Paste	EmailReaderWindow		貼り付け
+Previous	EmailReaderWindow	Toolbar, short as possible	前へ
+Previous message	EmailReaderWindow		前のメッセージ
+Previous message, keep status	EmailReaderWindow		前へ、ステータス維持
+Print	EmailReaderWindow	Toolbar, short as possible	印刷
+Print…	EmailReaderWindow		印刷…
+Redo	EmailReaderWindow		やり直し
+Remove attachment	EmailReaderWindow		添付ファイルを削除
+Reply	EmailReaderWindow		返信
+Reply	EmailReaderWindow	Toolbar, short as possible	返信
+Reply all	EmailReaderWindow	Toolbar, short as possible	全員返信
+Reply to all	EmailReaderWindow		全員に返信
+Reply to sender	EmailReaderWindow		差出人に返信
+Resend	EmailReaderWindow		再送信
+Save	EmailReaderWindow		保存
+Save	EmailReaderWindow	Toolbar, short as possible	保存
+Save as draft	EmailReaderWindow		下書きとして保存
+Save this message as a draft before closing?	EmailReaderWindow		閉じる前にこのメッセージを下書きとして保存しますか？
+Select all	EmailReaderWindow		全て選択
+Send	EmailReaderWindow		送信
+Send	EmailReaderWindow	Toolbar, short as possible	送信
+Send message	EmailReaderWindow		メッセージを送信
+Send this message before closing?	EmailReaderWindow		閉じる前にこのメッセージを送信しますか？
+Show header	EmailReaderWindow		ヘッダーを表示
+Show raw message	EmailReaderWindow		未処理のメッセージを表示
+Signature	EmailReaderWindow	Toolbar, short as possible	署名
+Sorry	EmailReaderWindow		ごめん
+Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Person ファイルタイプを扱うアプリケーションが見つかりません。
+Spam	EmailReaderWindow	Toolbar, short as possible	スパム
+Start now	EmailReaderWindow		すぐに開始
+The mail_daemon could not be started:\n\t	EmailReaderWindow		mail_daemon が起動できません:\n\t
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		mail_daemon が起動してません。メッセージがキューに入れられ、mail_daemon が起動したら送信されます。
+The subject is empty. Do you want to send anyway?	EmailReaderWindow		件名が入力されていません。それでもメッセージを送信しますか？
+Trash	EmailReaderWindow	Toolbar, short as possible	ごみ箱
+Undo	EmailReaderWindow		元に戻す
+Unread	EmailReaderWindow	Toolbar, short as possible	未既読
+Untitled	EmailReaderWindow		無名
+View	EmailReaderWindow		表示
+View HTML version	EmailReaderWindow		HTML版を開く
+Viewer	EmailReaderWindow		ビュアー
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		メインテキストに %ld 個のエンコードできない文字があります。別の文字セットを使用した方が良いかもしれません。それでも送信する場合「送信」をクリックしてください（エンコードできない文字には代替文字が使用されます）。修正して再試行するには「中止」をクリックしてください。
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	１日前
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	１ヶ月前
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	１週間前
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	１年前
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	２日前
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	２ヶ月前
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	２週間前
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	２年前
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	３日前
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	３ヶ月前
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	３週間前
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	４日前
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	５日前
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	５年前
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	６日前
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	６ヶ月前
+All	TimeRangeSlider	Time range slider label - keep as short as possible	全て
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	今日
+[Message truncated...]	EmailViewsWindow		[メッセージが省略されました...]
+[The draft has no body text to display]	EmailViewsWindow		[下書きに表示できる本文はありません]
+%d emails selected.	EmailViewsWindow		%d 通のメールが選択されています。
+%s emails	EmailViewsWindow		%s 通メール
+1 email	EmailViewsWindow		1 通メール
+A query named '%name%' already exists.	EmailViewsWindow		「%name%」というクエリーは既に存在します。
+A query with the same search criteria already exists: '%name%'	EmailViewsWindow		同じ検索条件のクエリーは既に存在します: '%name%'
+About EmailViews…	EmailViewsWindow		EmailViews について…
+Account:	EmailViewsWindow		アカウント:
+Add 'Account' query	EmailViewsWindow		「アカウント」属性でクエリー追加
+Add 'From' query	EmailViewsWindow		「差出人」属性でクエリー追加
+Add 'To' query	EmailViewsWindow		「宛先」属性でクエリー追加
+All emails	EmailViewsWindow		全メール
+Backup failed	EmailViewsWindow		バックアップは失敗しました
+Cancel	EmailViewsWindow		中止
+Check email	EmailViewsWindow		メールチェック
+Check email	EmailViewsWindow	Toolbar, short as possible	メールチェック
+Could not get email reference.	EmailViewsWindow		メールの参照を取得できませんでした。
+Could not open email file.	EmailViewsWindow		メールファイルを開けませんでした。
+Create anyway	EmailViewsWindow		それでも作成する
+Delete	EmailViewsWindow		削除
+Delete emails	EmailViewsWindow		メールを削除
+Delete emails in Trash	EmailViewsWindow		ごみ箱にあるメールを永久削除
+Deleting emails…	EmailViewsWindow		メール削除中…
+Draft emails	EmailViewsWindow		メール下書き
+Draft emails (%ld)	EmailViewsWindow		メール下書き (%ld)
+Email accounts…	EmailViewsWindow		メールアカウント…
+Email backup	EmailViewsWindow		メールバックアップ
+Email preferences…	EmailViewsWindow		メール環境設定…
+Error	EmailViewsWindow		エラー
+Failed to create query file.	EmailViewsWindow		クエリー作成は失敗しました。
+Failed to start backup thread.	EmailViewsWindow		バックアップ処理を開始できませんでした。
+Forward	EmailViewsWindow		転送
+Forward	EmailViewsWindow	Toolbar, short as possible	転送
+HTML message	EmailViewsWindow		HTML メッセージ
+Mark as read	EmailViewsWindow		既読にする
+Mark as unread	EmailViewsWindow		未既読にする
+Mark read	EmailViewsWindow		既読
+Mark read	EmailViewsWindow	Toolbar, short as possible	既読
+Mark unread	EmailViewsWindow		未既読
+Mark unread	EmailViewsWindow	Toolbar, short as possible	未既読
+Messages	EmailViewsWindow		メッセージ
+Move to Trash	EmailViewsWindow		ごみ箱に移動
+New email	EmailViewsWindow		新規メール
+New email	EmailViewsWindow	Toolbar, short as possible	新規メール
+Next	EmailViewsWindow	Toolbar, short as possible	次へ
+No emails found.	EmailViewsWindow		メールは見つかりませんでした。
+No emails in Trash.	EmailViewsWindow		ごみ箱にメールはありません。
+No emails match your search.	EmailViewsWindow		検索条件に一致するメールはありません。
+OK	EmailViewsWindow		OK
+Open queries folder	EmailViewsWindow		クエリーフォルダーを開く
+Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		%count% 通のメールを完全に削除しますか？\n\nこの動作は元に戻せません。
+Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		%count% 通のメールを完全に削除しますか？\n\nこの動作は元に戻せません。
+Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		１通のメールを完全に削除しますか？\n\nこの動作は元に戻せません。
+Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		１通のメールを完全に削除しますか？\n\nこの動作は元に戻せません。
+Previous	EmailViewsWindow	Toolbar, short as possible	前へ
+Queries	EmailViewsWindow		クエリー
+Query exists	EmailViewsWindow		クエリーは存在する
+Quit	EmailViewsWindow		終了
+Reply	EmailViewsWindow		返信
+Reply	EmailViewsWindow	Toolbar, short as possible	返信
+Reply all	EmailViewsWindow		全員返信
+Restore email	EmailViewsWindow		メールを復元
+Save backup as	EmailViewsWindow		名前を付けてバックアップを保存
+Select an email to preview its contents.	EmailViewsWindow		メールを選択したらプレビューは表示されます。
+Select folder	EmailViewsWindow		フォルダー選択
+Sent emails	EmailViewsWindow		送信済メール
+Show in Deskbar	EmailViewsWindow		Deskbar に表示
+Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Person ファイルタイプを扱うアプリケーションは見つかりません。
+Starred emails	EmailViewsWindow		スター付メール
+Subject:	EmailViewsWindow		件名:
+There are no emails in the Trash.	EmailViewsWindow		ごみ箱にメールはありません。
+This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		This message is HTML formatted.\nClick below to open it in the default browser.
+Time range:	EmailViewsWindow		対象期間:
+To:	EmailViewsWindow		宛先:
+Trash	EmailViewsWindow		ごみ箱
+Trash	EmailViewsWindow	Toolbar, short as possible	ごみ箱へ
+Unread emails	EmailViewsWindow		未既読メール
+Unread emails (%ld)	EmailViewsWindow		未既読メール (%ld)
+View HTML version	EmailViewsWindow		HTML版を開く
+Volumes	EmailViewsWindow		ディスクボリューム
+With attachments	EmailViewsWindow		添付ファイル付メール
+You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		%count% 通のメールをシステムに設定されていないアカウントから復元しようとしています。復元先のフォルダを選択してください。
+You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		１通のメールをシステムに設定されていないアカウントから復元しようとしています。復元先のフォルダを選択してください。
+\\n - Newline	Preferences		\\n - 改行
+%d - Date	Preferences		%d - 日付
+%e - E-mail address	Preferences		%e - メールアドレス
+%n - Full name	Preferences		%n - フルネーム
+<no account found>	Preferences		<アカウントが見つかりません>
+Account from mail	Preferences		メールからのアカウント
+Attach attributes:	Preferences		属性の添付:
+Auto signature:	Preferences		自動署名:
+Automatically mark mail as read:	Preferences		メール自動的に既読にする:
+Beginner	Preferences		初心者
+Button bar:	Preferences		ツールバー:
+Cancel	Preferences		中止
+Colored quotes:	Preferences		カラー引用:
+Default account:	Preferences		デフォルトアカウント:
+Email preferences	Preferences		メール環境設定
+Expert	Preferences		エキスパート
+Font:	Preferences		フォント:
+Include file attributes in attachments	Preferences		添付ファイルの属性を含む
+Initial spell check mode:	Preferences		スペルチェック設定:
+Mailing	Preferences		メール環境
+No file attributes, just plain data	Preferences		ファイル属性なし、ただのデータのみ
+None	Preferences		なし
+Off	Preferences		オフ
+OK	Preferences		OK
+On	Preferences		有効
+Outgoing encoding:	Preferences		送信エンコーディング:
+Reply account:	Preferences		返信アカウント:
+Reply preamble:	Preferences		返信前文:
+Revert	Preferences		元に戻す
+Show icons & labels	Preferences		アイコンとラベルを表示
+Show icons only	Preferences		アイコンのみ表示
+Size:	Preferences		サイズ:
+Text wrapping:	Preferences		テキスト折り返し:
+Time range slider:	Preferences		対象期間スライダー:
+Use default account	Preferences		デフォルトアカウントを使用
+User interface	Preferences		ユーザインターフェース
+Warn unencodable:	Preferences		エンコード不可警告:
+%e wrote:\n	ReaderSettings		%e の引用:\n
+None	ReaderSettings		なし
+<none>	HeaderView		＜なし＞
+Bcc:	HeaderView		Bcc:
+Cc:	HeaderView		Cc:
+Date:	HeaderView		日時:
+From:	HeaderView		差出人:
+Subject:	HeaderView		件名:
+To:	HeaderView		宛先:
+Unknown	HeaderView		不明
+Account	EmailColumnHeader		アカウント
+Attachment	EmailColumnHeader		添付
+Date	EmailColumnHeader		日時
+From	EmailColumnHeader		差出人
+Star	EmailColumnHeader		スター
+Status	EmailColumnHeader		ステータス
+Subject	EmailColumnHeader		件名
+To	EmailColumnHeader		宛先
+Account	SearchBarView		アカウント
+Backup emails to ZIP file	SearchBarView		メールを ZIP ファイルにバックアップする
+Backup in progress…	SearchBarView		バックアップ進行中…
+Clear search box	SearchBarView		検索ボックスをクリア
+contains	SearchBarView		含む
+Create query based on search criteria	SearchBarView		検索条件に基づいてクエリを作成する
+Filter:	SearchBarView		フィルター:
+From	SearchBarView		差出人
+matches	SearchBarView		一致
+Select attribute(s) to query	SearchBarView		クエリする属性を選択してください
+Select search operator	SearchBarView		検索オペレーターを選択してください
+Subject	SearchBarView		件名
+To	SearchBarView		宛先
+Type text and press Enter…	SearchBarView		テキストを入力して Enter キーを押してください…
+Add	ContentView		追加
+An error occurred trying to open this signature.	ContentView		この署名を開こうとしたときエラーが発生しました。
+An error occurred trying to save the attachment.	ContentView		この添付ファイルを保存しょうとしたときエラーが発生しました。
+Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	添付ファイル: %name% (ライプ: %type%)
+Copy link location	ContentView		リンク先をコピー
+Inconsistency occurred in the undo/redo buffer.	ContentView		元に戻す/やり直しバッファに不整合が発生しました。
+No matches	ContentView		一致する項目はありません
+OK	ContentView		OK
+Open attachment	ContentView		添付ファイルを開く
+Open this link	ContentView		このリンクを開く
+Save attachment…	ContentView		添付ファイルを保存...
+Sorry	ContentView		ごめん
+There is no installed handler for URL links.	ContentView		URLリンクを開くるアプリケーションはインストールされていません。
+Add 'Account' query	EmailListView		「アカウント」属性でクエリーを追加
+Add 'From' query	EmailListView		「差出人」属性でクエリーを追加
+Add 'To' query	EmailListView		「宛先」属性でクエリーを追加
+Create Person file for	EmailListView		Person ファイルを作成
+Delete permanently	EmailListView		完全削除
+Filter by 'Account'	EmailListView		「アカウント」属性でフィルター
+Filter by 'Recipient'	EmailListView		「宛先」属性でフィルター
+Filter by 'Sender'	EmailListView		「差出人」属性でフィルター
+Filter by 'Subject'	EmailListView		「件名」属性でフィルター
+Forward	EmailListView		転送
+Mark as read	EmailListView		既読にする
+Mark as unread	EmailListView		未既読にする
+Move to Trash	EmailListView		ごみ箱へ移動
+New email to sender	EmailListView		差出人に新規メール
+Reply	EmailListView		返信
+Reply all	EmailListView		全員に返信
+Restore	EmailListView		復元
+Send as attachment	EmailListView		添付として送信
+Star	EmailListView		スター
+Unstar	EmailListView		スター解除
+All people	AddressTextControl		全員
+An error occurred trying to save this signature.	SignatureWindow		この署名の保存中にエラーが発生しました。
+Cancel	SignatureWindow		中止
+Copy	SignatureWindow		コピー
+Couldn't open this signature. Sorry.	SignatureWindow		この署名を開けませんでした。
+Cut	SignatureWindow		切り取り
+Delete	SignatureWindow		削除
+Don't save	SignatureWindow		保存しない
+Edit	SignatureWindow		編集
+New	SignatureWindow		新規
+OK	SignatureWindow		OK
+Open	SignatureWindow		開く
+Paste	SignatureWindow		貼り付け
+Really delete this signature? This cannot be undone.	SignatureWindow		本当にこの署名を削除しますか？これは元に戻せません。
+Save	SignatureWindow		保存
+Save changes to this signature?	SignatureWindow		この署名の変更を保存しますか？
+Select all	SignatureWindow		全て選択
+Signature	SignatureWindow		署名
+Signature:	SignatureWindow		署名:
+Signatures	SignatureWindow		署名
+Sorry	SignatureWindow		ごめん
+Title:	SignatureWindow		タイトル:
+Undo	SignatureWindow		元に戻す
+Attachments:	EnclosuresView		添付ファイル:
+OK	EnclosuresView		OK
+Only files can be added as attachments.	EnclosuresView		添付として追加できるのはファイルだけです。
+Open attachment	EnclosuresView		添付ファイルを開く
+Remove attachment	EnclosuresView		添付ファイルを削除
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		転送されたメールから添付ファイルを削除する機能はまだ実装されていませんので、正しく動作しません。
+Cancel	QueryNameDialog		中止
+Save	QueryNameDialog		保存
+Delete emails in Trash	TrashItemView		ごみ箱にあるメールを完全削除
+Emails in Trash	TrashItemView		メールごみ箱
+Find	FindWindow		検索
+OK	AboutWindow		OK
+Open	AttachmentStripView		開く
+Remove	AttachmentStripView		削除
+Save as…	AttachmentStripView		名前を付けて保存
+Open query in Tracker…	QueryListView		Tracker でクエリーを開く…
+Remove query	QueryListView		クエリーを削除
+Unread emails	QueryListView		未既読メール
