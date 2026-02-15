@@ -456,7 +456,7 @@ TNameControl::TNameControl(const char* label, BMessage* invocationMessage)
 	:
 	BTextControl("", label, "", invocationMessage)
 {
-	strcpy(fLabel, label);
+	strlcpy(fLabel, label, sizeof(fLabel));
 }
 
 

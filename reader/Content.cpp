@@ -1889,8 +1889,8 @@ TTextView::Open(hyper_text *enclosure)
 					if (dir.InitCheck() == B_NO_ERROR) {
 						char name[B_FILE_NAME_LENGTH];
 						char baseName[B_FILE_NAME_LENGTH];
-						strcpy(baseName, enclosure->name ? enclosure->name : "enclosure");
-						strcpy(name, baseName);
+						strlcpy(baseName, enclosure->name ? enclosure->name : "enclosure", sizeof(baseName));
+						strlcpy(name, baseName, sizeof(name));
 						for (int32 index = 0; dir.Contains(name); index++) {
 							snprintf(name, B_FILE_NAME_LENGTH, "%s_%" B_PRId32,
 								baseName, index);
