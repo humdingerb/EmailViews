@@ -1,10 +1,8 @@
-1	English	application/x-vnd.EmailViews	1984325143
+1	English	application/x-vnd.EmailViews	1175271525
 Open attachment	ContentView		Open attachment
 Cancel	QueryNameDialog		Cancel
 From	EmailColumnHeader		From
 Delete emails in Trash	EmailViewsWindow		Delete emails in Trash
-New	EmailReaderWindow		New
- Read 	EmailReaderWindow		 Read 
 Inconsistency occurred in the undo/redo buffer.	ContentView		Inconsistency occurred in the undo/redo buffer.
 User interface	Preferences		User interface
 Empty subject	EmailReaderWindow		Empty subject
@@ -16,6 +14,7 @@ Date	EmailColumnHeader		Date
 Sorry	EmailReaderWindow		Sorry
 [Message truncated...]	EmailViewsWindow		[Message truncated...]
 Open attachment	EnclosuresView		Open attachment
+New	EmailReaderWindow	Toolbar, short as possible	New
 Unread emails	EmailViewsWindow		Unread emails
 Save changes to this signature?	SignatureWindow		Save changes to this signature?
 Select folder	EmailViewsWindow		Select folder
@@ -23,6 +22,7 @@ Cut	EmailReaderWindow		Cut
 Reply to sender	EmailReaderWindow		Reply to sender
 Signatures	SignatureWindow		Signatures
 Sent emails	EmailViewsWindow		Sent emails
+Reply all	EmailReaderWindow	Toolbar, short as possible	Reply all
 Star	EmailColumnHeader		Star
 Add 'To' query	EmailViewsWindow		Add 'To' query
 Draft emails	EmailViewsWindow		Draft emails
@@ -31,14 +31,15 @@ None	ReaderSettings		None
 Copy to new	EmailReaderWindow		Copy to new
 Forward	EmailViewsWindow		Forward
 [The draft has no body text to display]	EmailViewsWindow		[The draft has no body text to display]
+Forward	EmailViewsWindow	Toolbar, short as possible	Forward
 To	EmailColumnHeader		To
 Warn unencodable:	Preferences		Warn unencodable:
+Attach	EmailReaderWindow	Toolbar, short as possible	Attach
 Account	EmailColumnHeader		Account
 All people	AddressTextControl		All people
 Email preferences…	EmailViewsWindow		Email preferences…
 View HTML version	EmailViewsWindow		View HTML version
 Delete	SignatureWindow		Delete
-Signature	EmailReaderWindow		Signature
 matches	SearchBarView		matches
 Failed to start backup thread.	EmailViewsWindow		Failed to start backup thread.
 Don't save	SignatureWindow		Don't save
@@ -48,7 +49,9 @@ Add 'Account' query	EmailListView		Add 'Account' query
 The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.
 Account from mail	Preferences		Account from mail
 Check spelling	EmailReaderWindow		Check spelling
-Next	EmailViewsWindow		Next
+New email	EmailViewsWindow	Toolbar, short as possible	New email
+Trash	EmailViewsWindow	Toolbar, short as possible	Trash
+Signature	EmailReaderWindow	Toolbar, short as possible	Signature
 Undo	EmailReaderWindow		Undo
 There are no emails in the Trash.	EmailViewsWindow		There are no emails in the Trash.
 Queries	EmailViewsWindow		Queries
@@ -63,6 +66,7 @@ Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		P
 Open	SignatureWindow		Open
 Include file attributes in attachments	Preferences		Include file attributes in attachments
 Message	EmailReaderWindow		Message
+Mark read	EmailViewsWindow	Toolbar, short as possible	Mark read
 New mail message	EmailReaderWindow		New mail message
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/
 Save attachment…	ContentView		Save attachment…
@@ -94,6 +98,7 @@ Reply all	EmailViewsWindow		Reply all
 -2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 days
 Copy link location	ContentView		Copy link location
 Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.
+Reply	EmailReaderWindow	Toolbar, short as possible	Reply
 Clear search box	SearchBarView		Clear search box
 Mailing	Preferences		Mailing
 %e - E-mail address	Preferences		%e - E-mail address
@@ -109,8 +114,8 @@ Mark as read	EmailViewsWindow		Mark as read
 Save this message as a draft before closing?	EmailReaderWindow		Save this message as a draft before closing?
 Mark as read	EmailListView		Mark as read
 Email backup	EmailViewsWindow		Email backup
-Trash	EmailViewsWindow		Trash
 New email	EmailViewsWindow		New email
+Trash	EmailViewsWindow		Trash
 Reply	EmailViewsWindow		Reply
 Size:	Preferences		Size:
 Time range:	EmailViewsWindow		Time range:
@@ -118,17 +123,19 @@ Initial spell check mode:	Preferences		Initial spell check mode:
 -6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 months
 Off	Preferences		Off
 -1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 day
+Save	EmailReaderWindow	Toolbar, short as possible	Save
 Date:	HeaderView		Date:
 New email to sender	EmailListView		New email to sender
 Outgoing encoding:	Preferences		Outgoing encoding:
-Filter by	SearchBarView		Filter by
+Spam	EmailReaderWindow	Toolbar, short as possible	Spam
+Next	EmailViewsWindow	Toolbar, short as possible	Next
 -3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 months
-Spam	EmailReaderWindow		Spam
 To	SearchBarView		To
 Signature:	SignatureWindow		Signature:
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
 View	EmailReaderWindow		View
 About EmailViews…	EmailViewsWindow		About EmailViews…
+Forward	EmailReaderWindow	Toolbar, short as possible	Forward
 No emails match your search.	EmailViewsWindow		No emails match your search.
 A query named '%name%' already exists.	EmailViewsWindow		A query named '%name%' already exists.
 Create query based on search criteria	SearchBarView		Create query based on search criteria
@@ -145,7 +152,6 @@ Removing attachments from a forwarded mail is not yet implemented!\nIt will not 
 Backup failed	EmailViewsWindow		Backup failed
 Create Person file for	EmailReaderWindow		Create Person file for
 New	SignatureWindow		New
-Previous	EmailReaderWindow		Previous
 -3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 weeks
 OK	Preferences		OK
 Volumes	EmailViewsWindow		Volumes
@@ -173,7 +179,6 @@ Cancel	SignatureWindow		Cancel
 Paste	EmailReaderWindow		Paste
 Cut	SignatureWindow		Cut
 Create anyway	EmailViewsWindow		Create anyway
-Print	EmailReaderWindow		Print
 Mark read	EmailViewsWindow		Mark read
 No file attributes, just plain data	Preferences		No file attributes, just plain data
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Sorry, could not find an application that supports the 'Person' data type.
@@ -189,7 +194,6 @@ Couldn't open this signature. Sorry.	SignatureWindow		Couldn't open this signatu
 Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Attachment: %name% (Type: %type%)
 Signature	SignatureWindow		Signature
 Backup in progress…	SearchBarView		Backup in progress…
-Reply all	EmailReaderWindow		Reply all
 Remove query	QueryListView		Remove query
 Title:	SignatureWindow		Title:
 Select an email to preview its contents.	EmailViewsWindow		Select an email to preview its contents.
@@ -202,6 +206,7 @@ Forward	EmailReaderWindow		Forward
 contains	SearchBarView		contains
 (Address unavailable)	EmailReaderWindow		(Address unavailable)
 Today	TimeRangeSlider	Time range slider label - keep as short as possible	Today
+Previous	EmailViewsWindow	Toolbar, short as possible	Previous
 Print…	EmailReaderWindow		Print…
 Save as…	AttachmentStripView		Save as…
 Encoding	EmailReaderWindow		Encoding
@@ -215,17 +220,17 @@ Account:	EmailViewsWindow		Account:
 None	EmailReaderWindow		None
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails from Trash?\n\nThis cannot be undone.
 Add attachment…	EmailReaderWindow		Add attachment…
+Filter:	SearchBarView		Filter:
 Messages	EmailViewsWindow		Messages
 Filter by 'Subject'	EmailListView		Filter by 'Subject'
 %e wrote:\n	ReaderSettings		%e wrote:\n
 OK	AboutWindow		OK
 Edit signatures…	EmailReaderWindow		Edit signatures…
 Unread emails	QueryListView		Unread emails
-Previous	EmailViewsWindow		Previous
 Select search operator	SearchBarView		Select search operator
-that	SearchBarView		that
 From	SearchBarView		From
 -2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 years
+Trash	EmailReaderWindow	Toolbar, short as possible	Trash
 %s emails	EmailViewsWindow		%s emails
 None	Preferences		None
 Status	EmailColumnHeader		Status
@@ -250,6 +255,7 @@ Failed to create query file.	EmailViewsWindow		Failed to create query file.
 Save as draft	EmailReaderWindow		Save as draft
 Attachment	EmailColumnHeader		Attachment
 <none>	HeaderView		<none>
+ Read 	EmailReaderWindow	Toolbar, short as possible	 Read 
 Star	EmailListView		Star
 Send as attachment	EmailListView		Send as attachment
 Font:	Preferences		Font:
@@ -258,19 +264,22 @@ Unstar	EmailListView		Unstar
 Find…	EmailReaderWindow		Find…
 Default account:	Preferences		Default account:
 Save	EmailReaderWindow		Save
-Unread	EmailReaderWindow		Unread
 Could not get email reference.	EmailViewsWindow		Could not get email reference.
 Auto signature:	Preferences		Auto signature:
 Really delete this signature? This cannot be undone.	SignatureWindow		Really delete this signature? This cannot be undone.
 Previous message	EmailReaderWindow		Previous message
 Revert	Preferences		Revert
 From:	HeaderView		From:
+Unread	EmailReaderWindow	Toolbar, short as possible	Unread
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email from Trash?\n\nThis cannot be undone.
+Mark unread	EmailViewsWindow	Toolbar, short as possible	Mark unread
 Forward without attachments	EmailReaderWindow		Forward without attachments
 Move to Trash	EmailViewsWindow		Move to Trash
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 week
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
+Next	EmailReaderWindow	Toolbar, short as possible	Next
 Don't save	EmailReaderWindow		Don't save
+Print	EmailReaderWindow	Toolbar, short as possible	Print
 Email accounts…	EmailReaderWindow		Email accounts…
 Error	EmailViewsWindow		Error
 Show icons only	Preferences		Show icons only
@@ -285,8 +294,10 @@ Reply to all	EmailReaderWindow		Reply to all
 Reply all	EmailListView		Reply all
 Add 'From' query	EmailListView		Add 'From' query
 Unread emails (%ld)	EmailViewsWindow		Unread emails (%ld)
+Reply	EmailViewsWindow	Toolbar, short as possible	Reply
 Cc:	EmailReaderWindow		Cc:
 1 email	EmailViewsWindow		1 email
+Check email	EmailViewsWindow	Toolbar, short as possible	Check email
 Open	AttachmentStripView		Open
 Save	SignatureWindow		Save
 To:	HeaderView		To:
@@ -297,7 +308,6 @@ On	Preferences		On
 OK	EmailViewsWindow		OK
 Reply account:	Preferences		Reply account:
 Delete	EmailViewsWindow		Delete
-Trash	EmailReaderWindow		Trash
 Find	FindWindow		Find
 No matches	ContentView		No matches
 Delete permanently	EmailListView		Delete permanently
@@ -305,12 +315,11 @@ Copy	EmailReaderWindow		Copy
 Reply	EmailReaderWindow		Reply
 Next message	EmailReaderWindow		Next message
 Emails in Trash	TrashItemView		Emails in Trash
-Attach	EmailReaderWindow		Attach
 Bcc:	HeaderView		Bcc:
-Next	EmailReaderWindow		Next
 \\n - Newline	Preferences		\\n - Newline
 Select all	EmailReaderWindow		Select all
 Email accounts…	EmailViewsWindow		Email accounts…
+Previous	EmailReaderWindow	Toolbar, short as possible	Previous
 Cancel	EmailReaderWindow		Cancel
 Open this link	ContentView		Open this link
 Account	SearchBarView		Account
@@ -319,5 +328,6 @@ Cancel	EmailViewsWindow		Cancel
 %d emails selected.	EmailViewsWindow		%d emails selected.
 Send this message before closing?	EmailReaderWindow		Send this message before closing?
 Find again	EmailReaderWindow		Find again
+Send	EmailReaderWindow	Toolbar, short as possible	Send
 Previous message, keep status	EmailReaderWindow		Previous message, keep status
 Starred emails	EmailViewsWindow		Starred emails
