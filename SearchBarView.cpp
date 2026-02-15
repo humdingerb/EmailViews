@@ -232,7 +232,7 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 	menu->ItemAt(0)->SetMarked(true);  // Default to "Subject"
 
 	// Create menu field with "Filter by" label
-	fAttributeMenu = new BMenuField("attribute", B_TRANSLATE("Filter by"), menu);
+	fAttributeMenu = new BMenuField("attribute", B_TRANSLATE("Filter:"), menu);
 	fAttributeMenu->SetToolTip(B_TRANSLATE("Select attribute(s) to query"));
 
 	// Calculate optimal width: label + widest item + arrow/padding
@@ -242,13 +242,10 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 		if (w > maxItemWidth)
 			maxItemWidth = w;
 	}
-	float labelWidth = be_plain_font->StringWidth(B_TRANSLATE("Filter by")) + 8;
+	float labelWidth = be_plain_font->StringWidth(B_TRANSLATE("Filter:")) + 8;
 	float menuWidth = labelWidth + maxItemWidth + 55;  // 55 for arrow, borders and padding
 	fAttributeMenu->SetExplicitMinSize(BSize(menuWidth, B_SIZE_UNSET));
 	fAttributeMenu->SetExplicitMaxSize(BSize(menuWidth, B_SIZE_UNSET));
-
-	// Create "that" label before operator dropdown
-	BStringView* thatLabel = new BStringView("that", B_TRANSLATE("that"));
 
 	// Create operator popup menu
 	BPopUpMenu* operatorMenu = new BPopUpMenu("operator");
@@ -291,8 +288,6 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 	float buttonsWidth = (fButtonSize + 4) * 2 + 4;
 	BLayoutBuilder::Group<>(this, B_HORIZONTAL, 2)
 		.Add(fAttributeMenu)
-		.AddStrut(4)
-		.Add(thatLabel)
 		.AddStrut(4)
 		.Add(fOperatorMenu)
 		.AddStrut(4)

@@ -597,54 +597,54 @@ EmailReaderWindow::BuildToolBar()
 
 	fToolBar = new ToolBarView();
 	fToolBar->AddAction(M_NEW, this, _RetrieveVectorIcon(kIconNew), NULL,
-		B_TRANSLATE("New"));
+		B_TRANSLATE_COMMENT("New", "Toolbar, short as possible"));
 	fToolBar->AddView(new BSeparatorView(B_VERTICAL, B_PLAIN_BORDER));
 
 	if (fResending) {
 		fToolBar->AddAction(M_SEND_NOW, this, _RetrieveVectorIcon(kIconSend), NULL,
-			B_TRANSLATE("Send"));
+			B_TRANSLATE_COMMENT("Send", "Toolbar, short as possible"));
 	} else if (!fIncoming) {
 		fToolBar->AddAction(M_SEND_NOW, this, _RetrieveVectorIcon(kIconSend), NULL,
-			B_TRANSLATE("Send"));
+			B_TRANSLATE_COMMENT("Send", "Toolbar, short as possible"));
 		fToolBar->SetActionEnabled(M_SEND_NOW, false);
 		fToolBar->AddAction(M_SIG_MENU, this, _RetrieveVectorIcon(kIconSignature), NULL,
-			B_TRANSLATE("Signature"));
+			B_TRANSLATE_COMMENT("Signature", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_ADD, this, _RetrieveVectorIcon(kIconAttachment), NULL,
-			B_TRANSLATE("Attach"));
+			B_TRANSLATE_COMMENT("Attach", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_SAVE_AS_DRAFT, this, _RetrieveVectorIcon(kIconSave), NULL,
-			B_TRANSLATE("Save"));
+			B_TRANSLATE_COMMENT("Save", "Toolbar, short as possible"));
 		fToolBar->SetActionEnabled(M_SAVE_AS_DRAFT, false);
 		fToolBar->AddAction(M_PRINT, this, _RetrieveVectorIcon(kIconPrint), NULL,
-			B_TRANSLATE("Print"));
+			B_TRANSLATE_COMMENT("Print", "Toolbar, short as possible"));
 		fToolBar->SetActionEnabled(M_PRINT, false);
 		fToolBar->AddAction(M_DELETE, this, _RetrieveVectorIcon(kIconTrash), NULL,
-			B_TRANSLATE("Trash"));
+			B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"));
 	} else {
 		fToolBar->AddAction(M_REPLY, this, _RetrieveVectorIcon(kIconReply), NULL,
-			B_TRANSLATE("Reply"));
+			B_TRANSLATE_COMMENT("Reply", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_REPLY_ALL, this, _RetrieveVectorIcon(kIconReplyAll), NULL,
-			B_TRANSLATE("Reply all"));
+			B_TRANSLATE_COMMENT("Reply all", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_FORWARD, this, _RetrieveVectorIcon(kIconForward), NULL,
-			B_TRANSLATE("Forward"));
+			B_TRANSLATE_COMMENT("Forward", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_PRINT, this, _RetrieveVectorIcon(kIconPrint), NULL,
-			B_TRANSLATE("Print"));
+			B_TRANSLATE_COMMENT("Print", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_DELETE_NEXT, this, _RetrieveVectorIcon(kIconTrash), NULL,
-			B_TRANSLATE("Trash"));
+			B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"));
 		if (gReaderSettings->ShowSpamGUI()) {
 			fToolBar->AddAction(M_SPAM_BUTTON, this, _RetrieveVectorIcon(kIconTrash),
-				NULL, B_TRANSLATE("Spam"));
+				NULL, B_TRANSLATE_COMMENT("Spam", "Toolbar, short as possible"));
 		}
 		fToolBar->AddView(new BSeparatorView(B_VERTICAL, B_PLAIN_BORDER));
 		fToolBar->AddAction(M_NEXTMSG, this, _RetrieveVectorIcon(kIconNext), NULL,
-			B_TRANSLATE("Next"));
+			B_TRANSLATE_COMMENT("Next", "Toolbar, short as possible"));
 		fToolBar->AddAction(M_UNREAD, this, _RetrieveVectorIcon(kIconUnread), NULL,
-			B_TRANSLATE("Unread"));
+			B_TRANSLATE_COMMENT("Unread", "Toolbar, short as possible"));
 		fToolBar->SetActionVisible(M_UNREAD, false);
 		fToolBar->AddAction(M_READ, this, _RetrieveVectorIcon(kIconRead), NULL,
-			B_TRANSLATE(" Read "));
+			B_TRANSLATE_COMMENT(" Read ", "Toolbar, short as possible"));
 		fToolBar->SetActionVisible(M_READ, false);
 		fToolBar->AddAction(M_PREVMSG, this, _RetrieveVectorIcon(kIconPrevious), NULL,
-			B_TRANSLATE("Previous"));
+			B_TRANSLATE_COMMENT("Previous", "Toolbar, short as possible"));
 
 		if (fEmailViewsWindow == NULL) {
 			fToolBar->SetActionEnabled(M_NEXTMSG, false);
@@ -669,21 +669,21 @@ EmailReaderWindow::UpdateViews()
 			fToolBar->Show();
 
 		bool showLabel = showToolBar == kShowToolBar;
-		_UpdateLabel(M_NEW, B_TRANSLATE("New"), showLabel);
-		_UpdateLabel(M_SEND_NOW, B_TRANSLATE("Send"), showLabel);
-		_UpdateLabel(M_SIG_MENU, B_TRANSLATE("Signature"), showLabel);
-		_UpdateLabel(M_SAVE_AS_DRAFT, B_TRANSLATE("Save"), showLabel);
-		_UpdateLabel(M_PRINT, B_TRANSLATE("Print"), showLabel);
-		_UpdateLabel(M_DELETE, B_TRANSLATE("Trash"), showLabel);
-		_UpdateLabel(M_REPLY, B_TRANSLATE("Reply"), showLabel);
-		_UpdateLabel(M_REPLY_ALL, B_TRANSLATE("Reply all"), showLabel);
-		_UpdateLabel(M_FORWARD, B_TRANSLATE("Forward"), showLabel);
-		_UpdateLabel(M_DELETE_NEXT, B_TRANSLATE("Trash"), showLabel);
-		_UpdateLabel(M_SPAM_BUTTON, B_TRANSLATE("Spam"), showLabel);
-		_UpdateLabel(M_NEXTMSG, B_TRANSLATE("Next"), showLabel);
-		_UpdateLabel(M_UNREAD, B_TRANSLATE("Unread"), showLabel);
-		_UpdateLabel(M_READ, B_TRANSLATE(" Read "), showLabel);
-		_UpdateLabel(M_PREVMSG, B_TRANSLATE("Previous"), showLabel);
+		_UpdateLabel(M_NEW, B_TRANSLATE_COMMENT("New", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_SEND_NOW, B_TRANSLATE_COMMENT("Send", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_SIG_MENU, B_TRANSLATE_COMMENT("Signature", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_SAVE_AS_DRAFT, B_TRANSLATE_COMMENT("Save", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_PRINT, B_TRANSLATE_COMMENT("Print", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_DELETE, B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_REPLY, B_TRANSLATE_COMMENT("Reply", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_REPLY_ALL, B_TRANSLATE_COMMENT("Reply all", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_FORWARD, B_TRANSLATE_COMMENT("Forward", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_DELETE_NEXT, B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_SPAM_BUTTON, B_TRANSLATE_COMMENT("Spam", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_NEXTMSG, B_TRANSLATE_COMMENT("Next", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_UNREAD, B_TRANSLATE_COMMENT("Unread", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_READ, B_TRANSLATE_COMMENT(" Read ", "Toolbar, short as possible"), showLabel);
+		_UpdateLabel(M_PREVMSG, B_TRANSLATE_COMMENT("Previous", "Toolbar, short as possible"), showLabel);
 	} else if (!fToolBar->IsHidden())
 		fToolBar->Hide();
 }
