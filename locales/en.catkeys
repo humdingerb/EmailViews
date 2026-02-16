@@ -1,4 +1,4 @@
-1	English	application/x-vnd.EmailViews	1175271525
+1	English	application/x-vnd.EmailViews	619359889
 Open attachment	ContentView		Open attachment
 Cancel	QueryNameDialog		Cancel
 From	EmailColumnHeader		From
@@ -21,6 +21,7 @@ Select folder	EmailViewsWindow		Select folder
 Cut	EmailReaderWindow		Cut
 Reply to sender	EmailReaderWindow		Reply to sender
 Signatures	SignatureWindow		Signatures
+Date	EmailColumnHeader	Email list column header	Date
 Sent emails	EmailViewsWindow		Sent emails
 Reply all	EmailReaderWindow	Toolbar, short as possible	Reply all
 Star	EmailColumnHeader		Star
@@ -109,6 +110,7 @@ Move to trash	EmailReaderWindow		Move to trash
 Mark unread	EmailViewsWindow		Mark unread
 Copy	SignatureWindow		Copy
 Decrease quote level	EmailReaderWindow		Decrease quote level
+Account	EmailColumnHeader	Email list column header	Account
 Save	QueryNameDialog		Save
 Mark as read	EmailViewsWindow		Mark as read
 Save this message as a draft before closing?	EmailReaderWindow		Save this message as a draft before closing?
@@ -133,6 +135,7 @@ Next	EmailViewsWindow	Toolbar, short as possible	Next
 To	SearchBarView		To
 Signature:	SignatureWindow		Signature:
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
+Subject	EmailColumnHeader	Email list column header	Subject
 View	EmailReaderWindow		View
 About EmailViews…	EmailViewsWindow		About EmailViews…
 Forward	EmailReaderWindow	Toolbar, short as possible	Forward
@@ -149,8 +152,8 @@ Subject	SearchBarView		Subject
 Filter by 'Sender'	EmailListView		Filter by 'Sender'
 Mark as unread	EmailViewsWindow		Mark as unread
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.
-Backup failed	EmailViewsWindow		Backup failed
 Create Person file for	EmailReaderWindow		Create Person file for
+Backup failed	EmailViewsWindow		Backup failed
 New	SignatureWindow		New
 -3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 weeks
 OK	Preferences		OK
@@ -223,6 +226,7 @@ Add attachment…	EmailReaderWindow		Add attachment…
 Filter:	SearchBarView		Filter:
 Messages	EmailViewsWindow		Messages
 Filter by 'Subject'	EmailListView		Filter by 'Subject'
+From	EmailColumnHeader	Email list column header	From
 %e wrote:\n	ReaderSettings		%e wrote:\n
 OK	AboutWindow		OK
 Edit signatures…	EmailReaderWindow		Edit signatures…
@@ -239,13 +243,14 @@ Next message, keep status	EmailReaderWindow		Next message, keep status
 Edit	EmailReaderWindow		Edit
 OK	ContentView		OK
 Delete emails	EmailViewsWindow		Delete emails
+To	EmailColumnHeader	Email list column header	To
 An error occurred trying to open this signature.	ContentView		An error occurred trying to open this signature.
 Remove	AttachmentStripView		Remove
 OK	SignatureWindow		OK
+View HTML version	EmailReaderWindow		View HTML version
 -2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 months
 Email preferences…	EmailReaderWindow		Email preferences…
 Show header	EmailReaderWindow		Show header
-View HTML version	EmailReaderWindow		View HTML version
 Could not open email file.	EmailViewsWindow		Could not open email file.
 Add 'Account' query	EmailViewsWindow		Add 'Account' query
 Redo	EmailReaderWindow		Redo
@@ -283,6 +288,7 @@ Print	EmailReaderWindow	Toolbar, short as possible	Print
 Email accounts…	EmailReaderWindow		Email accounts…
 Error	EmailViewsWindow		Error
 Show icons only	Preferences		Show icons only
+Status	EmailColumnHeader	Email list column header	Status
 Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Sorry, could not find an application that supports the 'Person' data type.
 Untitled	EmailReaderWindow		Untitled
 HTML message	EmailViewsWindow		HTML message
