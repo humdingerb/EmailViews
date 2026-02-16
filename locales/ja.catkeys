@@ -1,4 +1,4 @@
-1	Japanese	application/x-vnd.EmailViews	1175271525
+1	Japanese	application/x-vnd.EmailViews	619359889
  Read 	EmailReaderWindow	Toolbar, short as possible	既読
 (Address unavailable)	EmailReaderWindow		（アドレスはありません）
 (Date unavailable)	EmailReaderWindow		（日時はありません）
@@ -236,13 +236,19 @@ Subject:	HeaderView		件名:
 To:	HeaderView		宛先:
 Unknown	HeaderView		不明
 Account	EmailColumnHeader		アカウント
+Account	EmailColumnHeader	Email list column header	アカウント
 Attachment	EmailColumnHeader		添付
 Date	EmailColumnHeader		日時
+Date	EmailColumnHeader	Email list column header	日時
 From	EmailColumnHeader		差出人
+From	EmailColumnHeader	Email list column header	差出人
 Star	EmailColumnHeader		スター
 Status	EmailColumnHeader		ステータス
+Status	EmailColumnHeader	Email list column header	ステータス
 Subject	EmailColumnHeader		件名
+Subject	EmailColumnHeader	Email list column header	件名
 To	EmailColumnHeader		宛先
+To	EmailColumnHeader	Email list column header	宛先
 Account	SearchBarView		アカウント
 Backup emails to ZIP file	SearchBarView		メールを ZIP ファイルにバックアップする
 Backup in progress…	SearchBarView		バックアップ進行中…
