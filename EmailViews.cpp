@@ -5839,6 +5839,18 @@ bool EmailViewsWindow::SelectBuiltInQueryByName(const char* name)
     return false;
 }
 
+bool EmailViewsWindow::SelectBuiltInQueryByIndex(int32 index)
+{
+    if (index < 0 || index >= fQueryList->CountItems())
+        return false;
+    
+    QueryItem* item = dynamic_cast<QueryItem*>(fQueryList->ItemAt(index));
+    if (item == NULL)
+        return false;
+    
+    return SelectBuiltInQueryByName(item->GetBaseName());
+}
+
 
 bool EmailViewsWindow::_HandleSetSelection(BMessage* message)
 {
@@ -5928,6 +5940,28 @@ our_image(image_info& image)
 
 // DeskbarReplicant implementation
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "DeskbarReplicant"
+
+// The replicant runs inside the Deskbar process, so B_TRANSLATE() cannot
+// find EmailViews' catalog at runtime.  Instead we use an explicit BCatalog
+// initialized with the app signature (see _Init).  The B_TRANSLATE_MARK()
+// entries below are no-ops at runtime but let collectcatkeys pick up the
+// strings automatically during "make catkeys".
+static const char* kDeskbarReplicantStrings[] __attribute__((used)) = {
+    B_TRANSLATE_MARK("No new emails"),
+    B_TRANSLATE_MARK("1 new email"),
+    B_TRANSLATE_MARK("%count% new emails"),
+    B_TRANSLATE_MARK("Unread emails"),
+    B_TRANSLATE_MARK("Unread emails (%count%)"),
+    B_TRANSLATE_MARK("Create new email" B_UTF8_ELLIPSIS),
+    B_TRANSLATE_MARK("Send/Receive email"),
+    B_TRANSLATE_MARK("Email accounts" B_UTF8_ELLIPSIS),
+    B_TRANSLATE_MARK("Remove from Deskbar"),
+    B_TRANSLATE_MARK("About %app%" B_UTF8_ELLIPSIS),
+    NULL
+};
+
 DeskbarReplicant::DeskbarReplicant(BRect frame, int32 resizingMode)
     : BView(frame, kDeskbarReplicantName, resizingMode,
             B_WILL_DRAW | B_TRANSPARENT_BACKGROUND | B_PULSE_NEEDED),
@@ -5955,13 +5989,21 @@ DeskbarReplicant::~DeskbarReplicant()
 
 void DeskbarReplicant::_Init()
 {
-    // Initialize catalog for localization (loads from app signature)
-    fCatalog.SetTo(kAppSignature);
-    
-    // Find our binary image to load resources
+    // Find our binary image to load resources and catalog
     image_info info;
     if (our_image(info) != B_OK)
         return;
+    
+    // Load catalog from our binary's embedded resources.
+    // B_TRANSLATE() won't work here because the replicant runs inside the
+    // Deskbar process, and SetTo(signature) only searches filesystem catalog
+    // directories where nothing is installed.  The entry_ref variant of
+    // SetTo() reads the catalogs that "make bindcatalogs" embedded into the
+    // EmailViews binary.
+    BEntry catalogEntry(info.name);
+    entry_ref catalogRef;
+    if (catalogEntry.GetRef(&catalogRef) == B_OK)
+        fCatalog.SetTo(catalogRef);
     
     BFile file(info.name, B_READ_ONLY);
     if (file.InitCheck() != B_OK)
@@ -6155,8 +6197,8 @@ void DeskbarReplicant::MouseDown(BPoint point)
         menu->AddItem(new BMenuItem(_GetString("Email accounts" B_UTF8_ELLIPSIS, "DeskbarReplicant"), new BMessage('emst')));
         menu->AddSeparatorItem();
         menu->AddItem(new BMenuItem(_GetString("Remove from Deskbar", "DeskbarReplicant"), new BMessage('hide')));
-        BString aboutLabel;
-        aboutLabel << _GetString("About", "DeskbarReplicant") << " " << kAppName << B_UTF8_ELLIPSIS;
+        BString aboutLabel(_GetString("About %app%" B_UTF8_ELLIPSIS, "DeskbarReplicant"));
+        aboutLabel.ReplaceAll("%app%", kAppName);
         menu->AddItem(new BMenuItem(aboutLabel.String(), new BMessage('abut')));
         
         menu->SetTargetForItems(this);
@@ -6181,9 +6223,9 @@ void DeskbarReplicant::MessageReceived(BMessage* message)
 {
     switch (message->what) {
         case 'newv': {
-            // Show EmailViews with "Unread emails" view selected
+            // Show EmailViews with "Unread emails" view selected (index 1)
             BMessage showMsg(MSG_SHOW_WINDOW);
-            showMsg.AddString("view", "Unread emails");
+            showMsg.AddInt32("view_index", 1);
             if (be_roster->IsRunning(kAppSignature)) {
                 BMessenger messenger(kAppSignature);
                 messenger.SendMessage(&showMsg);
@@ -6343,10 +6385,16 @@ void EmailViewsApp::MessageReceived(BMessage* message)
                 fWindow->Minimize(false);
                 fWindow->Activate();
                 
-                // Check for optional "view" field to select a specific query view
-                const char* viewName = NULL;
-                if (message->FindString("view", &viewName) == B_OK && viewName != NULL) {
-                    fWindow->SelectBuiltInQueryByName(viewName);
+                // Check for optional view selection by index (preferred,
+                // language-independent) or by name (legacy)
+                int32 viewIndex;
+                if (message->FindInt32("view_index", &viewIndex) == B_OK) {
+                    fWindow->SelectBuiltInQueryByIndex(viewIndex);
+                } else {
+                    const char* viewName = NULL;
+                    if (message->FindString("view", &viewName) == B_OK && viewName != NULL) {
+                        fWindow->SelectBuiltInQueryByName(viewName);
+                    }
                 }
                 
                 fWindow->Unlock();

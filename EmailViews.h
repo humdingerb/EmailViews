@@ -210,6 +210,7 @@ public:
     
     // Select a built-in query view by name (for opening in specific view)
     bool SelectBuiltInQueryByName(const char* name);
+    bool SelectBuiltInQueryByIndex(int32 index);
     
     // Navigation for EmailReaderWindow - returns true if found
     bool GetNextEmailRef(const entry_ref* current, entry_ref* next);
