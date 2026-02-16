@@ -1,4 +1,4 @@
-1	English	application/x-vnd.EmailViews	619359889
+1	English	application/x-vnd.EmailViews	2649100377
 Open attachment	ContentView		Open attachment
 Cancel	QueryNameDialog		Cancel
 From	EmailColumnHeader		From
@@ -30,12 +30,14 @@ Draft emails	EmailViewsWindow		Draft emails
 None	ReaderSettings		None
 %d - Date	Preferences		%d - Date
 Copy to new	EmailReaderWindow		Copy to new
+1 new email	DeskbarReplicant		1 new email
 Forward	EmailViewsWindow		Forward
 [The draft has no body text to display]	EmailViewsWindow		[The draft has no body text to display]
 Forward	EmailViewsWindow	Toolbar, short as possible	Forward
 To	EmailColumnHeader		To
 Warn unencodable:	Preferences		Warn unencodable:
 Attach	EmailReaderWindow	Toolbar, short as possible	Attach
+About %app%…	DeskbarReplicant		About %app%…
 Account	EmailColumnHeader		Account
 All people	AddressTextControl		All people
 Email preferences…	EmailViewsWindow		Email preferences…
@@ -66,11 +68,13 @@ Draft emails (%ld)	EmailViewsWindow		Draft emails (%ld)
 Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails?\n\nThis cannot be undone.
 Open	SignatureWindow		Open
 Include file attributes in attachments	Preferences		Include file attributes in attachments
+Unread emails (%count%)	DeskbarReplicant		Unread emails (%count%)
 Message	EmailReaderWindow		Message
 Mark read	EmailViewsWindow	Toolbar, short as possible	Mark read
 New mail message	EmailReaderWindow		New mail message
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/
 Save attachment…	ContentView		Save attachment…
+%count% new emails	DeskbarReplicant		%count% new emails
 -6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 days
 Restore	EmailListView		Restore
 Attach attributes:	Preferences		Attach attributes:
@@ -103,6 +107,7 @@ Reply	EmailReaderWindow	Toolbar, short as possible	Reply
 Clear search box	SearchBarView		Clear search box
 Mailing	Preferences		Mailing
 %e - E-mail address	Preferences		%e - E-mail address
+No new emails	DeskbarReplicant		No new emails
 -1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 month
 <no account found>	Preferences		<no account found>
 Remove attachment	EmailReaderWindow		Remove attachment
@@ -162,8 +167,8 @@ A query with the same search criteria already exists: '%name%'	EmailViewsWindow	
 Paste	SignatureWindow		Paste
 Reply preamble:	Preferences		Reply preamble:
 Unknown	HeaderView		Unknown
-Restore email	EmailViewsWindow		Restore email
 Send message	EmailReaderWindow		Send message
+Restore email	EmailViewsWindow		Restore email
 -5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 years
 Show raw message	EmailReaderWindow		Show raw message
 Remove attachment	EnclosuresView		Remove attachment
@@ -182,6 +187,7 @@ Cancel	SignatureWindow		Cancel
 Paste	EmailReaderWindow		Paste
 Cut	SignatureWindow		Cut
 Create anyway	EmailViewsWindow		Create anyway
+Remove from Deskbar	DeskbarReplicant		Remove from Deskbar
 Mark read	EmailViewsWindow		Mark read
 No file attributes, just plain data	Preferences		No file attributes, just plain data
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Sorry, could not find an application that supports the 'Person' data type.
@@ -196,6 +202,7 @@ Subject:	HeaderView		Subject:
 Couldn't open this signature. Sorry.	SignatureWindow		Couldn't open this signature. Sorry.
 Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Attachment: %name% (Type: %type%)
 Signature	SignatureWindow		Signature
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.
 Backup in progress…	SearchBarView		Backup in progress…
 Remove query	QueryListView		Remove query
 Title:	SignatureWindow		Title:
@@ -224,6 +231,7 @@ None	EmailReaderWindow		None
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails from Trash?\n\nThis cannot be undone.
 Add attachment…	EmailReaderWindow		Add attachment…
 Filter:	SearchBarView		Filter:
+Create new email…	DeskbarReplicant		Create new email…
 Messages	EmailViewsWindow		Messages
 Filter by 'Subject'	EmailListView		Filter by 'Subject'
 From	EmailColumnHeader	Email list column header	From
@@ -232,6 +240,7 @@ OK	AboutWindow		OK
 Edit signatures…	EmailReaderWindow		Edit signatures…
 Unread emails	QueryListView		Unread emails
 Select search operator	SearchBarView		Select search operator
+Email accounts…	DeskbarReplicant		Email accounts…
 From	SearchBarView		From
 -2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 years
 Trash	EmailReaderWindow	Toolbar, short as possible	Trash
@@ -261,9 +270,11 @@ Save as draft	EmailReaderWindow		Save as draft
 Attachment	EmailColumnHeader		Attachment
 <none>	HeaderView		<none>
  Read 	EmailReaderWindow	Toolbar, short as possible	 Read 
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Created with the assistance of AI tools.\nMaintained by Jorge Mare.
 Star	EmailListView		Star
 Send as attachment	EmailListView		Send as attachment
 Font:	Preferences		Font:
+Unread emails	DeskbarReplicant		Unread emails
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		This message is HTML formatted.\nClick below to open it in the default browser.
 Unstar	EmailListView		Unstar
 Find…	EmailReaderWindow		Find…
@@ -277,8 +288,9 @@ Revert	Preferences		Revert
 From:	HeaderView		From:
 Unread	EmailReaderWindow	Toolbar, short as possible	Unread
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email from Trash?\n\nThis cannot be undone.
-Mark unread	EmailViewsWindow	Toolbar, short as possible	Mark unread
 Forward without attachments	EmailReaderWindow		Forward without attachments
+Mark unread	EmailViewsWindow	Toolbar, short as possible	Mark unread
+Send/Receive email	DeskbarReplicant		Send/Receive email
 Move to Trash	EmailViewsWindow		Move to Trash
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 week
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
@@ -318,8 +330,8 @@ Find	FindWindow		Find
 No matches	ContentView		No matches
 Delete permanently	EmailListView		Delete permanently
 Copy	EmailReaderWindow		Copy
-Reply	EmailReaderWindow		Reply
 Next message	EmailReaderWindow		Next message
+Reply	EmailReaderWindow		Reply
 Emails in Trash	TrashItemView		Emails in Trash
 Bcc:	HeaderView		Bcc:
 \\n - Newline	Preferences		\\n - Newline

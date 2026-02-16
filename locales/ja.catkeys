@@ -1,4 +1,4 @@
-1	Japanese	application/x-vnd.EmailViews	619359889
+1	Japanese	application/x-vnd.EmailViews	2649100377
  Read 	EmailReaderWindow	Toolbar, short as possible	既読
 (Address unavailable)	EmailReaderWindow		（アドレスはありません）
 (Date unavailable)	EmailReaderWindow		（日時はありません）
@@ -225,6 +225,16 @@ Time range slider:	Preferences		対象期間スライダー:
 Use default account	Preferences		デフォルトアカウントを使用
 User interface	Preferences		ユーザインターフェース
 Warn unencodable:	Preferences		エンコード不可警告:
+%count% new emails	DeskbarReplicant		未既読メール %count% 通
+1 new email	DeskbarReplicant		未既読メール 1 通
+About %app%…	DeskbarReplicant		%app% について…
+Create new email…	DeskbarReplicant		新規メール…
+Email accounts…	DeskbarReplicant		メールアカウント…
+No new emails	DeskbarReplicant		新規メールありません
+Remove from Deskbar	DeskbarReplicant		Deskbar から外す
+Send/Receive email	DeskbarReplicant		メールチェック
+Unread emails	DeskbarReplicant		未既読メール
+Unread emails (%count%)	DeskbarReplicant		未既読メール (%count%)
 %e wrote:\n	ReaderSettings		%e の引用:\n
 None	ReaderSettings		なし
 <none>	HeaderView		＜なし＞
@@ -327,10 +337,12 @@ Remove attachment	EnclosuresView		添付ファイルを削除
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		転送されたメールから添付ファイルを削除する機能はまだ実装されていませんので、正しく動作しません。
 Cancel	QueryNameDialog		中止
 Save	QueryNameDialog		保存
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		AI ツールの支援を受けて開発されました。\nJorge Mare によってメンテナンスされています。
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViewsは、ライブクエリを活用してメールを手軽に整理・閲覧できる、Haiku用の高速で軽量なメールビューアです。
+OK	AboutWindow		OK
 Delete emails in Trash	TrashItemView		ごみ箱にあるメールを完全削除
 Emails in Trash	TrashItemView		メールごみ箱
 Find	FindWindow		検索
-OK	AboutWindow		OK
 Open	AttachmentStripView		開く
 Remove	AttachmentStripView		削除
 Save as…	AttachmentStripView		名前を付けて保存
