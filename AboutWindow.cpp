@@ -30,12 +30,14 @@
 #define B_TRANSLATION_CONTEXT "AboutWindow"
 
 static const char* kAppDescription = 
-	"EmailViews is a fast, lightweight email viewer for Haiku that uses live "
-	"queries to organize and explore your emails effortlessly.";
+	B_TRANSLATE("EmailViews is a fast, lightweight email viewer for Haiku that uses live "
+	"queries to organize and explore your emails effortlessly.");
 
 static const char* kAppAuthors = 
-	"Created with the assistance of AI tools.\n"
-	"Maintained by Jorge Mare.\n\n"
+	B_TRANSLATE("Created with the assistance of AI tools.\n"
+	"Maintained by Jorge Mare.");
+
+static const char* kAppCredits = 
 	"Credits:\n"
 	"Haiku Mail application by the Haiku Project.\n"
 	"Icons from Haiku and Zumi icon sets.\n\n"
@@ -55,9 +57,16 @@ GetVersionString()
 {
 	BString versionStr;
 	
-	app_info appInfo;
-	if (be_app->GetAppInfo(&appInfo) == B_OK) {
-		BFile appFile(&appInfo.ref, B_READ_ONLY);
+	// Find the EmailViews binary.  When the About dialog is opened from the
+	// Deskbar replicant, be_app points to Deskbar, not EmailViews.  Use the
+	// app roster to locate our binary by signature instead.
+	entry_ref appRef;
+	bool found = false;
+	if (be_roster->FindApp("application/x-vnd.EmailViews", &appRef) == B_OK)
+		found = true;
+
+	if (found) {
+		BFile appFile(&appRef, B_READ_ONLY);
 		if (appFile.InitCheck() == B_OK) {
 			BAppFileInfo appFileInfo(&appFile);
 			if (appFileInfo.InitCheck() == B_OK) {
@@ -150,7 +159,8 @@ AboutWindow::AboutWindow(BBitmap* icon)
 
 	BString descText;
 	descText << kAppDescription << "\n\n"
-		 << kAppAuthors;
+		 << kAppAuthors << "\n\n"
+		 << kAppCredits;
 	fTextView->SetText(descText.String());
 
 	// Apply text color to all text
