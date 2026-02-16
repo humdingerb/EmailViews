@@ -45,14 +45,14 @@ EmailColumnHeaderView::EmailColumnHeaderView(const char* name)
     // Set up columns with default proportions
     // Icon columns have fixed width (proportion 0), text columns share remaining space
     // | Status (5%) | ★ (fixed 24) | 📎 (fixed 24) | From (15%) | To (15%) | Subject (35%) | Date (15%) | Account (15%) |
-    fColumns.AddItem(new ColumnInfo(kColumnStatus, "Status", 0.05f, 25.0f, true));
+    fColumns.AddItem(new ColumnInfo(kColumnStatus, B_TRANSLATE_COMMENT("Status", "Email list column header"), 0.05f, 25.0f, true));
     fColumns.AddItem(new ColumnInfo(kColumnStar, "", 0.0f, 24.0f, true, true));
     fColumns.AddItem(new ColumnInfo(kColumnAttachment, "", 0.0f, 24.0f, true, true));
-    fColumns.AddItem(new ColumnInfo(kColumnFrom, "From", 0.15f, 60.0f, true));
-    fColumns.AddItem(new ColumnInfo(kColumnTo, "To", 0.15f, 60.0f, true));
-    fColumns.AddItem(new ColumnInfo(kColumnSubject, "Subject", 0.35f, 80.0f, true));
-    fColumns.AddItem(new ColumnInfo(kColumnDate, "Date", 0.15f, 80.0f, true));
-    fColumns.AddItem(new ColumnInfo(kColumnAccount, "Account", 0.15f, 60.0f, true));
+    fColumns.AddItem(new ColumnInfo(kColumnFrom, B_TRANSLATE_COMMENT("From", "Email list column header"), 0.15f, 60.0f, true));
+    fColumns.AddItem(new ColumnInfo(kColumnTo, B_TRANSLATE_COMMENT("To", "Email list column header"), 0.15f, 60.0f, true));
+    fColumns.AddItem(new ColumnInfo(kColumnSubject, B_TRANSLATE_COMMENT("Subject", "Email list column header"), 0.35f, 80.0f, true));
+    fColumns.AddItem(new ColumnInfo(kColumnDate, B_TRANSLATE_COMMENT("Date", "Email list column header"), 0.15f, 80.0f, true));
+    fColumns.AddItem(new ColumnInfo(kColumnAccount, B_TRANSLATE_COMMENT("Account", "Email list column header"), 0.15f, 60.0f, true));
 }
 
 
@@ -595,7 +595,7 @@ EmailColumnHeaderView::RestoreState(const BMessage* from)
 
     if (count > 0 && count <= (int32)kColumnCount) {
         // Build new column order from saved state
-        BObjectList<ColumnInfo, false> newOrder(count);
+        BObjectList<ColumnInfo> newOrder(count);
 
         for (int32 i = 0; i < count; i++) {
             int32 colId;
@@ -626,7 +626,7 @@ EmailColumnHeaderView::RestoreState(const BMessage* from)
         if (newOrder.CountItems() == fColumns.CountItems()) {
             // Detach items from fColumns without deleting (owning list)
             // then re-add in new order
-            BObjectList<ColumnInfo, false> temp(fColumns.CountItems());
+            BObjectList<ColumnInfo> temp(fColumns.CountItems());
             for (int32 i = 0; i < fColumns.CountItems(); i++)
                 temp.AddItem(fColumns.ItemAt(i));
 
