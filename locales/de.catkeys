@@ -1,11 +1,11 @@
-1	German	application/x-vnd.EmailViews	1984325143
- Read 	EmailReaderWindow		Gelesen
+1	German	application/x-vnd.EmailViews	2649100377
+ Read 	EmailReaderWindow	Toolbar, short as possible	 Gelesen 
 (Address unavailable)	EmailReaderWindow		(Adresse nicht verfügbar)
 (Date unavailable)	EmailReaderWindow		(Datum nicht verfügbar)
 (Name unavailable)	EmailReaderWindow		(Name nicht verfügbar)
 Add attachment…	EmailReaderWindow		Anhang hinzufügen …
 Add signature	EmailReaderWindow		Signatur hinzufügen
-Attach	EmailReaderWindow		Anhang
+Attach	EmailReaderWindow	Toolbar, short as possible	Anhang
 Automatic	EmailReaderWindow		Automatisch
 Cancel	EmailReaderWindow		Abbrechen
 Cc:	EmailReaderWindow		Cc:
@@ -30,14 +30,15 @@ File	EmailReaderWindow		Datei
 Find again	EmailReaderWindow		Weitersuchen
 Find…	EmailReaderWindow		Suchen …
 Forward	EmailReaderWindow		Weiterleiten
+Forward	EmailReaderWindow	Toolbar, short as possible	Weiterleiten
 Forward without attachments	EmailReaderWindow		Ohne Anhänge weiterleiten
 Increase quote level	EmailReaderWindow		Eine Zitatebene tiefer
 Message	EmailReaderWindow		Nachricht
 Move to trash	EmailReaderWindow		In den Papierkorb verschieben
 Need Tracker to move items to trash	EmailReaderWindow		Tracker wird benötigt, um Sachen in den Papierkorb zu verschieben.
-New	EmailReaderWindow		Neu
+New	EmailReaderWindow	Toolbar, short as possible	Neu
 New mail message	EmailReaderWindow		Nachricht verfassen
-Next	EmailReaderWindow		Nächste
+Next	EmailReaderWindow	Toolbar, short as possible	Nächste
 Next message	EmailReaderWindow		Nächste Nachricht
 Next message, keep status	EmailReaderWindow		Nächste Nachricht, Status beibehalten
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		Es wurde kein Wörterbuch gefunden.\n\nBitte eine \"words\" Datei installieren in \n/boot/system/data/spell_check/word_dictionary/
@@ -45,38 +46,41 @@ None	EmailReaderWindow		Kein
 OK	EmailReaderWindow		OK
 Page setup…	EmailReaderWindow		Seite einrichten …
 Paste	EmailReaderWindow		Einfügen
-Previous	EmailReaderWindow		Vorherige
+Previous	EmailReaderWindow	Toolbar, short as possible	Vorherige
 Previous message	EmailReaderWindow		Vorherige Nachricht
 Previous message, keep status	EmailReaderWindow		Vorherige Nachricht, Status beibehalten
-Print	EmailReaderWindow		Drucken
+Print	EmailReaderWindow	Toolbar, short as possible	Drucken
 Print…	EmailReaderWindow		Drucken …
 Redo	EmailReaderWindow		Wiederholen
 Remove attachment	EmailReaderWindow		Anhang entfernen
 Reply	EmailReaderWindow		Antworten
-Reply all	EmailReaderWindow		Allen antworten
+Reply	EmailReaderWindow	Toolbar, short as possible	Antworten
+Reply all	EmailReaderWindow	Toolbar, short as possible	Allen antworten
 Reply to all	EmailReaderWindow		An alle antworten
 Reply to sender	EmailReaderWindow		Antwort an Absender
 Resend	EmailReaderWindow		Nochmals senden
 Save	EmailReaderWindow		Speichern
+Save	EmailReaderWindow	Toolbar, short as possible	Speichern
 Save as draft	EmailReaderWindow		Als Entwurf speichern
 Save this message as a draft before closing?	EmailReaderWindow		Nachricht vor dem Schließen als Entwurf speichern?
 Select all	EmailReaderWindow		Alles auswählen
 Send	EmailReaderWindow		Senden
+Send	EmailReaderWindow	Toolbar, short as possible	Senden
 Send message	EmailReaderWindow		Nachricht senden
 Send this message before closing?	EmailReaderWindow		Nachricht vor dem Schließen senden?
 Show header	EmailReaderWindow		Kopfdaten anzeigen
 Show raw message	EmailReaderWindow		Originalformat anzeigen
-Signature	EmailReaderWindow		Signatur
+Signature	EmailReaderWindow	Toolbar, short as possible	Signatur
 Sorry	EmailReaderWindow		Mist
 Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Es konnte leider keine Anwendung gefunden werden, die den Datentyp 'Person' unterstützt.
-Spam	EmailReaderWindow		Spam
+Spam	EmailReaderWindow	Toolbar, short as possible	Spam
 Start now	EmailReaderWindow		Jetzt starten
 The mail_daemon could not be started:\n\t	EmailReaderWindow		Der E-Mail-Dienst (mail_daemon) konnte nicht gestartet werden:\n\t
 The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		Der E-Mail-Dienst (mail_daemon) läuft nicht. Die Nachricht wird versendet, sobald der Dienst wieder läuft.
 The subject is empty. Do you want to send anyway?	EmailReaderWindow		Das Betreff ist leer. Soll die Nachricht trotzdem gesendet werden?
-Trash	EmailReaderWindow		Papierkorb
+Trash	EmailReaderWindow	Toolbar, short as possible	Papierkorb
 Undo	EmailReaderWindow		Rückgängig
-Unread	EmailReaderWindow		Ungelesen
+Unread	EmailReaderWindow	Toolbar, short as possible	Ungelesen
 Untitled	EmailReaderWindow		Unbenannt
 View	EmailReaderWindow		Ansicht
 View HTML version	EmailReaderWindow		HTML-Version anzeigen
@@ -116,6 +120,7 @@ All emails	EmailViewsWindow		Alle Emails
 Backup failed	EmailViewsWindow		Sicherung fehlgeschlagen
 Cancel	EmailViewsWindow		Abbrechen
 Check email	EmailViewsWindow		Email abfragen
+Check email	EmailViewsWindow	Toolbar, short as possible	Email abrufen
 Could not get email reference.	EmailViewsWindow		Keine Email-Referenz bekommen.
 Could not open email file.	EmailViewsWindow		Email-Datei konnte nicht geöffnet werden.
 Create anyway	EmailViewsWindow		Trotzdem erzeugen
@@ -132,15 +137,19 @@ Error	EmailViewsWindow		Fehler
 Failed to create query file.	EmailViewsWindow		Query-Datei konnte nicht erzeugt werden.
 Failed to start backup thread.	EmailViewsWindow		Sicherungs-Thread konnte nicht erzeugt werden.
 Forward	EmailViewsWindow		Weiterleiten
+Forward	EmailViewsWindow	Toolbar, short as possible	Weiterleiten
 HTML message	EmailViewsWindow		HTML Nachricht
 Mark as read	EmailViewsWindow		Als gelesen markieren
 Mark as unread	EmailViewsWindow		Als ungelesen markieren
 Mark read	EmailViewsWindow		Gelesen mark.
+Mark read	EmailViewsWindow	Toolbar, short as possible	Gelesen mark.
 Mark unread	EmailViewsWindow		Ungelesen mark.
+Mark unread	EmailViewsWindow	Toolbar, short as possible	Ungelesen mark.
 Messages	EmailViewsWindow		Nachrichten
 Move to Trash	EmailViewsWindow		In den Papierkorb verschieben
 New email	EmailViewsWindow		Neue Email
-Next	EmailViewsWindow		Nächste
+New email	EmailViewsWindow	Toolbar, short as possible	Neue Email
+Next	EmailViewsWindow	Toolbar, short as possible	Nächste
 No emails found.	EmailViewsWindow		Keine Emails gefunden.
 No emails in Trash.	EmailViewsWindow		Keine Emails im Papierkorb.
 No emails match your search.	EmailViewsWindow		Keine Emails entsprechen den Suchkriterien.
@@ -150,11 +159,12 @@ Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailVie
 Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		%count% Emails endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Die Email im Papierkorb endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
 Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Die Email endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
-Previous	EmailViewsWindow		Vorherige
+Previous	EmailViewsWindow	Toolbar, short as possible	Vorherige
 Queries	EmailViewsWindow		Queries
 Query exists	EmailViewsWindow		Query existiert bereits
 Quit	EmailViewsWindow		Beenden
 Reply	EmailViewsWindow		Antworten
+Reply	EmailViewsWindow	Toolbar, short as possible	Antworten
 Reply all	EmailViewsWindow		Allen antworten
 Restore email	EmailViewsWindow		Email wiederherstellen
 Save backup as	EmailViewsWindow		Sicherung speichern als
@@ -170,6 +180,7 @@ This message is HTML formatted.\nClick below to open it in the default browser.	
 Time range:	EmailViewsWindow		Zeitspanne:
 To:	EmailViewsWindow		An:
 Trash	EmailViewsWindow		Papierkorb
+Trash	EmailViewsWindow	Toolbar, short as possible	Papierkorb
 Unread emails	EmailViewsWindow		Ungelesene Emails
 Unread emails (%ld)	EmailViewsWindow		Ungelesene Emails (%ld)
 View HTML version	EmailViewsWindow		HTML-Version anzeigen
@@ -214,6 +225,16 @@ Time range slider:	Preferences		Zeitraum Schieberegler:
 Use default account	Preferences		Standardkonto:
 User interface	Preferences		Programmoberfläche
 Warn unencodable:	Preferences		Warnung bei nicht-kodierbaren Zeichen:
+%count% new emails	DeskbarReplicant		%count% neue Emails
+1 new email	DeskbarReplicant		1 neue Email
+About %app%…	DeskbarReplicant		Über %app% …
+Create new email…	DeskbarReplicant		Nachricht verfassen …
+Email accounts…	DeskbarReplicant		Email-Konten …
+No new emails	DeskbarReplicant		Keine neuen Emails
+Remove from Deskbar	DeskbarReplicant		Von Deskbar entfernen
+Send/Receive email	DeskbarReplicant		Emails senden/empfangen
+Unread emails	DeskbarReplicant		Ungelesene Emails
+Unread emails (%count%)	DeskbarReplicant		Ungelesene Emails (%count%)
 %e wrote:\n	ReaderSettings		%e schrieb:\n
 None	ReaderSettings		Keine
 <none>	HeaderView		<kein>
@@ -225,26 +246,31 @@ Subject:	HeaderView		Betreff:
 To:	HeaderView		An:
 Unknown	HeaderView		Unbekannt
 Account	EmailColumnHeader		Konto
+Account	EmailColumnHeader	Email list column header	Konto
 Attachment	EmailColumnHeader		Anhang
 Date	EmailColumnHeader		Datum
+Date	EmailColumnHeader	Email list column header	Datum
 From	EmailColumnHeader		Absender
+From	EmailColumnHeader	Email list column header	Absender
 Star	EmailColumnHeader		Stern
 Status	EmailColumnHeader		Status
+Status	EmailColumnHeader	Email list column header	Status
 Subject	EmailColumnHeader		Betreff
+Subject	EmailColumnHeader	Email list column header	Betreff
 To	EmailColumnHeader		Empfänger
+To	EmailColumnHeader	Email list column header	Empfänger
 Account	SearchBarView		Konto
 Backup emails to ZIP file	SearchBarView		Emails als ZIP Archiv sichern
 Backup in progress…	SearchBarView		Sicherung läuft …
 Clear search box	SearchBarView		Suchfeld leeren
 contains	SearchBarView		enthält
 Create query based on search criteria	SearchBarView		Query mit diesen Suchkriterien erstellen
-Filter by	SearchBarView		Filtern nach
+Filter:	SearchBarView		Filter:
 From	SearchBarView		Absender
 matches	SearchBarView		ist
 Select attribute(s) to query	SearchBarView		Attribut der Query wählen
 Select search operator	SearchBarView		Suchmodus wählen
 Subject	SearchBarView		Betreff
-that	SearchBarView		das
 To	SearchBarView		Empfänger
 Type text and press Enter…	SearchBarView		Text eingeben und Enter drücken …
 Add	ContentView		Hinzu
@@ -311,10 +337,12 @@ Remove attachment	EnclosuresView		Anhang entfernen
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Anhänge von weitergeleiteten Nachrichten zu entfernen wird noch nicht unterstützt.\nEs wird nicht richtig funktionieren.
 Cancel	QueryNameDialog		Abbrechen
 Save	QueryNameDialog		Speichern
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Mit Hilfe von KI-Werkzeugen entwickelt.\nVon Jorge Mare.
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews ist ein schneller Email Viewer für Haiku, der dessen Live-Queries nutzt, um Emails mühelos zu finden und zu verwalten.
+OK	AboutWindow		OK
 Delete emails in Trash	TrashItemView		Emails im Papierkorb löschen
 Emails in Trash	TrashItemView		Emails im Papierkorb
 Find	FindWindow		Suchen
-OK	AboutWindow		OK
 Open	AttachmentStripView		Öffnen
 Remove	AttachmentStripView		Entfernen
 Save as…	AttachmentStripView		Speichern unter …
