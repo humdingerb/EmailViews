@@ -3,7 +3,7 @@
 NAME = EmailViews
 TYPE = APP
 APP_MIME_SIG = application/x-vnd.EmailViews
-LOCALES = en ja de ca
+LOCALES = en ja de ca fr tr
 SRCS = EmailViews.cpp \
        AboutWindow.cpp \
        ToolBarView.cpp \
