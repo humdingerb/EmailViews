@@ -1,0 +1,351 @@
+1	Turkish	application/x-vnd.EmailViews	2649100377
+ Read 	EmailReaderWindow	Toolbar, short as possible	Oku
+(Address unavailable)	EmailReaderWindow		(Adres kullanılamıyor)
+(Date unavailable)	EmailReaderWindow		(Tarih kullanılamıyor)
+(Name unavailable)	EmailReaderWindow		(Ad kullanılamıyor)
+Add attachment…	EmailReaderWindow		Ek koy…
+Add signature	EmailReaderWindow		İmza ekle
+Attach	EmailReaderWindow	Toolbar, short as possible	İliştir
+Automatic	EmailReaderWindow		Kendiliğinden
+Cancel	EmailReaderWindow		Vazgeç
+Cc:	EmailReaderWindow		Kopya:
+Check spelling	EmailReaderWindow		Yazımı denetle
+Close	EmailReaderWindow		Kapat
+Composer	EmailReaderWindow		Oluşturan
+Copy	EmailReaderWindow		Kopyala
+Copy to new	EmailReaderWindow		Yeni olarak kopyala
+Create Person file for	EmailReaderWindow		Kişi dosyası oluştur:
+Cut	EmailReaderWindow		Kes
+Decrease quote level	EmailReaderWindow		Alıntı düzeyini azalt
+Don't save	EmailReaderWindow		Kaydetme
+Don't send	EmailReaderWindow		Gönderme
+E-mail draft could not be saved!	EmailReaderWindow		İleti taslağı kaydedilemedi!
+Edit	EmailReaderWindow		Düzen
+Edit signatures…	EmailReaderWindow		İmzaları düzenle…
+Email accounts…	EmailReaderWindow		E-posta hesapları…
+Email preferences…	EmailReaderWindow		E-posta tercihleri…
+Empty subject	EmailReaderWindow		Boş konu
+Encoding	EmailReaderWindow		Kodlama
+File	EmailReaderWindow		Dosya
+Find again	EmailReaderWindow		Yeniden bul
+Find…	EmailReaderWindow		Bul…
+Forward	EmailReaderWindow		İlet
+Forward	EmailReaderWindow	Toolbar, short as possible	İlet
+Forward without attachments	EmailReaderWindow		Ek olmadan ilet
+Increase quote level	EmailReaderWindow		Alıntı düzeyini artır
+Message	EmailReaderWindow		İleti
+Move to trash	EmailReaderWindow		Çöpe taşı
+Need Tracker to move items to trash	EmailReaderWindow		Ögeleri çöpe taşıması için İzleyici’ye gereksinim duyuluyor
+New	EmailReaderWindow	Toolbar, short as possible	Yeni
+New mail message	EmailReaderWindow		Yeni posta iletisi
+Next	EmailReaderWindow	Toolbar, short as possible	Sonraki
+Next message	EmailReaderWindow		Sonraki ileti
+Next message, keep status	EmailReaderWindow		Sonraki ileti, durumu tut
+No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		Bulunan yazım denetimi sözlüğü yok.\n\nLütfen şu konuma bir “sözcükler” dosyası yerleştirin:\n/boot/system/data/spell_check/word_dictionary/
+None	EmailReaderWindow		Yok
+OK	EmailReaderWindow		Tamam
+Page setup…	EmailReaderWindow		Sayfa yerleşimi…
+Paste	EmailReaderWindow		Yapıştır
+Previous	EmailReaderWindow	Toolbar, short as possible	Önceki
+Previous message	EmailReaderWindow		Önceki ileti
+Previous message, keep status	EmailReaderWindow		Önceki ileti, durumu tut
+Print	EmailReaderWindow	Toolbar, short as possible	Yazdır
+Print…	EmailReaderWindow		Yazdır…
+Redo	EmailReaderWindow		Yinele
+Remove attachment	EmailReaderWindow		Eki kaldır
+Reply	EmailReaderWindow		Yanıtla
+Reply	EmailReaderWindow	Toolbar, short as possible	Yanıtla
+Reply all	EmailReaderWindow	Toolbar, short as possible	Tümünü yanıtla
+Reply to all	EmailReaderWindow		Tümünü yanıtla
+Reply to sender	EmailReaderWindow		Göndereni yanıtla
+Resend	EmailReaderWindow		Yeniden gönder
+Save	EmailReaderWindow		Kaydet
+Save	EmailReaderWindow	Toolbar, short as possible	Kaydet
+Save as draft	EmailReaderWindow		Taslak olarak kaydet
+Save this message as a draft before closing?	EmailReaderWindow		Kapatmadan önce bu ileti taslak olarak kaydedilsin mi?
+Select all	EmailReaderWindow		Tümünü seç
+Send	EmailReaderWindow		Gönder
+Send	EmailReaderWindow	Toolbar, short as possible	Gönder
+Send message	EmailReaderWindow		İletiyi gönder
+Send this message before closing?	EmailReaderWindow		Kapatmadan önce bu ileti gönderilsin mi?
+Show header	EmailReaderWindow		Üstbilgiyi göster
+Show raw message	EmailReaderWindow		Ham iletiyi göster
+Signature	EmailReaderWindow	Toolbar, short as possible	İmza
+Sorry	EmailReaderWindow		Üzgünüm
+Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Üzgünüm; “Person” (Kişi) veri türünü destekleyen bir uygulama bulunamadı.
+Spam	EmailReaderWindow	Toolbar, short as possible	İstenmeyen
+Start now	EmailReaderWindow		Şimdi başlat
+The mail_daemon could not be started:\n\t	EmailReaderWindow		mail_daemon başlatılamadı:\n\t
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		mail_daemon çalışmıyor. İleti kuyruğa eklendi ve “mail_daemon”un bir sonraki başlatılışında gönderilecek.
+The subject is empty. Do you want to send anyway?	EmailReaderWindow		Konu boş. Yine de göndermek istiyor musunuz?
+Trash	EmailReaderWindow	Toolbar, short as possible	Çöpe at
+Undo	EmailReaderWindow		Geri al
+Unread	EmailReaderWindow	Toolbar, short as possible	Okunmamış
+Untitled	EmailReaderWindow		Başlıksız
+View	EmailReaderWindow		Görüntü
+View HTML version	EmailReaderWindow		HTML sürümünü görüntüle
+Viewer	EmailReaderWindow		Görüntüleyici
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Ana metninizde %ld kodlanamayan karakter var. Belki başka bir karakter kümesini kullanmak istersiniz? Yine de göndermek istiyorsanız “Gönder”e basın (kodlanamayan karakterlerin yerine bir başkası kullanılacaktır) veya düzeltmeye çalışacaksanız “Vazgeç”e basın.
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	−1 gün
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	−1 ay
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	−1 hafta
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	−1 yıl
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	−2 gün
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	−2 ay
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	−2 hafta
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	−2 yıl
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	−3 gün
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	−3 ay
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	−3 hafta
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	−4 gün
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	−5 gün
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	−5 yıl
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	−6 gün
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	−6 ay
+All	TimeRangeSlider	Time range slider label - keep as short as possible	Tümü
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Bugün
+[Message truncated...]	EmailViewsWindow		[İleti kesildi…]
+[The draft has no body text to display]	EmailViewsWindow		[Taslakta görüntülenecek gövde metni yok]
+%d emails selected.	EmailViewsWindow		%d ileti seçildi.
+%s emails	EmailViewsWindow		%s ileti
+1 email	EmailViewsWindow		1 ileti
+A query named '%name%' already exists.	EmailViewsWindow		“%name%” adlı bir sorgu halihazırda var.
+A query with the same search criteria already exists: '%name%'	EmailViewsWindow		Aynı arama kriteriyle bir sorgu halihazırda var: “%name%”
+About EmailViews…	EmailViewsWindow		EmailViews hakkında…
+Account:	EmailViewsWindow		Hesap:
+Add 'Account' query	EmailViewsWindow		“Hesap” sorgusu ekle
+Add 'From' query	EmailViewsWindow		“Kimden” sorgusu ekle
+Add 'To' query	EmailViewsWindow		“Kime” sorgusu ekle
+All emails	EmailViewsWindow		Tüm e-postalar
+Backup failed	EmailViewsWindow		Yedekleme başarısız
+Cancel	EmailViewsWindow		Vazgeç
+Check email	EmailViewsWindow		E-postayı denetle
+Check email	EmailViewsWindow	Toolbar, short as possible	E-postayı denetle
+Could not get email reference.	EmailViewsWindow		E-posta başvurusu alınamadı.
+Could not open email file.	EmailViewsWindow		E-posta dosyası açılamadı.
+Create anyway	EmailViewsWindow		Yine de oluştur
+Delete	EmailViewsWindow		Sil
+Delete emails	EmailViewsWindow		İletileri sil
+Delete emails in Trash	EmailViewsWindow		Çöpteki iletileri sil
+Deleting emails…	EmailViewsWindow		İletiler siliniyor…
+Draft emails	EmailViewsWindow		Taslak iletiler
+Draft emails (%ld)	EmailViewsWindow		Taslak iletiler (%ld)
+Email accounts…	EmailViewsWindow		E-posta hesapları…
+Email backup	EmailViewsWindow		E-posta yedeği
+Email preferences…	EmailViewsWindow		E-posta tercihleri…
+Error	EmailViewsWindow		Hata
+Failed to create query file.	EmailViewsWindow		Sorgu dosyası oluşturulamadı.
+Failed to start backup thread.	EmailViewsWindow		Yedek ileti dizisi başlatılamadı.
+Forward	EmailViewsWindow		İlet
+Forward	EmailViewsWindow	Toolbar, short as possible	İlet
+HTML message	EmailViewsWindow		HTML iletisi
+Mark as read	EmailViewsWindow		Okundu olarak imle
+Mark as unread	EmailViewsWindow		Okunmamış olarak imle
+Mark read	EmailViewsWindow		Okundu olarak imle
+Mark read	EmailViewsWindow	Toolbar, short as possible	Okundu olarak imle
+Mark unread	EmailViewsWindow		Okunmamış olarak imle
+Mark unread	EmailViewsWindow	Toolbar, short as possible	Okunmamış olarak imle
+Messages	EmailViewsWindow		İletiler
+Move to Trash	EmailViewsWindow		Çöpe taşı
+New email	EmailViewsWindow		Yeni ileti
+New email	EmailViewsWindow	Toolbar, short as possible	Yeni ileti
+Next	EmailViewsWindow	Toolbar, short as possible	Sonraki
+No emails found.	EmailViewsWindow		Bulunan ileti yok.
+No emails in Trash.	EmailViewsWindow		Çöpte ileti yok.
+No emails match your search.	EmailViewsWindow		Aramanızla eşleşen ileti yok.
+OK	EmailViewsWindow		Tamam
+Open queries folder	EmailViewsWindow		Sorgular klasörünü aç
+Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Çöpten %count% ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
+Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		%count% ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
+Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Çöpten 1 ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
+Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		1 ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
+Previous	EmailViewsWindow	Toolbar, short as possible	Önceki
+Queries	EmailViewsWindow		Sorgular
+Query exists	EmailViewsWindow		Sorgu var
+Quit	EmailViewsWindow		Çık
+Reply	EmailViewsWindow		Yanıtla
+Reply	EmailViewsWindow	Toolbar, short as possible	Yanıtla
+Reply all	EmailViewsWindow		Tümünü yanıtla
+Restore email	EmailViewsWindow		İletiyi geri yükle
+Save backup as	EmailViewsWindow		Yedeği farklı kaydet
+Select an email to preview its contents.	EmailViewsWindow		İçeriğini önizlemek için bir ileti seçin.
+Select folder	EmailViewsWindow		Klasör seç
+Sent emails	EmailViewsWindow		Gönderilmiş iletiler
+Show in Deskbar	EmailViewsWindow		Masaüstü Çubuğu’nda göster
+Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Üzgünüm, “Person” (Kişi) veri türünü destekleyen bir uygulama bulunamadı.
+Starred emails	EmailViewsWindow		Yıldızlı iletiler
+Subject:	EmailViewsWindow		Konu:
+There are no emails in the Trash.	EmailViewsWindow		Çöpte ileti yok.
+This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Bu ileti HTML biçimli.\nSaptanmış tarayıcıda açmak için aşağıya tıklayın.
+Time range:	EmailViewsWindow		Zaman erimi:
+To:	EmailViewsWindow		Kime:
+Trash	EmailViewsWindow		Çöp
+Trash	EmailViewsWindow	Toolbar, short as possible	Çöp
+Unread emails	EmailViewsWindow		Okunmamış iletiler
+Unread emails (%ld)	EmailViewsWindow		Okunmamış iletiler (%ld)
+View HTML version	EmailViewsWindow		HTML sürümünü görüntüle
+Volumes	EmailViewsWindow		Ciltler
+With attachments	EmailViewsWindow		Ek ile
+You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		Sisteminizde yapılandırılmış olmayan bir hesaba ait %count% iletiyi geri yüklemeye çalışıyorsunuz. Bu iletileri geri yüklemek istediğiniz klasörü seçin.
+You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Sisteminizde yapılandırılmış olmayan bir hesaba ait 1 iletiyi geri yüklemeye çalışıyorsunuz. Bu iletileri geri yüklemek istediğiniz klasörü seçin.
+\\n - Newline	Preferences		\\n — Yenisatır
+%d - Date	Preferences		%d — Tarih
+%e - E-mail address	Preferences		%e — E-posta adresi
+%n - Full name	Preferences		%n — Tam ad
+<no account found>	Preferences		<bulunan hesap yok>
+Account from mail	Preferences		Postadan hesap
+Attach attributes:	Preferences		İliştirme öznitelikleri:
+Auto signature:	Preferences		Otomatik imza:
+Automatically mark mail as read:	Preferences		İletiyi kendiliğinden okundu olarak imle:
+Beginner	Preferences		Acemi
+Button bar:	Preferences		Düğme çubuğu:
+Cancel	Preferences		Vazgeç
+Colored quotes:	Preferences		Renkli alıntılar:
+Default account:	Preferences		Saptanmış hesap:
+Email preferences	Preferences		E-posta tercihleri
+Expert	Preferences		Uzman
+Font:	Preferences		Yazıtipi:
+Include file attributes in attachments	Preferences		Eklerde dosya özniteliklerini içer
+Initial spell check mode:	Preferences		Başlangıç yazım denetimi kipi:
+Mailing	Preferences		Posta
+No file attributes, just plain data	Preferences		Dosya öznitelikleri yok, yalnızca düz veri
+None	Preferences		Yok
+Off	Preferences		Kapalı
+OK	Preferences		Tamam
+On	Preferences		Açık
+Outgoing encoding:	Preferences		Giden ileti kodlaması:
+Reply account:	Preferences		Yanıtlama hesabı:
+Reply preamble:	Preferences		Yanıt önsözü:
+Revert	Preferences		Geri al
+Show icons & labels	Preferences		Simgeleri ve etiketleri göster
+Show icons only	Preferences		Yalnızca simgeleri göster
+Size:	Preferences		Boyut:
+Text wrapping:	Preferences		Metin kaydırma:
+Time range slider:	Preferences		Zaman erimi sürgüsü:
+Use default account	Preferences		Saptanmış hesabı kullan
+User interface	Preferences		Kullanıcı arayüzü
+Warn unencodable:	Preferences		Kodlanamayanda uyar
+%count% new emails	DeskbarReplicant		%count% yeni ileti
+1 new email	DeskbarReplicant		1 yeni ileti
+About %app%…	DeskbarReplicant		%app% hakkında…
+Create new email…	DeskbarReplicant		Yeni ileti oluştur…
+Email accounts…	DeskbarReplicant		E-posta hesapları…
+No new emails	DeskbarReplicant		Yeni ileti yok
+Remove from Deskbar	DeskbarReplicant		Masaüstü Çubuğu’ndan kaldır
+Send/Receive email	DeskbarReplicant		E-posta gönder/al
+Unread emails	DeskbarReplicant		Okunmamış iletiler
+Unread emails (%count%)	DeskbarReplicant		Okunmamış iletiler (%count%)
+%e wrote:\n	ReaderSettings		%e şunu yazdı:\n
+None	ReaderSettings		Yok
+<none>	HeaderView		<yok>
+Bcc:	HeaderView		Gizli kopya:
+Cc:	HeaderView		Kopya:
+Date:	HeaderView		Tarih:
+From:	HeaderView		Kimden:
+Subject:	HeaderView		Konu:
+To:	HeaderView		Kime:
+Unknown	HeaderView		Bilinmiyor
+Account	EmailColumnHeader		Hesap
+Account	EmailColumnHeader	Email list column header	Hesap
+Attachment	EmailColumnHeader		Ek
+Date	EmailColumnHeader		Tarih
+Date	EmailColumnHeader	Email list column header	Tarih
+From	EmailColumnHeader		Kimden
+From	EmailColumnHeader	Email list column header	Kimden
+Star	EmailColumnHeader		Yıldız
+Status	EmailColumnHeader		Durum
+Status	EmailColumnHeader	Email list column header	Durum
+Subject	EmailColumnHeader		Konu
+Subject	EmailColumnHeader	Email list column header	Konu
+To	EmailColumnHeader		Kime
+To	EmailColumnHeader	Email list column header	Kime
+Account	SearchBarView		Hesap
+Backup emails to ZIP file	SearchBarView		İletileri ZIP dosyasına yedekle
+Backup in progress…	SearchBarView		Yedek sürüyor…
+Clear search box	SearchBarView		Arama kutusunu temizle
+contains	SearchBarView		içerir
+Create query based on search criteria	SearchBarView		Arama kriterinden sorgu oluştur
+Filter:	SearchBarView		Süzgeç:
+From	SearchBarView		Kimden
+matches	SearchBarView		eşleşir
+Select attribute(s) to query	SearchBarView		Sorgulanacak öznitelikleri seç
+Select search operator	SearchBarView		Arama işleci seç
+Subject	SearchBarView		Konu
+To	SearchBarView		Kime
+Type text and press Enter…	SearchBarView		Metin yazın ve Giriş’e basın…
+Add	ContentView		Ekle
+An error occurred trying to open this signature.	ContentView		Bu imzayı açmaya çalışırken bir hata oluştu.
+An error occurred trying to save the attachment.	ContentView		Ek kaydedilmeye çalışılırken bir hata oluştu.
+Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Ek: %name% (Tür: %type%)
+Copy link location	ContentView		Bağlantı konumunu kopyala
+Inconsistency occurred in the undo/redo buffer.	ContentView		Geri al/yinele arabelleğinde tutarsızlık oluştu.
+No matches	ContentView		Eşleşme yok
+OK	ContentView		Tamam
+Open attachment	ContentView		Eki aç
+Open this link	ContentView		Bağlantıyı aç
+Save attachment…	ContentView		Eki kaydet…
+Sorry	ContentView		Üzgünüm
+There is no installed handler for URL links.	ContentView		URL bağlantılarını işlemek için kurulu bir işleyici yok.
+Add 'Account' query	EmailListView		“Hesap” sorgusu ekle
+Add 'From' query	EmailListView		“Kimden” sorgusu ekle
+Add 'To' query	EmailListView		“Kime” sorgusu ekle
+Create Person file for	EmailListView		Kişi dosyası oluştur:
+Delete permanently	EmailListView		Kalıcı olarak sil
+Filter by 'Account'	EmailListView		Şuna göre süz: “Hesap”
+Filter by 'Recipient'	EmailListView		Şuna göre süz: “Alıcı”
+Filter by 'Sender'	EmailListView		Şuna göre süz: “Gönderen”
+Filter by 'Subject'	EmailListView		Şuna göre süz: “Konu”
+Forward	EmailListView		İlet
+Mark as read	EmailListView		Okundu olarak imle
+Mark as unread	EmailListView		Okunmamış olarak imle
+Move to Trash	EmailListView		Çöpe taşı
+New email to sender	EmailListView		Gönderene yeni ileti
+Reply	EmailListView		Yanıtla
+Reply all	EmailListView		Tümünü yanıtla
+Restore	EmailListView		Geri yükle
+Send as attachment	EmailListView		Ek olarak gönder
+Star	EmailListView		Yıldız koy
+Unstar	EmailListView		Yıldızı kaldır
+All people	AddressTextControl		Herkes
+An error occurred trying to save this signature.	SignatureWindow		İmzayı kaydetmeye çalışırken bir hata oluştu.
+Cancel	SignatureWindow		Vazgeç
+Copy	SignatureWindow		Kopyala
+Couldn't open this signature. Sorry.	SignatureWindow		Bu imza açılamadı. Üzgünüm.
+Cut	SignatureWindow		Kes
+Delete	SignatureWindow		Sil
+Don't save	SignatureWindow		Kaydetme
+Edit	SignatureWindow		Düzen
+New	SignatureWindow		Yeni
+OK	SignatureWindow		Tamam
+Open	SignatureWindow		Aç
+Paste	SignatureWindow		Yapıştır
+Really delete this signature? This cannot be undone.	SignatureWindow		Bu imzayı silmeyi gerçekten istiyor musunuz? Bu işlem geri alınamaz.
+Save	SignatureWindow		Kaydet
+Save changes to this signature?	SignatureWindow		Bu imzaya yapılmış değişiklikler kaydedilsin mi?
+Select all	SignatureWindow		Tümünü seç
+Signature	SignatureWindow		İmza
+Signature:	SignatureWindow		İmza:
+Signatures	SignatureWindow		İmzalar
+Sorry	SignatureWindow		Üzgünüm
+Title:	SignatureWindow		Başlık:
+Undo	SignatureWindow		Geri al
+Attachments:	EnclosuresView		Ekler:
+OK	EnclosuresView		Tamam
+Only files can be added as attachments.	EnclosuresView		Ek olarak yalnızca dosyalar eklenebilir.
+Open attachment	EnclosuresView		Eki aç
+Remove attachment	EnclosuresView		Eki kaldır
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		İletilen bir iletideki ekleri kaldırmak henüz desteklenmiyor!\nDoğru çalışmayacaktır.
+Cancel	QueryNameDialog		Vazgeç
+Save	QueryNameDialog		Kaydet
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Yapay zekâ araçlarının yardımıyla oluşturulmuştur.\nBakımı, Jorge Mare tarafından yapılır.
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews, Haiku için hızlı ve hafif bir e-posta görüntüleyicisidir. E-postalarınızı efektif olarak organize etmek ve taramanıza olanak tanımak adına Haiku’nun sorgular sistemini kullanır.
+OK	AboutWindow		Tamam
+Delete emails in Trash	TrashItemView		Çöpteki iletileri sil
+Emails in Trash	TrashItemView		Çöpteki iletiler
+Find	FindWindow		Bul
+Open	AttachmentStripView		Aç
+Remove	AttachmentStripView		Kaldır
+Save as…	AttachmentStripView		Farklı kaydet…
+Open query in Tracker…	QueryListView		Sorguyu İzleyici’de aç…
+Remove query	QueryListView		Sorguyu kaldır
+Unread emails	QueryListView		Okunmamış iletiler
