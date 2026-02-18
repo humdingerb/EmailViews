@@ -1,0 +1,351 @@
+1	Catalan	application/x-vnd.EmailViews	2649100377
+ Read 	EmailReaderWindow	Toolbar, short as possible	Llegeix
+(Address unavailable)	EmailReaderWindow		(Adreça no disponible)
+(Date unavailable)	EmailReaderWindow		(Data no disponible)
+(Name unavailable)	EmailReaderWindow		(Nom no disponible)
+Add attachment…	EmailReaderWindow		Afegeix un fitxer adjunt...
+Add signature	EmailReaderWindow		Afegeix una signatura
+Attach	EmailReaderWindow	Toolbar, short as possible	Adjunta
+Automatic	EmailReaderWindow		Automàtic
+Cancel	EmailReaderWindow		Cancel·la
+Cc:	EmailReaderWindow		A/c:
+Check spelling	EmailReaderWindow		Revisa'n l'ortografia
+Close	EmailReaderWindow		Tanca
+Composer	EmailReaderWindow		Escriptor
+Copy	EmailReaderWindow		Copia
+Copy to new	EmailReaderWindow		Copia a nou
+Create Person file for	EmailReaderWindow		Crea un fitxer de persona per a
+Cut	EmailReaderWindow		Retalla
+Decrease quote level	EmailReaderWindow		Disminueix la citació
+Don't save	EmailReaderWindow		Sense desar
+Don't send	EmailReaderWindow		Sense enviar
+E-mail draft could not be saved!	EmailReaderWindow		No s'ha pogut desar l'esborrany del missatge!
+Edit	EmailReaderWindow		Edita
+Edit signatures…	EmailReaderWindow		Edita les signatures...
+Email accounts…	EmailReaderWindow		Comptes de correu electrònic...
+Email preferences…	EmailReaderWindow		Preferències de correu electrònic...
+Empty subject	EmailReaderWindow		Assumpte buit
+Encoding	EmailReaderWindow		Codificació
+File	EmailReaderWindow		Fitxer
+Find again	EmailReaderWindow		Torna a trobar
+Find…	EmailReaderWindow		Troba...
+Forward	EmailReaderWindow		Reenvia
+Forward	EmailReaderWindow	Toolbar, short as possible	Reenvia
+Forward without attachments	EmailReaderWindow		Reenvia sense fitxers adjunts
+Increase quote level	EmailReaderWindow		Augmenta la citació
+Message	EmailReaderWindow		Missatge
+Move to trash	EmailReaderWindow		Mou a la paperera
+Need Tracker to move items to trash	EmailReaderWindow		Cal el Rastejador per moure els elements a la paperera
+New	EmailReaderWindow	Toolbar, short as possible	Nou
+New mail message	EmailReaderWindow		Missatge nou
+Next	EmailReaderWindow	Toolbar, short as possible	Següent
+Next message	EmailReaderWindow		Missatge següent
+Next message, keep status	EmailReaderWindow		Missatge següent, mantén l'estat
+No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No s'ha trobat cap diccionari per al corrector ortogràfic.\n\nInstal·leu un fitxer \"words\" a:\n/boot/system/data/spell_check/word_dictionary/
+None	EmailReaderWindow		Cap
+OK	EmailReaderWindow		D'acord
+Page setup…	EmailReaderWindow		Configuració de la pàgina...
+Paste	EmailReaderWindow		Enganxa
+Previous	EmailReaderWindow	Toolbar, short as possible	Anterior
+Previous message	EmailReaderWindow		Missatge anterior
+Previous message, keep status	EmailReaderWindow		Missatge anterior, mantén l'estat
+Print	EmailReaderWindow	Toolbar, short as possible	Imprimeix
+Print…	EmailReaderWindow		Imprimeix...
+Redo	EmailReaderWindow		Refés
+Remove attachment	EmailReaderWindow		Suprimeix el fitxer adjunt
+Reply	EmailReaderWindow		Respon
+Reply	EmailReaderWindow	Toolbar, short as possible	Respon
+Reply all	EmailReaderWindow	Toolbar, short as possible	Respon a tothom
+Reply to all	EmailReaderWindow		Respon a tothom
+Reply to sender	EmailReaderWindow		Respon al remitent
+Resend	EmailReaderWindow		Reenvia
+Save	EmailReaderWindow		Desa
+Save	EmailReaderWindow	Toolbar, short as possible	Desa
+Save as draft	EmailReaderWindow		Desa com a esborrany
+Save this message as a draft before closing?	EmailReaderWindow		Voleu desar aquest missatge com a esborrany abans de tancar?
+Select all	EmailReaderWindow		Selecciona-ho tot
+Send	EmailReaderWindow		Envia
+Send	EmailReaderWindow	Toolbar, short as possible	Envia
+Send message	EmailReaderWindow		Envia el missatge
+Send this message before closing?	EmailReaderWindow		Voleu enviar aquest missatge abans de tancar?
+Show header	EmailReaderWindow		Mostra la capçalera
+Show raw message	EmailReaderWindow		Mostra el missatge en brut
+Signature	EmailReaderWindow	Toolbar, short as possible	Signatura
+Sorry	EmailReaderWindow		Perdoneu
+Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Perdoneu, no s'ha trobat cap aplicació que admeti el tipus de dades de persona.
+Spam	EmailReaderWindow	Toolbar, short as possible	Brossa
+Start now	EmailReaderWindow		Comença ara
+The mail_daemon could not be started:\n\t	EmailReaderWindow		No s'ha pogut iniciar mail_daemon:\n\t
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		El dimoni del correu no s'executa. El missatge és a la cua i s'enviarà quan s'iniciï.
+The subject is empty. Do you want to send anyway?	EmailReaderWindow		L'assumpte és buit. Voleu enviar-lo tanmateix?
+Trash	EmailReaderWindow	Toolbar, short as possible	Paperera
+Undo	EmailReaderWindow		Desfés
+Unread	EmailReaderWindow	Toolbar, short as possible	No llegit
+Untitled	EmailReaderWindow		Sense títol
+View	EmailReaderWindow		Visualització
+View HTML version	EmailReaderWindow		Mostra la versió HTML
+Viewer	EmailReaderWindow		Visualitzador
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		El text principal conté %ld caràcters no codificables. Potser un conjunt de caràcters diferent funcionaria millor? Premeu Envia per enviar-lo tanmateix (s'usarà un caràcter substitut en lloc dels no codificables) o seleccioneu Cancel·la per tornar enrere i intentar corregir-ho.
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 dia
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mes
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 setmana
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 any
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 dies
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 mesos
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 setmanes
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 anys
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 anys
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 mesos
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 setmanes
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 dies
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 dies
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 anys
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 dies
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 mesos
+All	TimeRangeSlider	Time range slider label - keep as short as possible	Tot
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Avui
+[Message truncated...]	EmailViewsWindow		[Missatge truncat...]
+[The draft has no body text to display]	EmailViewsWindow		[L'esborrany no té text de cos per mostrar.]
+%d emails selected.	EmailViewsWindow		%d missatges seleccionats.
+%s emails	EmailViewsWindow		%s missatges
+1 email	EmailViewsWindow		1 missatge
+A query named '%name%' already exists.	EmailViewsWindow		Ja existeix una consulta anomenada %name%.
+A query with the same search criteria already exists: '%name%'	EmailViewsWindow		Ja existeix una consulta amb els mateixos criteris de cerca: %name%
+About EmailViews…	EmailViewsWindow		Quant a l'EmailViews…
+Account:	EmailViewsWindow		Compte:
+Add 'Account' query	EmailViewsWindow		Afegeix una consulta de compte
+Add 'From' query	EmailViewsWindow		Afegeix una consulta de remitent
+Add 'To' query	EmailViewsWindow		Afegeix una consulta de destinatari
+All emails	EmailViewsWindow		Tots els missatges
+Backup failed	EmailViewsWindow		La còpia de seguretat ha fallat.
+Cancel	EmailViewsWindow		Cancel·la
+Check email	EmailViewsWindow		Comprova el correu electrònic
+Check email	EmailViewsWindow	Toolbar, short as possible	Comprova el correu electrònic
+Could not get email reference.	EmailViewsWindow		No s'ha pogut obtenir la referència del correu electrònic.
+Could not open email file.	EmailViewsWindow		No s'ha pogut obrir el fitxer de correu electrònic.
+Create anyway	EmailViewsWindow		Crea'l tanmateix
+Delete	EmailViewsWindow		Suprimeix
+Delete emails	EmailViewsWindow		Suprimeix els missatges
+Delete emails in Trash	EmailViewsWindow		Suprimeix els missatges de la paperera
+Deleting emails…	EmailViewsWindow		Se suprimeixen missatges...
+Draft emails	EmailViewsWindow		Esborranys de missatges
+Draft emails (%ld)	EmailViewsWindow		Esborranys de missatges (%ld)
+Email accounts…	EmailViewsWindow		Comptes de correu...
+Email backup	EmailViewsWindow		Còpia de seguretat del correu electrònic
+Email preferences…	EmailViewsWindow		Preferències de correu electrònic...
+Error	EmailViewsWindow		Error
+Failed to create query file.	EmailViewsWindow		Ha fallat crear el fitxer de consulta.
+Failed to start backup thread.	EmailViewsWindow		Ha fallat iniciar el fil de còpia de seguretat.
+Forward	EmailViewsWindow		Reenvia
+Forward	EmailViewsWindow	Toolbar, short as possible	Reenvia
+HTML message	EmailViewsWindow		Missatge HTML
+Mark as read	EmailViewsWindow		Marca com a llegit
+Mark as unread	EmailViewsWindow		Marca com a no llegit
+Mark read	EmailViewsWindow		Marca com a llegit
+Mark read	EmailViewsWindow	Toolbar, short as possible	Llegit
+Mark unread	EmailViewsWindow		Marca com a no llegit
+Mark unread	EmailViewsWindow	Toolbar, short as possible	No llegit
+Messages	EmailViewsWindow		Missatges
+Move to Trash	EmailViewsWindow		Mou a la paperera
+New email	EmailViewsWindow		Missatge nou
+New email	EmailViewsWindow	Toolbar, short as possible	Missatge nou
+Next	EmailViewsWindow	Toolbar, short as possible	Següent
+No emails found.	EmailViewsWindow		No s'ha trobat cap missatge.
+No emails in Trash.	EmailViewsWindow		No hi ha missatges a la paperera.
+No emails match your search.	EmailViewsWindow		No hi ha cap missatge que coincideixi amb la cerca.
+OK	EmailViewsWindow		D'acord
+Open queries folder	EmailViewsWindow		Obre la carpeta de consultes
+Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment %count% missatges de la paperera?\n\nAixò no es pot desfer.
+Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment %count% missatges?\n\nAixò no es pot desfer.
+Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment 1 missatge de la paperera?\n\nAixò no es pot desfer.
+Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment 1 missatge?\n\nAixò no es pot desfer.
+Previous	EmailViewsWindow	Toolbar, short as possible	Anterior
+Queries	EmailViewsWindow		Consultes
+Query exists	EmailViewsWindow		La consulta existeix
+Quit	EmailViewsWindow		Surt
+Reply	EmailViewsWindow		Respon
+Reply	EmailViewsWindow	Toolbar, short as possible	Respon
+Reply all	EmailViewsWindow		Respon a tothom
+Restore email	EmailViewsWindow		Restaura el correu electrònic
+Save backup as	EmailViewsWindow		Desa la còpia de seguretat com a
+Select an email to preview its contents.	EmailViewsWindow		Seleccioneu un missatge per previsualitzar-ne el contingut.
+Select folder	EmailViewsWindow		Seleccioneu la carpeta
+Sent emails	EmailViewsWindow		Missatges enviats
+Show in Deskbar	EmailViewsWindow		Mostra a la barra d'escriptori
+Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Perdoneu, no s'ha trobat cap aplicació que admeti el tipus de dades de persona.
+Starred emails	EmailViewsWindow		Missatges destacats
+Subject:	EmailViewsWindow		Assumpte:
+There are no emails in the Trash.	EmailViewsWindow		No hi ha cap missatge a la paperera.
+This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Aquest missatge té format HTML. Feu clic a continuació per obrir-lo al navegador predeterminat.
+Time range:	EmailViewsWindow		Interval de temps:
+To:	EmailViewsWindow		A:
+Trash	EmailViewsWindow		Paperera
+Trash	EmailViewsWindow	Toolbar, short as possible	Paperera
+Unread emails	EmailViewsWindow		Missatges no llegits
+Unread emails (%ld)	EmailViewsWindow		Missatges no llegits (%ld)
+View HTML version	EmailViewsWindow		Mostra'n la versió HTML
+Volumes	EmailViewsWindow		Volums
+With attachments	EmailViewsWindow		Amb adjunts
+You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		Intenteu restaurar %count% missatges que pertanyen a un compte que no està configurat al sistema. Seleccioneu la carpeta de destinació on els voleu restaurar.
+You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Intenteu restaurar 1 missatge que pertany a un compte que no està configurat al sistema. Seleccioneu la carpeta de destinació on el voleu restaurar.
+\\n - Newline	Preferences		\\n - Línia nova
+%d - Date	Preferences		%d - Data
+%e - E-mail address	Preferences		%e - Adreça electrònica
+%n - Full name	Preferences		%n - Nom complet
+<no account found>	Preferences		<no s'ha trobat cap compte>
+Account from mail	Preferences		Compte del missatge
+Attach attributes:	Preferences		Atributs de l'adjunt:
+Auto signature:	Preferences		Signatura automàtica:
+Automatically mark mail as read:	Preferences		Marca automàticament el missatge com a llegit:
+Beginner	Preferences		Principiant
+Button bar:	Preferences		Barra de botons:
+Cancel	Preferences		Cancel·la
+Colored quotes:	Preferences		Citacions acolorides:
+Default account:	Preferences		Compte predeterminat:
+Email preferences	Preferences		Preferències del correu
+Expert	Preferences		Expert
+Font:	Preferences		Lletra:
+Include file attributes in attachments	Preferences		Inclou els atributs dels fitxers als adjunts
+Initial spell check mode:	Preferences		Mode de correcció ortogràfica inicial:
+Mailing	Preferences		Enviament
+No file attributes, just plain data	Preferences		Sense atributs de fitxer, només dades simples
+None	Preferences		Cap
+Off	Preferences		Deactivat
+OK	Preferences		D'acord
+On	Preferences		Activat
+Outgoing encoding:	Preferences		Codificació de sortida:
+Reply account:	Preferences		Compte de resposta:
+Reply preamble:	Preferences		Preàmbul de la resposta:
+Revert	Preferences		Reverteix
+Show icons & labels	Preferences		Mostra les icones i les etiquetes
+Show icons only	Preferences		Mostra només icones
+Size:	Preferences		Mida:
+Text wrapping:	Preferences		Embolcall del text:
+Time range slider:	Preferences		Control lliscant de l'interval de temps:
+Use default account	Preferences		Usa el compte predeterminat
+User interface	Preferences		Interfície de l'usuari
+Warn unencodable:	Preferences		Avís no codificable:
+%count% new emails	DeskbarReplicant		%count% missatges nous
+1 new email	DeskbarReplicant		1 missatge nou
+About %app%…	DeskbarReplicant		Quant a %app%…
+Create new email…	DeskbarReplicant		Escriviu un missatge nou...
+Email accounts…	DeskbarReplicant		Comptes de correu...
+No new emails	DeskbarReplicant		No hi ha més missatges nous.
+Remove from Deskbar	DeskbarReplicant		Suprimeix de la barra de l'escriptori
+Send/Receive email	DeskbarReplicant		Envia / Rep correu
+Unread emails	DeskbarReplicant		Missatges no llegits
+Unread emails (%count%)	DeskbarReplicant		Missatges no llegits (%count%)
+%e wrote:\n	ReaderSettings		%e ha escrit el següent:\n
+None	ReaderSettings		Cap
+<none>	HeaderView		<cap>
+Bcc:	HeaderView		C/o:
+Cc:	HeaderView		A/c:
+Date:	HeaderView		Data:
+From:	HeaderView		De:
+Subject:	HeaderView		Assumpte:
+To:	HeaderView		A:
+Unknown	HeaderView		Desconegut
+Account	EmailColumnHeader		Compte
+Account	EmailColumnHeader	Email list column header	Compte
+Attachment	EmailColumnHeader		Adjunt
+Date	EmailColumnHeader		Data
+Date	EmailColumnHeader	Email list column header	Data
+From	EmailColumnHeader		A
+From	EmailColumnHeader	Email list column header	De
+Star	EmailColumnHeader		Destaca
+Status	EmailColumnHeader		Estat
+Status	EmailColumnHeader	Email list column header	Estat
+Subject	EmailColumnHeader		Assumpte
+Subject	EmailColumnHeader	Email list column header	Assumpte
+To	EmailColumnHeader		A
+To	EmailColumnHeader	Email list column header	A
+Account	SearchBarView		Compte
+Backup emails to ZIP file	SearchBarView		Còpia de seguretat dels missatges en un fitxer ZIP
+Backup in progress…	SearchBarView		Còpia de seguretat en curs...
+Clear search box	SearchBarView		Esborra el quadre de cerca
+contains	SearchBarView		conté
+Create query based on search criteria	SearchBarView		Crea una consulta basada en criteris de cerca
+Filter:	SearchBarView		Filtre:
+From	SearchBarView		De
+matches	SearchBarView		coincidències
+Select attribute(s) to query	SearchBarView		Seleccioneu l'atribut o atributs per consultar
+Select search operator	SearchBarView		Seleccioneu l'operador de cerca
+Subject	SearchBarView		Assumpte
+To	SearchBarView		A
+Type text and press Enter…	SearchBarView		Escriviu text i premeu retorn…
+Add	ContentView		Afegeix
+An error occurred trying to open this signature.	ContentView		Hi ha hagut un error en intentar obrir aquesta signatura.
+An error occurred trying to save the attachment.	ContentView		Hi ha hagut un error en intentar desar el fitxer adjunt.
+Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Adjunt: %name% (Tipus: %type%)
+Copy link location	ContentView		Copia la ubicació de l'enllaç
+Inconsistency occurred in the undo/redo buffer.	ContentView		Hi ha hagut una inconsistència a la memòria intermèdia de desfer / refer.
+No matches	ContentView		Cap coincidència
+OK	ContentView		D'acord
+Open attachment	ContentView		Obre el fitxer adjunt
+Open this link	ContentView		Obre aquest enllaç
+Save attachment…	ContentView		Desa el fitxer adjunt...
+Sorry	ContentView		Perdoneu
+There is no installed handler for URL links.	ContentView		No hi ha cap controlador instal·lat per a enllaços d'URL.
+Add 'Account' query	EmailListView		Afegeix una consulta de compte
+Add 'From' query	EmailListView		Afegeix una consulta de remitent
+Add 'To' query	EmailListView		Afegeix una consulta de destinatari
+Create Person file for	EmailListView		Crea un fitxer de persona per a
+Delete permanently	EmailListView		Suprimeix permanentment
+Filter by 'Account'	EmailListView		Filtra per compte
+Filter by 'Recipient'	EmailListView		Filtra per destinatari
+Filter by 'Sender'	EmailListView		Filtra per remitent
+Filter by 'Subject'	EmailListView		Filtra per assumpte
+Forward	EmailListView		Reenvia
+Mark as read	EmailListView		Marca com a llegit
+Mark as unread	EmailListView		Marca com a no llegit
+Move to Trash	EmailListView		Mou a la paperera
+New email to sender	EmailListView		Missatge nou per al remitent
+Reply	EmailListView		Respon
+Reply all	EmailListView		Respon a tothom
+Restore	EmailListView		Restaura
+Send as attachment	EmailListView		Enviar com a fitxer adjunt
+Star	EmailListView		Destacat
+Unstar	EmailListView		Sense destacar
+All people	AddressTextControl		Tothom
+An error occurred trying to save this signature.	SignatureWindow		Hi ha hagut un error en intentar desar aquesta signatura.
+Cancel	SignatureWindow		Cancel·la
+Copy	SignatureWindow		Copia
+Couldn't open this signature. Sorry.	SignatureWindow		No s'ha pogut obrir aquesta signatura.
+Cut	SignatureWindow		Retalla
+Delete	SignatureWindow		Suprimeix
+Don't save	SignatureWindow		Sense desar
+Edit	SignatureWindow		Edita
+New	SignatureWindow		Nou
+OK	SignatureWindow		D'acord
+Open	SignatureWindow		Obre
+Paste	SignatureWindow		Enganxa
+Really delete this signature? This cannot be undone.	SignatureWindow		Realment voleu suprimir aquesta signatura? Això no es pot desfer.
+Save	SignatureWindow		Desa
+Save changes to this signature?	SignatureWindow		Voleu desar els canvis d'aquesta signatura?
+Select all	SignatureWindow		Selecciona-ho tot
+Signature	SignatureWindow		Signatura
+Signature:	SignatureWindow		Signatura:
+Signatures	SignatureWindow		Signatures
+Sorry	SignatureWindow		Perdoneu
+Title:	SignatureWindow		Títol:
+Undo	SignatureWindow		Desfés
+Attachments:	EnclosuresView		Adjunts:
+OK	EnclosuresView		D'acord
+Only files can be added as attachments.	EnclosuresView		Només es poden afegir fitxers com a adjunts.
+Open attachment	EnclosuresView		Obre el fitxer adjunt
+Remove attachment	EnclosuresView		Suprimeix el fitxer adjunt
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		La supressió d'adjunts d'un missatge reenviat encara no està implementada!\nEncara no funcionarà correctament.
+Cancel	QueryNameDialog		Cancel·la
+Save	QueryNameDialog		Desa
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Creat amb l'ajuda d'eines d'IA.\nMantingut per Jorge Mare.
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews és un visualitzador de correu electrònic ràpid i lleuger per al Haiku que usa consultes en directe per organitzar i explorar els missatges de correu electrònic sense esforç.
+OK	AboutWindow		D'acord
+Delete emails in Trash	TrashItemView		Suprimeix missatges de la paperera
+Emails in Trash	TrashItemView		Missatges de la paperera
+Find	FindWindow		Troba
+Open	AttachmentStripView		Obre
+Remove	AttachmentStripView		Suprimeix
+Save as…	AttachmentStripView		Desa com a...
+Open query in Tracker…	QueryListView		Obre la consulta al Rastrejador…
+Remove query	QueryListView		Suprimeix la consulta
+Unread emails	QueryListView		Missatges no llegits
