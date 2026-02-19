@@ -167,7 +167,11 @@ static status_t ZipWorkerThread(void* data)
 struct TrashEmptyData {
     BList* emailRefs;  // List of entry_ref* to delete (may be NULL if query needed)
     BMessenger messenger;  // To notify window when done
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, false> volumes;  // Volumes to query (non-owning)
+#else
+    BObjectList<BVolume> volumes;  // Volumes to query (non-owning)
+#endif
 };
 
 static status_t TrashEmptyThread(void* data)
@@ -251,8 +255,13 @@ struct QueryCountCustomQuery {
 
 struct QueryCountData {
     BMessenger messenger;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> volumes;
     BObjectList<QueryCountCustomQuery, true> customQueries;
+#else
+    BObjectList<BVolume> volumes;
+    BObjectList<QueryCountCustomQuery> customQueries;
+#endif
     volatile bool* stopFlag;
     bool showTrashOnly;
     int32 listCount;
@@ -1372,7 +1381,11 @@ void EmailViewsWindow::ResolveBaseQuery(QueryItem* item)
 // Trash loader thread data
 struct TrashLoaderData {
     BMessenger messenger;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> volumes;
+#else
+    BObjectList<BVolume> volumes;
+#endif
     volatile bool* stopFlag;
 };
 
@@ -1420,7 +1433,11 @@ EmailViewsWindow::_TrashLoaderThread(void* data)
     int32 totalLoaded = 0;
     
     // Collect trash directories to scan (including subdirectories)
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BString, true> dirsToScan(20);
+#else
+    BObjectList<BString> dirsToScan(20);
+#endif
     
     for (int32 v = 0; v < loaderData->volumes.CountItems(); v++) {
         if (*stopFlag)
@@ -1562,7 +1579,11 @@ EmailViewsWindow::_QueryCountThread(void* data)
         // support path constraints. Instead we walk the directory tree and
         // check MIME type on each file.
         if (volumeTrashPath.InitCheck() == B_OK) {
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
             BObjectList<BString, true> dirsToScan(10);
+#else
+            BObjectList<BString> dirsToScan(10);
+#endif
             dirsToScan.AddItem(new BString(volumeTrashPath.Path()));
             
             for (int32 d = 0; d < dirsToScan.CountItems(); d++) {

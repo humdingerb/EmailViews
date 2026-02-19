@@ -145,8 +145,12 @@ private:
     void                    _SetResizeCursor(bool resize);
     void                    _SwapColumns(int32 fromIndex, int32 toIndex);
     void                    _ShowColumnContextMenu(BPoint where);
-    
+
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<ColumnInfo, true> fColumns;  // true = owns items
+#else
+    BObjectList<ColumnInfo> fColumns;
+#endif
     float                   fHeaderHeight;
     
     // Sort state

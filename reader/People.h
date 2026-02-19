@@ -61,7 +61,11 @@ private:
 	typedef std::map<node_ref, Person*> PersonMap;
 
 			QueryList&			fQueryList;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
 			BObjectList<Person, true> fPersons;
+#else
+			BObjectList<Person> fPersons;
+#endif
 			PersonMap			fPersonMap;
 };
 
