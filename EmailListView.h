@@ -140,7 +140,11 @@ public:
     // === Query Execution API ===
     
     void                StartQuery(const char* predicate,
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
                                    BObjectList<BVolume, true>* volumes = NULL,
+#else
+                                   BObjectList<BVolume>* volumes = NULL,
+#endif
                                    bool showTrash = false,
                                    bool attachmentsOnly = false);
     void                StopQuery();
@@ -337,7 +341,11 @@ private:
     // fNodeToIndex provides O(1) lookup by node_ref but may have stale indices
     // during Phase 2 loading (see IndexOf() for the safety mechanism).
     // fWatchedNodes tracks which nodes we have active B_WATCH_ATTR monitors on.
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<EmailItem, false>  fItems;  // Non-owning: MakeEmpty uses async disposal
+#else
+    BObjectList<EmailItem> fItems;  // Non-owning: MakeEmpty uses async disposal
+#endif
     std::unordered_map<node_ref, int32, NodeRefHash, NodeRefEqual> fNodeToIndex;
     std::unordered_set<node_ref, NodeRefHash, NodeRefEqual> fWatchedNodes;
     
@@ -386,7 +394,12 @@ private:
     std::shared_ptr<volatile bool> fCurrentStopFlag;  // Shared with loader thread; set to true to cancel
     volatile int32      fCurrentQueryId;  // Incremented on each new query to detect stale results
     BString             fQueryPredicate;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> fQueryVolumes;
+#else
+    BObjectList<BVolume> fQueryVolumes;
+#endif
+
     bool                fQueryShowTrash;
     bool                fQueryAttachmentsOnly;
     time_t              fQueryCutoffTime;
@@ -394,7 +407,11 @@ private:
     int32               fTotalCount;
     
     // Live queries
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BQuery, true> fLiveQueries;
+#else
+    BObjectList<BQuery> fLiveQueries;
+#endif
 };
 
 

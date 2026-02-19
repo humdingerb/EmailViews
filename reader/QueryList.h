@@ -69,7 +69,11 @@ private:
 			QueryVector			fQueries;
 			QueryVector			fQueryQueue;
 			ThreadVector		fFetchThreads;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
 			BObjectList<QueryListener, true> fListeners;
+#else
+			BObjectList<QueryListener> fListeners;
+#endif
 };
 
 

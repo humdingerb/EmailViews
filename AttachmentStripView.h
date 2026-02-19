@@ -114,8 +114,13 @@ private:
 	
 	static const float	kMaxChipWidth;
 	static const float	kChipPadding;
-	
+
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
 	BObjectList<AttachmentInfo, true> fAttachments;  // owns AttachmentInfo items
+#else
+	BObjectList<AttachmentInfo> fAttachments;
+#endif
+	
 	BEmailMessage*		fEmail;  // Owns the email message (read mode only)
 	BString				fEmailPath;
 	void*				fHtmlAlternative;      // Raw HTML alternative body content (if any)
