@@ -1702,14 +1702,11 @@ EmailListView::_UpdateStripeColor()
     // Compute stripe color: a subtle tint of the background.
     // Dark themes (low brightness) get a slightly lighter stripe;
     // light themes get a slightly darker stripe.
-    int32 brightness = (fBackgroundColor.red + fBackgroundColor.green
-                        + fBackgroundColor.blue) / 3;
-    int32 shift = (brightness > 127) ? -12 : 12;
-    
-    fStripeColor.red   = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.red + shift));
-    fStripeColor.green = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.green + shift));
-    fStripeColor.blue  = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.blue + shift));
-    fStripeColor.alpha = 255;
+
+	if (fBackgroundColor.IsLight())
+		fStripeColor = tint_color(fBackgroundColor, 1.047);
+	else
+		fStripeColor = tint_color(fBackgroundColor, 0.940f);
 }
 
 

@@ -2745,7 +2745,7 @@ void EmailViewsWindow::SaveWindowState()
     
     // Update split view positions (as proportional weights, not pixels)
     if (fHorizontalSplit) {
-        float weight0 = fHorizontalSplit->ItemWeight(0);
+        float weight0 = fHorizontalSplit->ItemWeight((int32)0);
         float weight1 = fHorizontalSplit->ItemWeight(1);
         float total = weight0 + weight1;
         float proportion = (total > 0) ? (weight0 / total) : 0.2f;
@@ -2754,7 +2754,7 @@ void EmailViewsWindow::SaveWindowState()
     }
     
     if (fVerticalSplit) {
-        float weight0 = fVerticalSplit->ItemWeight(0);
+        float weight0 = fVerticalSplit->ItemWeight((int32)0);
         float weight1 = fVerticalSplit->ItemWeight(1);
         float total = weight0 + weight1;
         float proportion = (total > 0) ? (weight0 / total) : 0.5f;
