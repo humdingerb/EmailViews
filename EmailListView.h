@@ -139,10 +139,11 @@ public:
     
     // === Query Execution API ===
     
-    void                StartQuery(const char* predicate,
 #if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
+    void                StartQuery(const char* predicate,
                                    BObjectList<BVolume, true>* volumes = NULL,
 #else
+    void                StartQuery(const char* predicate,
                                    BObjectList<BVolume>* volumes = NULL,
 #endif
                                    bool showTrash = false,
@@ -344,7 +345,7 @@ private:
 #if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<EmailItem, false>  fItems;  // Non-owning: MakeEmpty uses async disposal
 #else
-    BObjectList<EmailItem> fItems;  // Non-owning: MakeEmpty uses async disposal
+    BObjectList<EmailItem>  fItems;  // Non-owning: MakeEmpty uses async disposal
 #endif
     std::unordered_map<node_ref, int32, NodeRefHash, NodeRefEqual> fNodeToIndex;
     std::unordered_set<node_ref, NodeRefHash, NodeRefEqual> fWatchedNodes;
@@ -399,7 +400,6 @@ private:
 #else
     BObjectList<BVolume> fQueryVolumes;
 #endif
-
     bool                fQueryShowTrash;
     bool                fQueryAttachmentsOnly;
     time_t              fQueryCutoffTime;

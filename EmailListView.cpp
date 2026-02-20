@@ -250,7 +250,11 @@ struct LoaderData {
     EmailListView*      view;
     BMessenger          messenger;
     BString             predicate;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, false> volumes;  // Does NOT own items - we delete manually
+#else
+    BObjectList<BVolume> volumes;  // Does NOT own items - we delete manually
+#endif
     bool                showTrash;
     bool                attachmentsOnly;
     std::shared_ptr<volatile bool> stopFlag;  // Shared ownership with EmailListView
@@ -3458,8 +3462,13 @@ EmailListView::CompareItems(const EmailItem* a, const EmailItem* b,
 
 
 void
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
 EmailListView::StartQuery(const char* predicate, BObjectList<BVolume, true>* volumes,
                           bool showTrash, bool attachmentsOnly)
+#else
+EmailListView::StartQuery(const char* predicate, BObjectList<BVolume>* volumes,
+                          bool showTrash, bool attachmentsOnly)
+#endif
 {
     // Stop any existing query
     StopQuery();
@@ -3606,7 +3615,11 @@ EmailListView::_LoaderThread(void* data)
     
     // Batch of fully-loaded EmailRefs to send
     const int32 kBatchSize = 50;
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<EmailRef, false> batch(kBatchSize);
+#else
+    BObjectList<EmailRef> batch(kBatchSize);
+#endif
     int32 totalLoaded = 0;
     
     // Query each volume
