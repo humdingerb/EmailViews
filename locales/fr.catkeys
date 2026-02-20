@@ -1,4 +1,4 @@
-1	French	application/x-vnd.EmailViews	2649100377
+1	French	application/x-vnd.EmailViews	156248161
  Read 	EmailReaderWindow	Toolbar, short as possible	Lu
 (Address unavailable)	EmailReaderWindow		(Adresse indisponible)
 (Date unavailable)	EmailReaderWindow		(Date indisponible)
@@ -117,6 +117,7 @@ Add 'Account' query	EmailViewsWindow		Ajouter une requête 'Compte'
 Add 'From' query	EmailViewsWindow		Ajouter une requête 'De'
 Add 'To' query	EmailViewsWindow		Ajouter une requête 'À'
 All emails	EmailViewsWindow		Tous les courriels
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Êtes-vous certain de vouloir déplacer %count% courriels vers la corbeille ?
 Backup failed	EmailViewsWindow		Échec de la sauvegarde
 Cancel	EmailViewsWindow		Annuler
 Check email	EmailViewsWindow		Relever les courriels
