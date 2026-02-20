@@ -3356,8 +3356,27 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             if (fEmailList->IsLoading())
                 break;
             int32 count = fEmailList->CountItems();
-            if (count > 0)
+            if (count > 0) {
                 fEmailList->SelectRange(0, count - 1);
+                
+                // Update toolbar and menu item states for select-all.
+                // With everything selected we assume a mixed set of statuses,
+                // so both Mark Read and Mark Unread are enabled (their handlers
+                // are already status-aware and won't touch Sent/Replied/etc.).
+                // Reply and Forward are disabled — bulk compose is rarely
+                // intentional and Alt+A is easy to hit accidentally.
+                // Next/Previous are disabled — navigation is meaningless
+                // when everything is selected.
+                fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, !fShowTrashOnly);
+                fToolBar->SetActionEnabled(MSG_MARK_READ, !fShowTrashOnly);
+                fToolBar->SetActionEnabled(MSG_MARK_UNREAD, !fShowTrashOnly);
+                fMarkReadMenuItem->SetEnabled(!fShowTrashOnly);
+                fMarkUnreadMenuItem->SetEnabled(!fShowTrashOnly);
+                fToolBar->SetActionEnabled(MSG_REPLY, false);
+                fToolBar->SetActionEnabled(MSG_FORWARD, false);
+                fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
+                fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
+            }
             break;
         }
         
