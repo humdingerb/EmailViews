@@ -1,9 +1,10 @@
-1	English	application/x-vnd.EmailViews	2649100377
+1	English	application/x-vnd.EmailViews	156248161
 Open attachment	ContentView		Open attachment
 Cancel	QueryNameDialog		Cancel
 From	EmailColumnHeader		From
 Delete emails in Trash	EmailViewsWindow		Delete emails in Trash
 Inconsistency occurred in the undo/redo buffer.	ContentView		Inconsistency occurred in the undo/redo buffer.
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Are you sure you want to move %count% emails to Trash?
 User interface	Preferences		User interface
 Empty subject	EmailReaderWindow		Empty subject
 Deleting emails…	EmailViewsWindow		Deleting emails…

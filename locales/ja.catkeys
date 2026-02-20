@@ -1,4 +1,4 @@
-1	Japanese	application/x-vnd.EmailViews	2649100377
+1	Japanese	application/x-vnd.EmailViews	156248161
  Read 	EmailReaderWindow	Toolbar, short as possible	既読
 (Address unavailable)	EmailReaderWindow		（アドレスはありません）
 (Date unavailable)	EmailReaderWindow		（日時はありません）
@@ -117,6 +117,7 @@ Add 'Account' query	EmailViewsWindow		「アカウント」属性でクエリー
 Add 'From' query	EmailViewsWindow		「差出人」属性でクエリー追加
 Add 'To' query	EmailViewsWindow		「宛先」属性でクエリー追加
 All emails	EmailViewsWindow		全メール
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		%count%通のメールをごみ箱に移動してもよろしいですか?
 Backup failed	EmailViewsWindow		バックアップは失敗しました
 Cancel	EmailViewsWindow		中止
 Check email	EmailViewsWindow		メールチェック
