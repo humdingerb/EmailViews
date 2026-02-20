@@ -167,11 +167,7 @@ static status_t ZipWorkerThread(void* data)
 struct TrashEmptyData {
     BList* emailRefs;  // List of entry_ref* to delete (may be NULL if query needed)
     BMessenger messenger;  // To notify window when done
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, false> volumes;  // Volumes to query (non-owning)
-#else
-    BObjectList<BVolume> volumes;  // Volumes to query (non-owning)
-#endif
 };
 
 static status_t TrashEmptyThread(void* data)
@@ -255,13 +251,8 @@ struct QueryCountCustomQuery {
 
 struct QueryCountData {
     BMessenger messenger;
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> volumes;
     BObjectList<QueryCountCustomQuery, true> customQueries;
-#else
-    BObjectList<BVolume> volumes;
-    BObjectList<QueryCountCustomQuery> customQueries;
-#endif
     volatile bool* stopFlag;
     bool showTrashOnly;
     int32 listCount;
@@ -735,6 +726,10 @@ EmailViewsWindow::EmailViewsWindow()
     messagesMenu->AddItem(fMarkUnreadMenuItem);
     messagesMenu->AddSeparatorItem();
     messagesMenu->AddItem(new BMenuItem(B_TRANSLATE("Move to Trash"), new BMessage(MSG_DELETE_EMAIL)));
+    messagesMenu->AddSeparatorItem();
+    fUndoMenuItem = new BMenuItem(B_TRANSLATE("Undo Move to Trash"), new BMessage(MSG_UNDO_DELETE), 'Z');
+    fUndoMenuItem->SetEnabled(false);
+    messagesMenu->AddItem(fUndoMenuItem);
     menuBar->AddItem(messagesMenu);
     
     // Create Queries menu
@@ -1036,6 +1031,7 @@ EmailViewsWindow::EmailViewsWindow()
     AddShortcut('T', B_COMMAND_KEY | B_SHIFT_KEY, new BMessage(MSG_TOGGLE_TIME_RANGE));
     AddShortcut('A', B_COMMAND_KEY, new BMessage(MSG_SELECT_ALL_EMAILS));
     AddShortcut('S', B_COMMAND_KEY, new BMessage(MSG_FOCUS_SEARCH));
+    AddShortcut('Z', B_COMMAND_KEY, new BMessage(MSG_UNDO_DELETE));
     
     // Load volume selection BEFORE loading queries (queries need selected volumes)
     LoadVolumeSelection();
@@ -1381,11 +1377,7 @@ void EmailViewsWindow::ResolveBaseQuery(QueryItem* item)
 // Trash loader thread data
 struct TrashLoaderData {
     BMessenger messenger;
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> volumes;
-#else
-    BObjectList<BVolume> volumes;
-#endif
     volatile bool* stopFlag;
 };
 
@@ -1433,11 +1425,7 @@ EmailViewsWindow::_TrashLoaderThread(void* data)
     int32 totalLoaded = 0;
     
     // Collect trash directories to scan (including subdirectories)
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BString, true> dirsToScan(20);
-#else
-    BObjectList<BString> dirsToScan(20);
-#endif
     
     for (int32 v = 0; v < loaderData->volumes.CountItems(); v++) {
         if (*stopFlag)
@@ -1579,11 +1567,7 @@ EmailViewsWindow::_QueryCountThread(void* data)
         // support path constraints. Instead we walk the directory tree and
         // check MIME type on each file.
         if (volumeTrashPath.InitCheck() == B_OK) {
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
             BObjectList<BString, true> dirsToScan(10);
-#else
-            BObjectList<BString> dirsToScan(10);
-#endif
             dirsToScan.AddItem(new BString(volumeTrashPath.Path()));
             
             for (int32 d = 0; d < dirsToScan.CountItems(); d++) {
@@ -2766,7 +2750,7 @@ void EmailViewsWindow::SaveWindowState()
     
     // Update split view positions (as proportional weights, not pixels)
     if (fHorizontalSplit) {
-        float weight0 = fHorizontalSplit->ItemWeight((int32)0);
+        float weight0 = fHorizontalSplit->ItemWeight(0);
         float weight1 = fHorizontalSplit->ItemWeight(1);
         float total = weight0 + weight1;
         float proportion = (total > 0) ? (weight0 / total) : 0.2f;
@@ -2775,7 +2759,7 @@ void EmailViewsWindow::SaveWindowState()
     }
     
     if (fVerticalSplit) {
-        float weight0 = fVerticalSplit->ItemWeight((int32)0);
+        float weight0 = fVerticalSplit->ItemWeight(0);
         float weight1 = fVerticalSplit->ItemWeight(1);
         float total = weight0 + weight1;
         float proportion = (total > 0) ? (weight0 / total) : 0.5f;
@@ -3163,6 +3147,11 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                     // Give the email list keyboard focus so Alt+A and keyboard
                     // navigation work immediately without requiring a click
                     fEmailList->MakeFocus(true);
+                    
+                    // Clear undo stack on view switch — restored emails would
+                    // appear in a different view context
+                    fUndoStack.clear();
+                    fUndoMenuItem->SetEnabled(false);
                 }
             }
             break;
@@ -3222,6 +3211,11 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             // Give the email list keyboard focus so Alt+A and keyboard
             // navigation work immediately without requiring a click
             fEmailList->MakeFocus(true);
+            
+            // Clear undo stack — undo is not available in Trash view
+            // (the user has direct restore functionality there)
+            fUndoStack.clear();
+            fUndoMenuItem->SetEnabled(false);
             break;
         }
         
@@ -3407,6 +3401,72 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             break;
         }
         
+        case MSG_UNDO_DELETE: {
+            // Restore the most recently trashed batch of emails (Alt+Z).
+            if (fUndoStack.empty() || fShowTrashOnly)
+                break;
+            
+            // Pop the most recent delete operation
+            std::vector<node_ref> nrefs = std::move(fUndoStack.back());
+            fUndoStack.pop_back();
+            fUndoMenuItem->SetEnabled(!fUndoStack.empty());
+            
+            // For each node_ref, find the file (now in Trash) and restore it
+            // using its _trk/original_path attribute.
+            for (const node_ref& nref : nrefs) {
+                // Use the node_ref's device to find the correct trash directory
+                // for that volume — avoids scanning the wrong volume's trash.
+                BVolume vol(nref.device);
+                BPath trashPath;
+                if (vol.InitCheck() != B_OK
+                    || find_directory(B_TRASH_DIRECTORY, &trashPath, false, &vol) != B_OK)
+                    continue;
+                
+                BDirectory trashDir(trashPath.Path());
+                BEntry trashEntry;
+                bool found = false;
+                while (trashDir.GetNextEntry(&trashEntry) == B_OK) {
+                    node_ref entryNref;
+                    trashEntry.GetNodeRef(&entryNref);
+                    if (entryNref == nref) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (!found)
+                    continue;
+                
+                // Read the original path attribute
+                BNode trashNode(&trashEntry);
+                char originalPath[B_PATH_NAME_LENGTH];
+                ssize_t size = trashNode.ReadAttr("_trk/original_path", B_STRING_TYPE, 0,
+                    originalPath, sizeof(originalPath) - 1);
+                if (size <= 0)
+                    continue;
+                originalPath[size] = '\0';
+                
+                // Get the destination directory from the original path
+                BPath origPath(originalPath);
+                BPath parentPath;
+                if (origPath.GetParent(&parentPath) != B_OK)
+                    continue;
+                
+                // Ensure destination directory exists
+                create_directory(parentPath.Path(), 0755);
+                BDirectory destDir(parentPath.Path());
+                if (destDir.InitCheck() != B_OK)
+                    continue;
+                
+                // Move back to original location
+                trashEntry.MoveTo(&destDir);
+            }
+            
+            // Update counts after restore
+            ScheduleQueryCountUpdate();
+            break;
+        }
+        
         case MSG_DELETE_EMAIL: {
             // Get all selected rows
             BList selectedRows;
@@ -3517,10 +3577,16 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 }
                 
                 BList* pathsToTrash = new BList();
+                std::vector<node_ref> undoEntry;  // Captured before row removal
                 for (int32 i = 0; i < selectedRows.CountItems(); i++) {
                     EmailItem* selectedRow = (EmailItem*)selectedRows.ItemAt(i);
-                    if (selectedRow)
+                    if (selectedRow) {
                         pathsToTrash->AddItem(new BString(selectedRow->GetPath()));
+                        // Capture node_ref now — EmailItem is deleted by RemoveRow() below
+                        const node_ref* nref = selectedRow->GetNodeRef();
+                        if (nref)
+                            undoEntry.push_back(*nref);
+                    }
                 }
                 
                 // Remove rows from list immediately
@@ -3546,6 +3612,18 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 MoveToTrashData* trashData = new MoveToTrashData();
                 trashData->emailPaths = pathsToTrash;
                 trashData->messenger = BMessenger(this);
+                
+                // Push pre-captured node_refs onto undo stack so Alt+Z can restore them.
+                // node_refs were captured above before RemoveRow() deleted the EmailItems.
+                // At undo time we use the node_ref to find the file in Trash and
+                // restore it via its _trk/original_path attribute.
+                // Cap at 10 levels — drop the oldest entry if full.
+                if (!undoEntry.empty()) {
+                    if (fUndoStack.size() >= 10)
+                        fUndoStack.erase(fUndoStack.begin());
+                    fUndoStack.push_back(std::move(undoEntry));
+                    fUndoMenuItem->SetEnabled(true);
+                }
                 
                 thread_id thread = spawn_thread(MoveToTrashThread,
                     "move_to_trash", B_NORMAL_PRIORITY, trashData);
@@ -4043,6 +4121,10 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             }
             // Refresh counts - will query fresh
             RefreshQueryCountDisplay();
+            
+            // Clear undo stack — the emails no longer exist in Trash
+            fUndoStack.clear();
+            fUndoMenuItem->SetEnabled(false);
             break;
         }
         

@@ -42,6 +42,8 @@
 #include <Bitmap.h>
 #include <MenuField.h>
 #include <PopUpMenu.h>
+#include <vector>
+#include <utility>
 #include <MenuBar.h>
 #include <Menu.h>
 #include <MenuItem.h>
@@ -152,6 +154,7 @@ const uint32 MSG_NEXT_EMAIL = 'nxem';
 const uint32 MSG_PREV_EMAIL = 'pvem';
 const uint32 MSG_SELECT_ALL_EMAILS = 'sall';
 const uint32 MSG_FOCUS_SEARCH = 'fsrc';
+const uint32 MSG_UNDO_DELETE = 'undl';
 
 // Tracker scripting constants (for Mail Next/Previous navigation)
 const uint32 kNextSpecifier = 'snxt';
@@ -285,12 +288,7 @@ private:
     node_ref fTrashDirRef;    // For monitoring trash directory when viewing trash
     BString fCurrentFolder;
     QueryItem* fCurrentViewItem;  // Currently displayed view (for column prefs)
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BQuery, true> fBackgroundNewMailQueries;  // Background queries for new mail count
-#else
-    BObjectList<BQuery> fBackgroundNewMailQueries;  // Background queries for new mail count
-#endif
-
     BackgroundQueryHandler* fBackgroundQueryHandler;  // Handler for background query messages
     bool fShowTrashOnly;
     volatile bool fTrashLoaderStop;
@@ -347,16 +345,17 @@ private:
     BFilePanel* fRestoreFolderPanel;
     BList fPendingRestoreRefs;  // List of entry_ref* for emails awaiting folder selection
     
+    // Undo delete stack — each entry is a list of node_refs from one delete operation
+    // (max 10 levels; older entries are dropped when the stack is full)
+    std::vector<std::vector<node_ref>> fUndoStack;
+    BMenuItem* fUndoMenuItem;  // "Undo Move to Trash" in Messages menu
+    
     void ApplySearchFilter();
     
     // Volume selection
     BMenu* fVolumeMenu;
     BVolumeRoster fVolumeRoster;  // Must persist for B_WATCH_VOLUME notifications
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> fSelectedVolumes;  // List of currently selected volumes
-#else
-    BObjectList<BVolume> fSelectedVolumes;  // List of currently selected volumes
-#endif
     void BuildVolumeMenu();
     void UpdateVolumeMenu();
     void LoadVolumeSelection();

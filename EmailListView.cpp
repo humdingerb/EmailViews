@@ -250,11 +250,7 @@ struct LoaderData {
     EmailListView*      view;
     BMessenger          messenger;
     BString             predicate;
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, false> volumes;  // Does NOT own items - we delete manually
-#else
-    BObjectList<BVolume> volumes;  // Does NOT own items - we delete manually
-#endif
     bool                showTrash;
     bool                attachmentsOnly;
     std::shared_ptr<volatile bool> stopFlag;  // Shared ownership with EmailListView
@@ -1706,11 +1702,14 @@ EmailListView::_UpdateStripeColor()
     // Compute stripe color: a subtle tint of the background.
     // Dark themes (low brightness) get a slightly lighter stripe;
     // light themes get a slightly darker stripe.
-
-	if (fBackgroundColor.IsLight())
-		fStripeColor = tint_color(fBackgroundColor, 1.047);
-	else
-		fStripeColor = tint_color(fBackgroundColor, 0.940f);
+    int32 brightness = (fBackgroundColor.red + fBackgroundColor.green
+                        + fBackgroundColor.blue) / 3;
+    int32 shift = (brightness > 127) ? -12 : 12;
+    
+    fStripeColor.red   = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.red + shift));
+    fStripeColor.green = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.green + shift));
+    fStripeColor.blue  = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.blue + shift));
+    fStripeColor.alpha = 255;
 }
 
 
@@ -1802,6 +1801,9 @@ EmailListView::_HandleKeyDown(const char* bytes, int32 numBytes)
 {
     if (numBytes == 1) {
         int32 mods = ::modifiers();
+        // DEBUG: log all keystrokes to stderr
+        fprintf(stderr, "[EmailListView] KeyDown: bytes[0]=0x%02x ('%c') numBytes=%d mods=0x%08x B_COMMAND_KEY=0x%08x\n",
+            (unsigned char)bytes[0], bytes[0], (int)numBytes, (int)mods, (int)B_COMMAND_KEY);
         bool extend = (mods & B_SHIFT_KEY) != 0;
         int32 current = fLastClickIndex >= 0 ? fLastClickIndex : FirstSelected();
         
@@ -1885,6 +1887,16 @@ EmailListView::_HandleKeyDown(const char* bytes, int32 numBytes)
             case B_DELETE:
                 if (CountSelected() > 0) {
                     _MoveSelectedToTrash();
+                }
+                break;
+            
+            case 'z':
+            case 'Z':
+                // Alt+Z — forward undo delete to the parent window
+                // Using raw constant 'undl' = MSG_UNDO_DELETE (defined in EmailViews.h)
+                // to avoid circular include dependency.
+                if (mods & B_COMMAND_KEY) {
+                    BMessenger(Window()).SendMessage(new BMessage('undl'));
                 }
                 break;
             
@@ -3446,14 +3458,8 @@ EmailListView::CompareItems(const EmailItem* a, const EmailItem* b,
 
 
 void
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
 EmailListView::StartQuery(const char* predicate, BObjectList<BVolume, true>* volumes,
                           bool showTrash, bool attachmentsOnly)
-#else
-EmailListView::StartQuery(const char* predicate, BObjectList<BVolume>* volumes,
-                          bool showTrash, bool attachmentsOnly)
-#endif
-
 {
     // Stop any existing query
     StopQuery();
@@ -3600,11 +3606,7 @@ EmailListView::_LoaderThread(void* data)
     
     // Batch of fully-loaded EmailRefs to send
     const int32 kBatchSize = 50;
-#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<EmailRef, false> batch(kBatchSize);
-#else
-    BObjectList<EmailRef> batch(kBatchSize);
-#endif
     int32 totalLoaded = 0;
     
     // Query each volume
