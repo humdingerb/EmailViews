@@ -1,4 +1,4 @@
-1	Catalan	application/x-vnd.EmailViews	2649100377
+1	Catalan	application/x-vnd.EmailViews	156248161
  Read 	EmailReaderWindow	Toolbar, short as possible	Llegeix
 (Address unavailable)	EmailReaderWindow		(Adreça no disponible)
 (Date unavailable)	EmailReaderWindow		(Data no disponible)
@@ -117,6 +117,7 @@ Add 'Account' query	EmailViewsWindow		Afegeix una consulta de compte
 Add 'From' query	EmailViewsWindow		Afegeix una consulta de remitent
 Add 'To' query	EmailViewsWindow		Afegeix una consulta de destinatari
 All emails	EmailViewsWindow		Tots els missatges
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Segur que voleu moure %count% missatges a la paperera?
 Backup failed	EmailViewsWindow		La còpia de seguretat ha fallat.
 Cancel	EmailViewsWindow		Cancel·la
 Check email	EmailViewsWindow		Comprova el correu electrònic
