@@ -2163,8 +2163,9 @@ void EmailViewsWindow::MarkEmailAsRead(const char* emailPath, bool read)
                 node.WriteAttr("MAIL:read", B_INT32_TYPE, 0, &readFlag, sizeof(readFlag));
             }
         } else {
-            // Mark as unread - set to "New"
-            if (strcmp(oldStatus, "New") != 0) {
+            // Mark as unread - only change emails with "Read" status.
+            // Other statuses (Sent, Replied, Forwarded, etc.) must be left untouched.
+            if (strcmp(oldStatus, "Read") == 0) {
                 node.WriteAttr("MAIL:status", B_STRING_TYPE, 0, "New", 4);
                 int32 readFlag = B_UNREAD;
                 node.WriteAttr("MAIL:read", B_INT32_TYPE, 0, &readFlag, sizeof(readFlag));
@@ -4085,11 +4086,25 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 MarkEmailAsRead(row->GetPath(), true);
             }
             
-            // Update toolbar/menu: all selected are now read
-            fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-            fMarkReadMenuItem->SetEnabled(false);
-            fToolBar->SetActionEnabled(MSG_MARK_UNREAD, true);
-            fMarkUnreadMenuItem->SetEnabled(true);
+            // Re-scan selection to set accurate button states.
+            // Some emails may still be "Read" (were already read) or have other
+            // statuses (Sent, Replied) that were left untouched.
+            {
+                bool hasNew = false;
+                bool hasRead = false;
+                row = NULL;
+                while ((row = fEmailList->CurrentSelection(row)) != NULL) {
+                    const char* status = row->GetStatus();
+                    if (strcmp(status, "New") == 0)
+                        hasNew = true;
+                    else if (strcmp(status, "Read") == 0)
+                        hasRead = true;
+                }
+                fToolBar->SetActionEnabled(MSG_MARK_READ, hasNew);
+                fMarkReadMenuItem->SetEnabled(hasNew);
+                fToolBar->SetActionEnabled(MSG_MARK_UNREAD, hasRead);
+                fMarkUnreadMenuItem->SetEnabled(hasRead);
+            }
             
             // Update folder unread counts
             ScheduleQueryCountUpdate();
@@ -4103,11 +4118,23 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 MarkEmailAsRead(row->GetPath(), false);
             }
             
-            // Update toolbar/menu: all selected are now unread
-            fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-            fMarkUnreadMenuItem->SetEnabled(false);
-            fToolBar->SetActionEnabled(MSG_MARK_READ, true);
-            fMarkReadMenuItem->SetEnabled(true);
+            // Re-scan selection to set accurate button states.
+            {
+                bool hasNew = false;
+                bool hasRead = false;
+                row = NULL;
+                while ((row = fEmailList->CurrentSelection(row)) != NULL) {
+                    const char* status = row->GetStatus();
+                    if (strcmp(status, "New") == 0)
+                        hasNew = true;
+                    else if (strcmp(status, "Read") == 0)
+                        hasRead = true;
+                }
+                fToolBar->SetActionEnabled(MSG_MARK_READ, hasNew);
+                fMarkReadMenuItem->SetEnabled(hasNew);
+                fToolBar->SetActionEnabled(MSG_MARK_UNREAD, hasRead);
+                fMarkUnreadMenuItem->SetEnabled(hasRead);
+            }
             
             // Update folder unread counts
             ScheduleQueryCountUpdate();
