@@ -288,7 +288,11 @@ private:
     node_ref fTrashDirRef;    // For monitoring trash directory when viewing trash
     BString fCurrentFolder;
     QueryItem* fCurrentViewItem;  // Currently displayed view (for column prefs)
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BQuery, true> fBackgroundNewMailQueries;  // Background queries for new mail count
+#else
+    BObjectList<BQuery> fBackgroundNewMailQueries;  // Background queries for new mail count
+#endif
     BackgroundQueryHandler* fBackgroundQueryHandler;  // Handler for background query messages
     bool fShowTrashOnly;
     volatile bool fTrashLoaderStop;
@@ -355,7 +359,11 @@ private:
     // Volume selection
     BMenu* fVolumeMenu;
     BVolumeRoster fVolumeRoster;  // Must persist for B_WATCH_VOLUME notifications
+#if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
     BObjectList<BVolume, true> fSelectedVolumes;  // List of currently selected volumes
+#else
+    BObjectList<BVolume> fSelectedVolumes;  // List of currently selected volumes
+#endif
     void BuildVolumeMenu();
     void UpdateVolumeMenu();
     void LoadVolumeSelection();
