@@ -2036,6 +2036,17 @@ EmailListView::_CompareForInsertion(const EmailRef* a, const EmailRef* b) const
                 result = -1;
             else if (a->when > b->when)
                 result = 1;
+            else {
+                // Tiebreaker: inode number (sequential on BFS, higher = newer file).
+                // MAIL:when is second-precision, so two emails sent/received within
+                // the same second (e.g. sending to yourself) have identical timestamps.
+                // Inode numbers are assigned sequentially, making them a reliable
+                // proxy for creation order within the same volume.
+                if (a->nodeRef.node < b->nodeRef.node)
+                    result = -1;
+                else if (a->nodeRef.node > b->nodeRef.node)
+                    result = 1;
+            }
             break;
     }
     
@@ -3403,8 +3414,17 @@ EmailListView::CompareItems(const EmailItem* a, const EmailItem* b,
                 result = -1;
             else if (refA->when > refB->when)
                 result = 1;
-            else
-                result = 0;
+            else {
+                // Tiebreaker: inode number (sequential on BFS, higher = newer file).
+                // MAIL:when is second-precision, so two emails sent/received within
+                // the same second (e.g. sending to yourself) have identical timestamps.
+                // Inode numbers are assigned sequentially, making them a reliable
+                // proxy for creation order within the same volume.
+                if (refA->nodeRef.node < refB->nodeRef.node)
+                    result = -1;
+                else if (refA->nodeRef.node > refB->nodeRef.node)
+                    result = 1;
+            }
             break;
         case kSortByAccount:
             result = strcasecmp(refA->account.String(), refB->account.String());
