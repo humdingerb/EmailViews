@@ -1,4 +1,4 @@
-1	German	application/x-vnd.EmailViews	2649100377
+1	German	application/x-vnd.EmailViews	156248161
  Read 	EmailReaderWindow	Toolbar, short as possible	 Gelesen 
 (Address unavailable)	EmailReaderWindow		(Adresse nicht verfügbar)
 (Date unavailable)	EmailReaderWindow		(Datum nicht verfügbar)
@@ -117,6 +117,7 @@ Add 'Account' query	EmailViewsWindow		Gleiches Konto
 Add 'From' query	EmailViewsWindow		Gleicher Absender
 Add 'To' query	EmailViewsWindow		Gleicher Empfänger
 All emails	EmailViewsWindow		Alle Emails
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Sollen tatsächlich %count% Emails in den Papierkorb verschoben werden?
 Backup failed	EmailViewsWindow		Sicherung fehlgeschlagen
 Cancel	EmailViewsWindow		Abbrechen
 Check email	EmailViewsWindow		Email abfragen
