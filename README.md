@@ -30,15 +30,17 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 **Sortable columns** — Click any column header to sort by status, star, attachment, sender/recipient, subject, date, or account. Drag columns to reorder them. Column layout is saved per view.
 
-**Keyboard navigation** — Arrow keys, Page Up/Down, Home/End for list navigation. Enter to open, Delete to trash. Shift-click and Shift-arrows for multi-selection.
+**Keyboard navigation** — Arrow keys, Page Up/Down, Home/End for list navigation. Enter to open, Delete to trash. Shift-click and Shift-arrows for multi-selection. Alt+A to select all emails in the current view.
 
-**Trash management** — Move emails to trash, restore them to their original location, or permanently delete them. The trash view shows a count badge and supports emptying all at once.
+**Trash management** — Move emails to trash, restore them to their original location, or permanently delete them. The trash view shows a count badge and supports emptying all at once. A confirmation dialog is shown when moving 50 or more emails to trash at once.
+
+**Undo move to Trash** — Press Alt+Z (or use Messages → Undo Move to Trash) to restore the most recently trashed batch of emails back to their original location, without having to navigate to the Trash view. Supports up to 10 levels of undo.
 
 **Email backup** — Back up the current view's emails to a ZIP archive via the toolbar search bar's menu.
 
 **Deskbar integration** — An optional Deskbar replicant shows the unread mail count in the system tray with a popup menu for quick access.
 
-**Multi-volume support** — Query emails across multiple mounted volumes.
+**Multi-volume support** — Query and manage emails across multiple mounted volumes. Select which volumes to include via the Volumes menu.
 
 **Dark theme support** — Respects Haiku's system colors and works with both light and dark themes.
 
@@ -46,9 +48,9 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 ## Requirements
 
-- 64-bit Haiku (tested on R1/nightly builds)
 - At least one email account configured in Haiku's E-mail preferences
 - `mail_daemon` running (starts automatically when email accounts are configured)
+- EmailViews was developed in 64-bit Haiku, but should compile and run on R1/beta 5 and after
 
 ## Building
 
@@ -81,10 +83,32 @@ On first run, EmailViews creates a `queries` directory in its settings folder (`
 ## Usage tips
 
 - **Creating custom queries**: Right-click an email in the list and choose "Add 'From' query", "Add 'To' query", or "Add 'Account' query" from the Messages menu to create a filtered view for that sender, recipient, or account.
-- **Time range filtering**: Press Cmd+Shift+T to toggle the time range slider, which lets you narrow results to a specific date range.
+- **Time range filtering**: Press Alt+Shift+T to toggle the time range slider, which lets you narrow results to a specific date range.
 - **Starring emails**: Click the star column in the email list, or use the toolbar button in the reader window.
 - **Deskbar replicant**: Enable via the EmailViews menu → "Show in Deskbar". The tray icon shows the current unread count.
 - **Column customization**: Drag column headers to reorder, click to sort. Each view remembers its own column layout.
+- **Select all**: Press Alt+A to select all emails in the current view. Reply, Forward, and navigation buttons are disabled in this mode to prevent accidental bulk actions.
+- **Undo delete**: Press Alt+Z immediately after moving emails to Trash to restore them to their original location. Each press undoes one delete operation.
+- **Bulk delete safeguard**: Moving 50 or more emails to Trash at once requires confirmation.
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| Alt+N | New email |
+| Alt+R | Reply |
+| Alt+Shift+R | Reply all |
+| Alt+Shift+F | Forward |
+| Delete | Move to Trash |
+| Alt+Z | Undo Move to Trash |
+| Alt+A | Select all |
+| Alt+S | Focus search |
+| Alt+Shift+T | Toggle time range slider |
+| Enter | Open selected email |
+| Arrow keys | Navigate email list |
+| Shift+Arrow | Extend selection |
+| Page Up/Down | Scroll by page |
+| Home/End | Jump to first/last email |
 
 ## Credits
 
@@ -97,7 +121,7 @@ EmailViews is built on the shoulders of Haiku's mail kit and draws inspiration f
 
 Icons from the Haiku and Zumi icon sets.
 
-Special thanks to **Humdinger** for meticulous testing, detailed bug reports, and valuable feature suggestions.
+Special thanks to **Humdinger** for meticulous testing, detailed bug reports, valuable feature suggestions, and code contributions.
 
 ## License
 
