@@ -3137,6 +3137,10 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                         // Use ApplySearchFilter to include time range predicate
                         ApplySearchFilter();
                     }
+                    
+                    // Give the email list keyboard focus so Alt+A and keyboard
+                    // navigation work immediately without requiring a click
+                    fEmailList->MakeFocus(true);
                 }
             }
             break;
@@ -3192,6 +3196,10 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             
             // Load trash emails by scanning trash directories directly
             LoadTrashEmails();
+            
+            // Give the email list keyboard focus so Alt+A and keyboard
+            // navigation work immediately without requiring a click
+            fEmailList->MakeFocus(true);
             break;
         }
         
@@ -3439,6 +3447,25 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 // loading (they may not be started yet), so we remove rows
                 // ourselves. If a live query B_ENTRY_REMOVED arrives later,
                 // RemoveEmail will be a no-op (not found in HashMap).
+                
+                // Confirm before moving a large number of emails to Trash
+                if (deleteCount >= 50) {
+                    BString confirmMsg;
+                    BString fmt(B_TRANSLATE("Are you sure you want to move %count% emails to Trash?"));
+                    BString countStr;
+                    countStr << deleteCount;
+                    fmt.ReplaceAll("%count%", countStr);
+                    confirmMsg = fmt;
+                    
+                    BAlert* alert = new BAlert(B_TRANSLATE("Move to Trash"),
+                        confirmMsg.String(),
+                        B_TRANSLATE("Cancel"), B_TRANSLATE("Move to Trash"), NULL,
+                        B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+                    alert->SetShortcut(0, B_ESCAPE);
+                    
+                    if (alert->Go() != 1)
+                        break;
+                }
                 
                 // Remember index of first selected row for auto-select after removal
                 int32 firstIndex = -1;
@@ -4024,6 +4051,10 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 
                 UpdateEmailCountLabel();
                 ScheduleQueryCountUpdate();
+                
+                // Give the email list keyboard focus when loading completes
+                // so Alt+A and keyboard navigation work without requiring a click
+                fEmailList->MakeFocus(true);
             }
             break;
         }
