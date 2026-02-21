@@ -1710,9 +1710,9 @@ EmailListView::_UpdateStripeColor()
                         + fBackgroundColor.blue) / 3;
     int32 shift = (brightness > 127) ? -12 : 12;
     
-    fStripeColor.red   = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.red + shift));
-    fStripeColor.green = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.green + shift));
-    fStripeColor.blue  = (uint8)std::max(0, std::min(255, (int32)fBackgroundColor.blue + shift));
+    fStripeColor.red   = (uint8)std::max(0, std::min(255, (int)fBackgroundColor.red + (int)shift));
+    fStripeColor.green = (uint8)std::max(0, std::min(255, (int)fBackgroundColor.green + (int)shift));
+    fStripeColor.blue  = (uint8)std::max(0, std::min(255, (int)fBackgroundColor.blue + (int)shift));
     fStripeColor.alpha = 255;
 }
 
