@@ -42,6 +42,9 @@ public:
 			void				SetLabel(const char* label);
 			const char*			Label() const { return fLabel.Length() > 0 ? fLabel.String() : NULL; }
 
+			void				SetLabelVisible(bool visible);
+			bool				IsLabelVisible() const { return fLabelVisible; }
+
 			void				SetEnabled(bool enabled);
 			bool				IsEnabled() const { return fEnabled; }
 
@@ -60,6 +63,7 @@ private:
 			BMessage*			fMessage;
 			BHandler*			fTarget;
 			bool				fEnabled;
+			bool				fLabelVisible;
 			bool				fInside;
 			bool				fPressed;
 			BSize				fCachedSize;
@@ -73,6 +77,7 @@ public:
 
 	virtual	void				Hide();
 	virtual	void				AllAttached();
+			void				UpdateLayout();
 
 			void				AddAction(uint32 command, BHandler* target,
 									const BBitmap* icon,

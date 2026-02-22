@@ -596,55 +596,57 @@ EmailReaderWindow::BuildToolBar()
 	const int32 kIconRead = 202;         // MarkAsRead (shared)
 
 	fToolBar = new ToolBarView();
+	#undef B_TRANSLATION_CONTEXT
+	#define B_TRANSLATION_CONTEXT "Toolbar"
 	fToolBar->AddAction(M_NEW, this, _RetrieveVectorIcon(kIconNew), NULL,
-		B_TRANSLATE_COMMENT("New", "Toolbar, short as possible"));
+		B_TRANSLATE_COMMENT("New", "As short as possible"));
 	fToolBar->AddView(new BSeparatorView(B_VERTICAL, B_PLAIN_BORDER));
 
 	if (fResending) {
 		fToolBar->AddAction(M_SEND_NOW, this, _RetrieveVectorIcon(kIconSend), NULL,
-			B_TRANSLATE_COMMENT("Send", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Send", "As short as possible"));
 	} else if (!fIncoming) {
 		fToolBar->AddAction(M_SEND_NOW, this, _RetrieveVectorIcon(kIconSend), NULL,
-			B_TRANSLATE_COMMENT("Send", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Send", "As short as possible"));
 		fToolBar->SetActionEnabled(M_SEND_NOW, false);
 		fToolBar->AddAction(M_SIG_MENU, this, _RetrieveVectorIcon(kIconSignature), NULL,
-			B_TRANSLATE_COMMENT("Signature", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Signature", "As short as possible"));
 		fToolBar->AddAction(M_ADD, this, _RetrieveVectorIcon(kIconAttachment), NULL,
-			B_TRANSLATE_COMMENT("Attach", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Attach", "As short as possible"));
 		fToolBar->AddAction(M_SAVE_AS_DRAFT, this, _RetrieveVectorIcon(kIconSave), NULL,
-			B_TRANSLATE_COMMENT("Save", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Save", "As short as possible"));
 		fToolBar->SetActionEnabled(M_SAVE_AS_DRAFT, false);
 		fToolBar->AddAction(M_PRINT, this, _RetrieveVectorIcon(kIconPrint), NULL,
-			B_TRANSLATE_COMMENT("Print", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Print", "As short as possible"));
 		fToolBar->SetActionEnabled(M_PRINT, false);
 		fToolBar->AddAction(M_DELETE, this, _RetrieveVectorIcon(kIconTrash), NULL,
-			B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Trash", "As short as possible"));
 	} else {
 		fToolBar->AddAction(M_REPLY, this, _RetrieveVectorIcon(kIconReply), NULL,
-			B_TRANSLATE_COMMENT("Reply", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Reply", "As short as possible"));
 		fToolBar->AddAction(M_REPLY_ALL, this, _RetrieveVectorIcon(kIconReplyAll), NULL,
-			B_TRANSLATE_COMMENT("Reply all", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Reply all", "As short as possible"));
 		fToolBar->AddAction(M_FORWARD, this, _RetrieveVectorIcon(kIconForward), NULL,
-			B_TRANSLATE_COMMENT("Forward", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Forward", "As short as possible"));
 		fToolBar->AddAction(M_PRINT, this, _RetrieveVectorIcon(kIconPrint), NULL,
-			B_TRANSLATE_COMMENT("Print", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Print", "As short as possible"));
 		fToolBar->AddAction(M_DELETE_NEXT, this, _RetrieveVectorIcon(kIconTrash), NULL,
-			B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Trash", "As short as possible"));
 		if (gReaderSettings->ShowSpamGUI()) {
 			fToolBar->AddAction(M_SPAM_BUTTON, this, _RetrieveVectorIcon(kIconTrash),
-				NULL, B_TRANSLATE_COMMENT("Spam", "Toolbar, short as possible"));
+				NULL, B_TRANSLATE_COMMENT("Spam", "As short as possible"));
 		}
 		fToolBar->AddView(new BSeparatorView(B_VERTICAL, B_PLAIN_BORDER));
 		fToolBar->AddAction(M_NEXTMSG, this, _RetrieveVectorIcon(kIconNext), NULL,
-			B_TRANSLATE_COMMENT("Next", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Next", "As short as possible"));
 		fToolBar->AddAction(M_UNREAD, this, _RetrieveVectorIcon(kIconUnread), NULL,
-			B_TRANSLATE_COMMENT("Unread", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Unread", "As short as possible"));
 		fToolBar->SetActionVisible(M_UNREAD, false);
 		fToolBar->AddAction(M_READ, this, _RetrieveVectorIcon(kIconRead), NULL,
-			B_TRANSLATE_COMMENT(" Read ", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT(" Read ", "As short as possible"));
 		fToolBar->SetActionVisible(M_READ, false);
 		fToolBar->AddAction(M_PREVMSG, this, _RetrieveVectorIcon(kIconPrevious), NULL,
-			B_TRANSLATE_COMMENT("Previous", "Toolbar, short as possible"));
+			B_TRANSLATE_COMMENT("Previous", "As short as possible"));
 
 		if (fEmailViewsWindow == NULL) {
 			fToolBar->SetActionEnabled(M_NEXTMSG, false);
@@ -655,6 +657,8 @@ EmailReaderWindow::BuildToolBar()
 			_AddReadButton();
 	}
 	fToolBar->AddGlue();
+	#undef B_TRANSLATION_CONTEXT
+	#define B_TRANSLATION_CONTEXT "EmailReaderWindow"
 }
 
 
@@ -669,21 +673,20 @@ EmailReaderWindow::UpdateViews()
 			fToolBar->Show();
 
 		bool showLabel = showToolBar == kShowToolBar;
-		_UpdateLabel(M_NEW, B_TRANSLATE_COMMENT("New", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_SEND_NOW, B_TRANSLATE_COMMENT("Send", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_SIG_MENU, B_TRANSLATE_COMMENT("Signature", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_SAVE_AS_DRAFT, B_TRANSLATE_COMMENT("Save", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_PRINT, B_TRANSLATE_COMMENT("Print", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_DELETE, B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_REPLY, B_TRANSLATE_COMMENT("Reply", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_REPLY_ALL, B_TRANSLATE_COMMENT("Reply all", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_FORWARD, B_TRANSLATE_COMMENT("Forward", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_DELETE_NEXT, B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_SPAM_BUTTON, B_TRANSLATE_COMMENT("Spam", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_NEXTMSG, B_TRANSLATE_COMMENT("Next", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_UNREAD, B_TRANSLATE_COMMENT("Unread", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_READ, B_TRANSLATE_COMMENT(" Read ", "Toolbar, short as possible"), showLabel);
-		_UpdateLabel(M_PREVMSG, B_TRANSLATE_COMMENT("Previous", "Toolbar, short as possible"), showLabel);
+		static const uint32 kCommands[] = {
+			M_NEW, M_SEND_NOW, M_SIG_MENU, M_ADD, M_SAVE_AS_DRAFT,
+			M_PRINT, M_DELETE, M_REPLY, M_REPLY_ALL, M_FORWARD,
+			M_DELETE_NEXT, M_SPAM_BUTTON, M_NEXTMSG, M_UNREAD,
+			M_READ, M_PREVMSG
+		};
+		for (uint32 i = 0; i < sizeof(kCommands) / sizeof(kCommands[0]); i++) {
+			ToolBarButton* button = fToolBar->FindButton(kCommands[i]);
+			if (button != NULL) {
+				button->SetLabelVisible(showLabel);
+				button->SetToolTip(showLabel ? NULL : button->Label());
+			}
+		}
+		fToolBar->UpdateLayout();
 	} else if (!fToolBar->IsHidden())
 		fToolBar->Hide();
 }
@@ -694,6 +697,7 @@ EmailReaderWindow::UpdatePreferences()
 {
 	fAutoMarkRead = gReaderSettings->AutoMarkRead();
 
+	UpdateViews();
 	_UpdateReadButton();
 }
 
@@ -3376,17 +3380,6 @@ EmailReaderWindow::AddAutoSignature(bool beforeQuotedText, bool resetChanged)
 		}
 	} else {
 		// Query failed - nothing to do
-	}
-}
-
-
-void
-EmailReaderWindow::_UpdateLabel(uint32 command, const char* label, bool show)
-{
-	ToolBarButton* button = fToolBar->FindButton(command);
-	if (button != NULL) {
-		button->SetLabel(show ? label : NULL);
-		button->SetToolTip(show ? NULL : label);
 	}
 }
 

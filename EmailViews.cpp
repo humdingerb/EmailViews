@@ -792,26 +792,30 @@ EmailViewsWindow::EmailViewsWindow()
     
     // Create toolbar
     fToolBar = new ToolBarView();
-    fToolBar->AddAction(MSG_CHECK_EMAIL, this, LoadIconById(kIconCheckEmail), NULL, B_TRANSLATE_COMMENT("Check email", "Toolbar, short as possible"));
-    fToolBar->AddAction(MSG_NEW_EMAIL, this, LoadIconById(kIconNewEmail), NULL, B_TRANSLATE_COMMENT("New email", "Toolbar, short as possible"));
-    fToolBar->AddAction(MSG_REPLY, this, LoadIconById(kIconReply), NULL, B_TRANSLATE_COMMENT("Reply", "Toolbar, short as possible"));
+    #undef B_TRANSLATION_CONTEXT
+    #define B_TRANSLATION_CONTEXT "Toolbar"
+    fToolBar->AddAction(MSG_CHECK_EMAIL, this, LoadIconById(kIconCheckEmail), NULL, B_TRANSLATE_COMMENT("Check email", "As short as possible"));
+    fToolBar->AddAction(MSG_NEW_EMAIL, this, LoadIconById(kIconNewEmail), NULL, B_TRANSLATE_COMMENT("New email", "As short as possible"));
+    fToolBar->AddAction(MSG_REPLY, this, LoadIconById(kIconReply), NULL, B_TRANSLATE_COMMENT("Reply", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_REPLY, false);
-    fToolBar->AddAction(MSG_FORWARD, this, LoadIconById(kIconForward), NULL, B_TRANSLATE_COMMENT("Forward", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_FORWARD, this, LoadIconById(kIconForward), NULL, B_TRANSLATE_COMMENT("Forward", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_FORWARD, false);
-    fToolBar->AddAction(MSG_MARK_READ, this, LoadIconById(kIconMarkRead), NULL, B_TRANSLATE_COMMENT("Mark read", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_MARK_READ, this, LoadIconById(kIconMarkRead), NULL, B_TRANSLATE_COMMENT("Mark read", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-    fToolBar->AddAction(MSG_MARK_UNREAD, this, LoadIconById(kIconMarkUnread), NULL, B_TRANSLATE_COMMENT("Mark unread", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_MARK_UNREAD, this, LoadIconById(kIconMarkUnread), NULL, B_TRANSLATE_COMMENT("Mark unread", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-    fToolBar->AddAction(MSG_DELETE_EMAIL, this, LoadIconById(kIconDelete), NULL, B_TRANSLATE_COMMENT("Trash", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_DELETE_EMAIL, this, LoadIconById(kIconDelete), NULL, B_TRANSLATE_COMMENT("Trash", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
     fToolBar->AddSeparator();
     const int32 kIconNext = 1013;
     const int32 kIconPrevious = 1012;
-    fToolBar->AddAction(MSG_NEXT_EMAIL, this, LoadIconById(kIconNext), NULL, B_TRANSLATE_COMMENT("Next", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_NEXT_EMAIL, this, LoadIconById(kIconNext), NULL, B_TRANSLATE_COMMENT("Next", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
-    fToolBar->AddAction(MSG_PREV_EMAIL, this, LoadIconById(kIconPrevious), NULL, B_TRANSLATE_COMMENT("Previous", "Toolbar, short as possible"));
+    fToolBar->AddAction(MSG_PREV_EMAIL, this, LoadIconById(kIconPrevious), NULL, B_TRANSLATE_COMMENT("Previous", "As short as possible"));
     fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
     fToolBar->AddGlue();  // Glue at end like reader window
+    #undef B_TRANSLATION_CONTEXT
+    #define B_TRANSLATION_CONTEXT "EmailViewsWindow"
     
     // Apply toolbar button bar preference (icons only vs icons & labels)
     _UpdateToolBar();
@@ -2274,22 +2278,19 @@ void EmailViewsWindow::_UpdateToolBar()
     // Treat kHideToolBar (0) as kShowToolBar (show with labels) for backwards compatibility
     bool showLabel = (showToolBar == kShowToolBar || showToolBar == kHideToolBar);
     
-    _UpdateToolBarLabel(MSG_CHECK_EMAIL, B_TRANSLATE("Check email"), showLabel);
-    _UpdateToolBarLabel(MSG_NEW_EMAIL, B_TRANSLATE("New email"), showLabel);
-    _UpdateToolBarLabel(MSG_REPLY, B_TRANSLATE("Reply"), showLabel);
-    _UpdateToolBarLabel(MSG_FORWARD, B_TRANSLATE("Forward"), showLabel);
-    _UpdateToolBarLabel(MSG_MARK_READ, B_TRANSLATE("Mark read"), showLabel);
-    _UpdateToolBarLabel(MSG_MARK_UNREAD, B_TRANSLATE("Mark unread"), showLabel);
-    _UpdateToolBarLabel(MSG_DELETE_EMAIL, B_TRANSLATE("Trash"), showLabel);
-}
-
-void EmailViewsWindow::_UpdateToolBarLabel(uint32 command, const char* label, bool show)
-{
-    ToolBarButton* button = fToolBar->FindButton(command);
-    if (button != NULL) {
-        button->SetLabel(show ? label : NULL);
-        button->SetToolTip(show ? NULL : label);
+    static const uint32 kLabeledCommands[] = {
+        MSG_CHECK_EMAIL, MSG_NEW_EMAIL, MSG_REPLY, MSG_FORWARD,
+        MSG_MARK_READ, MSG_MARK_UNREAD, MSG_DELETE_EMAIL,
+        MSG_NEXT_EMAIL, MSG_PREV_EMAIL
+    };
+    for (uint32 i = 0; i < sizeof(kLabeledCommands) / sizeof(kLabeledCommands[0]); i++) {
+        ToolBarButton* button = fToolBar->FindButton(kLabeledCommands[i]);
+        if (button != NULL) {
+            button->SetLabelVisible(showLabel);
+            button->SetToolTip(showLabel ? NULL : button->Label());
+        }
     }
+    fToolBar->UpdateLayout();
 }
 
 void EmailViewsWindow::ShowEmptyListMessage(const char* message)

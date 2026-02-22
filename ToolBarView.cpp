@@ -26,7 +26,7 @@
 
 
 static const float kIconSize = 32.0f;
-static const float kPaddingH = 8.0f;	// horizontal padding around content
+static const float kPaddingH = 4.0f;	// horizontal padding around content
 static const float kPaddingTop = 4.0f;	// above icon
 static const float kPaddingBottom = 6.0f;	// below label (extra to compensate for icon's built-in top margin)
 static const float kIconLabelGap = 1.0f;	// between icon and label
@@ -44,6 +44,7 @@ ToolBarButton::ToolBarButton(const char* name, const BBitmap* icon,
 	fMessage(message),
 	fTarget(target),
 	fEnabled(true),
+	fLabelVisible(true),
 	fInside(false),
 	fPressed(false),
 	fCachedSize(-1, -1)
@@ -115,7 +116,7 @@ ToolBarButton::Draw(BRect updateRect)
 	}
 
 	// Draw label below icon
-	if (fLabel.Length() > 0) {
+	if (fLabelVisible && fLabel.Length() > 0) {
 		font_height fh;
 		GetFontHeight(&fh);
 
@@ -200,6 +201,13 @@ ToolBarButton::AttachedToWindow()
 	SetViewUIColor(B_MENU_BACKGROUND_COLOR);
 	SetLowUIColor(B_MENU_BACKGROUND_COLOR);
 	SetHighUIColor(B_CONTROL_TEXT_COLOR);
+
+	// Reduce label font to 90% of the system default for compact toolbar appearance
+	BFont font;
+	GetFont(&font);
+	font.SetSize(font.Size() * 0.95f);
+	SetFont(&font);
+	fCachedSize.Set(-1, -1);
 }
 
 
@@ -231,6 +239,18 @@ ToolBarButton::SetLabel(const char* label)
 		fLabel = label;
 	else
 		fLabel = "";
+	fCachedSize.Set(-1, -1);
+	InvalidateLayout();
+	Invalidate();
+}
+
+
+void
+ToolBarButton::SetLabelVisible(bool visible)
+{
+	if (fLabelVisible == visible)
+		return;
+	fLabelVisible = visible;
 	fCachedSize.Set(-1, -1);
 	InvalidateLayout();
 	Invalidate();
@@ -283,7 +303,7 @@ ToolBarButton::_CalculateSize()
 	float width = kIconSize + kPaddingH * 2;
 	float height = kPaddingTop + kIconSize + kPaddingBottom;
 
-	if (fLabel.Length() > 0) {
+	if (fLabelVisible && fLabel.Length() > 0) {
 		font_height fh;
 		GetFontHeight(&fh);
 		float labelWidth = StringWidth(fLabel.String()) + kPaddingH * 2;
@@ -345,6 +365,42 @@ ToolBarView::AllAttached()
 	}
 
 	// Apply uniform width to all buttons
+	if (maxWidth > 0) {
+		for (int32 i = 0; BView* view = ChildAt(i); i++) {
+			ToolBarButton* button = dynamic_cast<ToolBarButton*>(view);
+			if (button == NULL)
+				continue;
+			button->SetExplicitMinSize(BSize(maxWidth, B_SIZE_UNSET));
+			button->SetExplicitMaxSize(BSize(maxWidth, B_SIZE_UNSET));
+		}
+	}
+}
+
+
+void
+ToolBarView::UpdateLayout()
+{
+	// Re-equalize button widths after a label visibility change.
+	// First clear explicit sizes so PreferredSize() reflects the new state,
+	// then find the new maximum and reapply uniform widths.
+	for (int32 i = 0; BView* view = ChildAt(i); i++) {
+		ToolBarButton* button = dynamic_cast<ToolBarButton*>(view);
+		if (button == NULL)
+			continue;
+		button->SetExplicitMinSize(BSize(B_SIZE_UNSET, B_SIZE_UNSET));
+		button->SetExplicitMaxSize(BSize(B_SIZE_UNSET, B_SIZE_UNSET));
+	}
+
+	float maxWidth = 0;
+	for (int32 i = 0; BView* view = ChildAt(i); i++) {
+		ToolBarButton* button = dynamic_cast<ToolBarButton*>(view);
+		if (button == NULL)
+			continue;
+		float width = button->PreferredSize().width;
+		if (width > maxWidth)
+			maxWidth = width;
+	}
+
 	if (maxWidth > 0) {
 		for (int32 i = 0; BView* view = ChildAt(i); i++) {
 			ToolBarButton* button = dynamic_cast<ToolBarButton*>(view);
