@@ -6,7 +6,6 @@
 #include "AttachmentStripView.h"
 
 #include <algorithm>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -128,8 +127,14 @@ void
 AttachmentStripView::FrameResized(float newWidth, float newHeight)
 {
 	BView::FrameResized(newWidth, newHeight);
-	// Just redraw - don't InvalidateLayout here as it causes infinite loop with splitters
-	Invalidate();
+	// If the correct height differs from the current height, the layout was
+	// calculated with incorrect metrics (e.g. Bounds().Width() was -1 at
+	// layout time). Trigger a layout recalculation to correct it.
+	float correctHeight = _CalculateTotalHeight();
+	if (fAttachments.CountItems() > 0 && correctHeight != newHeight)
+		InvalidateLayout();
+	else
+		Invalidate();
 }
 
 
