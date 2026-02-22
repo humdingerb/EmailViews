@@ -1,11 +1,46 @@
-1	French	application/x-vnd.EmailViews	156248161
- Read 	EmailReaderWindow	Toolbar, short as possible	Lu
+1	French	application/x-vnd.EmailViews	4210084602
+ Read 	Toolbar	As short as possible	 Read 
+Attach	Toolbar	As short as possible	Attach
+Check email	Toolbar	As short as possible	Check email
+Forward	Toolbar	As short as possible	Forward
+Mark read	Toolbar	As short as possible	Mark read
+Mark unread	Toolbar	As short as possible	Mark unread
+New	Toolbar	As short as possible	New
+New email	Toolbar	As short as possible	New email
+Next	Toolbar	As short as possible	Next
+Previous	Toolbar	As short as possible	Previous
+Print	Toolbar	As short as possible	Print
+Reply	Toolbar	As short as possible	Reply
+Reply all	Toolbar	As short as possible	Reply all
+Save	Toolbar	As short as possible	Save
+Send	Toolbar	As short as possible	Send
+Signature	Toolbar	As short as possible	Signature
+Spam	Toolbar	As short as possible	Spam
+Trash	Toolbar	As short as possible	Trash
+Unread	Toolbar	As short as possible	Unread
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 jour
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mois
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 semaine
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 an
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 jours
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 mois
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 semaines
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 ans
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 jours
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 mois
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 semaines
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 jours
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 jours
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 ans
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 jours
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 mois
+All	TimeRangeSlider	Time range slider label - keep as short as possible	Tout
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Aujourd'hui
 (Address unavailable)	EmailReaderWindow		(Adresse indisponible)
 (Date unavailable)	EmailReaderWindow		(Date indisponible)
 (Name unavailable)	EmailReaderWindow		(Nom indisponible)
 Add attachment…	EmailReaderWindow		Ajouter une pièce jointe…
 Add signature	EmailReaderWindow		Ajouter une signature
-Attach	EmailReaderWindow	Toolbar, short as possible	Joindre
 Automatic	EmailReaderWindow		Automatique
 Cancel	EmailReaderWindow		Annuler
 Cc:	EmailReaderWindow		Cc :
@@ -30,15 +65,12 @@ File	EmailReaderWindow		Fichier
 Find again	EmailReaderWindow		Poursuivre la recherche
 Find…	EmailReaderWindow		Rechercher…
 Forward	EmailReaderWindow		Transmettre
-Forward	EmailReaderWindow	Toolbar, short as possible	Transmettre
 Forward without attachments	EmailReaderWindow		Transmettre sans pièce jointe
 Increase quote level	EmailReaderWindow		Augmenter le niveau de citation
 Message	EmailReaderWindow		Message
 Move to trash	EmailReaderWindow		Déplacer vers la corbeille
 Need Tracker to move items to trash	EmailReaderWindow		En attente du déplacement des éléments vers la corbeille par le Tracker
-New	EmailReaderWindow	Toolbar, short as possible	Nouveau
 New mail message	EmailReaderWindow		Nouveau message courriel
-Next	EmailReaderWindow	Toolbar, short as possible	Suivant
 Next message	EmailReaderWindow		Message suivant
 Next message, keep status	EmailReaderWindow		Message suivant, maintenir le statut
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		Aucun dictionnaire orthographique a été trouvé.\n\nVeuillez installer un fichier \"words\" dans :\n/boot/system/data/spell_check/word_dictionary/
@@ -46,64 +78,36 @@ None	EmailReaderWindow		Aucun
 OK	EmailReaderWindow		D'accord
 Page setup…	EmailReaderWindow		Mise en page…
 Paste	EmailReaderWindow		Coller
-Previous	EmailReaderWindow	Toolbar, short as possible	Précédent
 Previous message	EmailReaderWindow		Message précédent
 Previous message, keep status	EmailReaderWindow		Message précédent, maintenir le statut
-Print	EmailReaderWindow	Toolbar, short as possible	Imprimer
 Print…	EmailReaderWindow		Imprimer…
 Redo	EmailReaderWindow		Refaire
 Remove attachment	EmailReaderWindow		Supprimer la pièce jointe
 Reply	EmailReaderWindow		Répondre
-Reply	EmailReaderWindow	Toolbar, short as possible	Répondre
-Reply all	EmailReaderWindow	Toolbar, short as possible	Répondre à tous
 Reply to all	EmailReaderWindow		Répondre à tous
 Reply to sender	EmailReaderWindow		Répondre à l'expéditeur
 Resend	EmailReaderWindow		Envoyer de nouveau
 Save	EmailReaderWindow		Enregistrer
-Save	EmailReaderWindow	Toolbar, short as possible	Enregistrer
 Save as draft	EmailReaderWindow		Enregistrer comme brouillon
 Save this message as a draft before closing?	EmailReaderWindow		Enregistrer ce message comme brouillon avant de fermer ?
 Select all	EmailReaderWindow		Sélectionner tout
 Send	EmailReaderWindow		Envoyer
-Send	EmailReaderWindow	Toolbar, short as possible	Envoyer
 Send message	EmailReaderWindow		Envoyer le message
 Send this message before closing?	EmailReaderWindow		Envoyer ce message avant de fermer ?
 Show header	EmailReaderWindow		Afficher l'en-tête
 Show raw message	EmailReaderWindow		Afficher le message brut
-Signature	EmailReaderWindow	Toolbar, short as possible	Signature
 Sorry	EmailReaderWindow		Désolé
 Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Désolé, impossible de trouver une application gérant le type de données 'Personne'.
-Spam	EmailReaderWindow	Toolbar, short as possible	Spam
 Start now	EmailReaderWindow		Démarrer maintenant
 The mail_daemon could not be started:\n\t	EmailReaderWindow		Impossible de démarrer mail_daemon :\n\t
 The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		mail_daemon n'est pas lancé. Le message est ajouté à la file d'attente et sera envoyé lorsque mail_daemon sera démarré.
 The subject is empty. Do you want to send anyway?	EmailReaderWindow		Le sujet est vide. Voulez-vous envoyer quand même ?
-Trash	EmailReaderWindow	Toolbar, short as possible	Corbeille
 Undo	EmailReaderWindow		Défaire
-Unread	EmailReaderWindow	Toolbar, short as possible	Non-lu
 Untitled	EmailReaderWindow		Sans titre
 View	EmailReaderWindow		Voir
 View HTML version	EmailReaderWindow		Voir la version HTML
 Viewer	EmailReaderWindow		Visionneur
 Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Votre texte principal contient %ld caractères non-encodables. Peut être cela fonctionnerait-il mieux avec un jeu de caractères différent ? Tapez Envoyer pour envoyer quand même (un caractère de substitution sera utilisé à la place de ceux qui ne peuvent pas être encodés), ou choisissez Annuler pour revenir en arrière et essayer d'arranger ça.
--1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 jour
--1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mois
--1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 semaine
--1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 an
--2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 jours
--2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 mois
--2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 semaines
--2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 ans
--3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 jours
--3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 mois
--3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 semaines
--4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 jours
--5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 jours
--5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 ans
--6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 jours
--6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 mois
-All	TimeRangeSlider	Time range slider label - keep as short as possible	Tout
-Today	TimeRangeSlider	Time range slider label - keep as short as possible	Aujourd'hui
 [Message truncated...]	EmailViewsWindow		[Message tronqué...]
 [The draft has no body text to display]	EmailViewsWindow		[Le brouillon ne contient pas de corps de texte à afficher]
 %d emails selected.	EmailViewsWindow		%d courriels sélectionnés.
@@ -120,8 +124,6 @@ All emails	EmailViewsWindow		Tous les courriels
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Êtes-vous certain de vouloir déplacer %count% courriels vers la corbeille ?
 Backup failed	EmailViewsWindow		Échec de la sauvegarde
 Cancel	EmailViewsWindow		Annuler
-Check email	EmailViewsWindow		Relever les courriels
-Check email	EmailViewsWindow	Toolbar, short as possible	Relever
 Could not get email reference.	EmailViewsWindow		Impossible d'obtenir la référence du courriel.
 Could not open email file.	EmailViewsWindow		Impossible d'ouvrir le fichier courriel.
 Create anyway	EmailViewsWindow		Créer quand même
@@ -138,19 +140,12 @@ Error	EmailViewsWindow		Erreur
 Failed to create query file.	EmailViewsWindow		Échec de la création du fichier requête.
 Failed to start backup thread.	EmailViewsWindow		Échec au démarrage du fil de sauvegarde.
 Forward	EmailViewsWindow		Transmettre
-Forward	EmailViewsWindow	Toolbar, short as possible	Transmettre
 HTML message	EmailViewsWindow		Message HTML
 Mark as read	EmailViewsWindow		Marquer comme lu
 Mark as unread	EmailViewsWindow		Marquer comme non-lu
-Mark read	EmailViewsWindow		Marquer comme lu
-Mark read	EmailViewsWindow	Toolbar, short as possible	Marquer lu
-Mark unread	EmailViewsWindow		Marquer comme non-lu
-Mark unread	EmailViewsWindow	Toolbar, short as possible	Marquer non-lu
 Messages	EmailViewsWindow		Messages
 Move to Trash	EmailViewsWindow		Déplacer vers la corbeille
 New email	EmailViewsWindow		Nouveau courriel
-New email	EmailViewsWindow	Toolbar, short as possible	Nouveau courriel
-Next	EmailViewsWindow	Toolbar, short as possible	Suivant
 No emails found.	EmailViewsWindow		Aucun courriel trouvé.
 No emails in Trash.	EmailViewsWindow		Aucun courriel dans la corbeille.
 No emails match your search.	EmailViewsWindow		Aucun courriel correspond à votre recherche.
@@ -160,12 +155,10 @@ Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailVie
 Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Supprimer définitivement %count% courriels ?\n\nC'est irrémédiable.
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Supprimer définitivement ce courriel de la corbeille ?\n\nC'est irrémédiable.
 Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Supprimer définitivement ce courriel ?\n\nC'est irrémédiable.
-Previous	EmailViewsWindow	Toolbar, short as possible	Précédent
 Queries	EmailViewsWindow		Requêtes
 Query exists	EmailViewsWindow		La requête existe
 Quit	EmailViewsWindow		Quitter
 Reply	EmailViewsWindow		Répondre
-Reply	EmailViewsWindow	Toolbar, short as possible	Répondre
 Reply all	EmailViewsWindow		Répondre à tous
 Restore email	EmailViewsWindow		Restaurer le courriel
 Save backup as	EmailViewsWindow		Sauvegarder en tant que
@@ -180,8 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		Il n'a pas de courriel dans 
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Ce message est au format HTML.\nCliquer ci-dessous pour l'ouvrir dans le navigateur par défaut.
 Time range:	EmailViewsWindow		Intervalle de temps :
 To:	EmailViewsWindow		À :
-Trash	EmailViewsWindow		Corbeille
-Trash	EmailViewsWindow	Toolbar, short as possible	Corbeille
+Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
 Unread emails	EmailViewsWindow		Courriels non-lus
 Unread emails (%ld)	EmailViewsWindow		Courriels non-lus (%ld)
 View HTML version	EmailViewsWindow		Voir la version HTML

@@ -1,11 +1,46 @@
-1	Turkish	application/x-vnd.EmailViews	2649100377
- Read 	EmailReaderWindow	Toolbar, short as possible	Oku
+1	Turkish	application/x-vnd.EmailViews	4210084602
+ Read 	Toolbar	As short as possible	 Read 
+Attach	Toolbar	As short as possible	Attach
+Check email	Toolbar	As short as possible	Check email
+Forward	Toolbar	As short as possible	Forward
+Mark read	Toolbar	As short as possible	Mark read
+Mark unread	Toolbar	As short as possible	Mark unread
+New	Toolbar	As short as possible	New
+New email	Toolbar	As short as possible	New email
+Next	Toolbar	As short as possible	Next
+Previous	Toolbar	As short as possible	Previous
+Print	Toolbar	As short as possible	Print
+Reply	Toolbar	As short as possible	Reply
+Reply all	Toolbar	As short as possible	Reply all
+Save	Toolbar	As short as possible	Save
+Send	Toolbar	As short as possible	Send
+Signature	Toolbar	As short as possible	Signature
+Spam	Toolbar	As short as possible	Spam
+Trash	Toolbar	As short as possible	Trash
+Unread	Toolbar	As short as possible	Unread
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	−1 gün
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	−1 ay
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	−1 hafta
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	−1 yıl
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	−2 gün
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	−2 ay
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	−2 hafta
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	−2 yıl
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	−3 gün
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	−3 ay
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	−3 hafta
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	−4 gün
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	−5 gün
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	−5 yıl
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	−6 gün
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	−6 ay
+All	TimeRangeSlider	Time range slider label - keep as short as possible	Tümü
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Bugün
 (Address unavailable)	EmailReaderWindow		(Adres kullanılamıyor)
 (Date unavailable)	EmailReaderWindow		(Tarih kullanılamıyor)
 (Name unavailable)	EmailReaderWindow		(Ad kullanılamıyor)
 Add attachment…	EmailReaderWindow		Ek koy…
 Add signature	EmailReaderWindow		İmza ekle
-Attach	EmailReaderWindow	Toolbar, short as possible	İliştir
 Automatic	EmailReaderWindow		Kendiliğinden
 Cancel	EmailReaderWindow		Vazgeç
 Cc:	EmailReaderWindow		Kopya:
@@ -30,15 +65,12 @@ File	EmailReaderWindow		Dosya
 Find again	EmailReaderWindow		Yeniden bul
 Find…	EmailReaderWindow		Bul…
 Forward	EmailReaderWindow		İlet
-Forward	EmailReaderWindow	Toolbar, short as possible	İlet
 Forward without attachments	EmailReaderWindow		Ek olmadan ilet
 Increase quote level	EmailReaderWindow		Alıntı düzeyini artır
 Message	EmailReaderWindow		İleti
 Move to trash	EmailReaderWindow		Çöpe taşı
 Need Tracker to move items to trash	EmailReaderWindow		Ögeleri çöpe taşıması için İzleyici’ye gereksinim duyuluyor
-New	EmailReaderWindow	Toolbar, short as possible	Yeni
 New mail message	EmailReaderWindow		Yeni posta iletisi
-Next	EmailReaderWindow	Toolbar, short as possible	Sonraki
 Next message	EmailReaderWindow		Sonraki ileti
 Next message, keep status	EmailReaderWindow		Sonraki ileti, durumu tut
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		Bulunan yazım denetimi sözlüğü yok.\n\nLütfen şu konuma bir “sözcükler” dosyası yerleştirin:\n/boot/system/data/spell_check/word_dictionary/
@@ -46,64 +78,36 @@ None	EmailReaderWindow		Yok
 OK	EmailReaderWindow		Tamam
 Page setup…	EmailReaderWindow		Sayfa yerleşimi…
 Paste	EmailReaderWindow		Yapıştır
-Previous	EmailReaderWindow	Toolbar, short as possible	Önceki
 Previous message	EmailReaderWindow		Önceki ileti
 Previous message, keep status	EmailReaderWindow		Önceki ileti, durumu tut
-Print	EmailReaderWindow	Toolbar, short as possible	Yazdır
 Print…	EmailReaderWindow		Yazdır…
 Redo	EmailReaderWindow		Yinele
 Remove attachment	EmailReaderWindow		Eki kaldır
 Reply	EmailReaderWindow		Yanıtla
-Reply	EmailReaderWindow	Toolbar, short as possible	Yanıtla
-Reply all	EmailReaderWindow	Toolbar, short as possible	Tümünü yanıtla
 Reply to all	EmailReaderWindow		Tümünü yanıtla
 Reply to sender	EmailReaderWindow		Göndereni yanıtla
 Resend	EmailReaderWindow		Yeniden gönder
 Save	EmailReaderWindow		Kaydet
-Save	EmailReaderWindow	Toolbar, short as possible	Kaydet
 Save as draft	EmailReaderWindow		Taslak olarak kaydet
 Save this message as a draft before closing?	EmailReaderWindow		Kapatmadan önce bu ileti taslak olarak kaydedilsin mi?
 Select all	EmailReaderWindow		Tümünü seç
 Send	EmailReaderWindow		Gönder
-Send	EmailReaderWindow	Toolbar, short as possible	Gönder
 Send message	EmailReaderWindow		İletiyi gönder
 Send this message before closing?	EmailReaderWindow		Kapatmadan önce bu ileti gönderilsin mi?
 Show header	EmailReaderWindow		Üstbilgiyi göster
 Show raw message	EmailReaderWindow		Ham iletiyi göster
-Signature	EmailReaderWindow	Toolbar, short as possible	İmza
 Sorry	EmailReaderWindow		Üzgünüm
 Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Üzgünüm; “Person” (Kişi) veri türünü destekleyen bir uygulama bulunamadı.
-Spam	EmailReaderWindow	Toolbar, short as possible	İstenmeyen
 Start now	EmailReaderWindow		Şimdi başlat
 The mail_daemon could not be started:\n\t	EmailReaderWindow		mail_daemon başlatılamadı:\n\t
 The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		mail_daemon çalışmıyor. İleti kuyruğa eklendi ve “mail_daemon”un bir sonraki başlatılışında gönderilecek.
 The subject is empty. Do you want to send anyway?	EmailReaderWindow		Konu boş. Yine de göndermek istiyor musunuz?
-Trash	EmailReaderWindow	Toolbar, short as possible	Çöpe at
 Undo	EmailReaderWindow		Geri al
-Unread	EmailReaderWindow	Toolbar, short as possible	Okunmamış
 Untitled	EmailReaderWindow		Başlıksız
 View	EmailReaderWindow		Görüntü
 View HTML version	EmailReaderWindow		HTML sürümünü görüntüle
 Viewer	EmailReaderWindow		Görüntüleyici
 Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Ana metninizde %ld kodlanamayan karakter var. Belki başka bir karakter kümesini kullanmak istersiniz? Yine de göndermek istiyorsanız “Gönder”e basın (kodlanamayan karakterlerin yerine bir başkası kullanılacaktır) veya düzeltmeye çalışacaksanız “Vazgeç”e basın.
--1 day	TimeRangeSlider	Time range slider label - keep as short as possible	−1 gün
--1 month	TimeRangeSlider	Time range slider label - keep as short as possible	−1 ay
--1 week	TimeRangeSlider	Time range slider label - keep as short as possible	−1 hafta
--1 year	TimeRangeSlider	Time range slider label - keep as short as possible	−1 yıl
--2 days	TimeRangeSlider	Time range slider label - keep as short as possible	−2 gün
--2 months	TimeRangeSlider	Time range slider label - keep as short as possible	−2 ay
--2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	−2 hafta
--2 years	TimeRangeSlider	Time range slider label - keep as short as possible	−2 yıl
--3 days	TimeRangeSlider	Time range slider label - keep as short as possible	−3 gün
--3 months	TimeRangeSlider	Time range slider label - keep as short as possible	−3 ay
--3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	−3 hafta
--4 days	TimeRangeSlider	Time range slider label - keep as short as possible	−4 gün
--5 days	TimeRangeSlider	Time range slider label - keep as short as possible	−5 gün
--5 years	TimeRangeSlider	Time range slider label - keep as short as possible	−5 yıl
--6 days	TimeRangeSlider	Time range slider label - keep as short as possible	−6 gün
--6 months	TimeRangeSlider	Time range slider label - keep as short as possible	−6 ay
-All	TimeRangeSlider	Time range slider label - keep as short as possible	Tümü
-Today	TimeRangeSlider	Time range slider label - keep as short as possible	Bugün
 [Message truncated...]	EmailViewsWindow		[İleti kesildi…]
 [The draft has no body text to display]	EmailViewsWindow		[Taslakta görüntülenecek gövde metni yok]
 %d emails selected.	EmailViewsWindow		%d ileti seçildi.
@@ -117,10 +121,9 @@ Add 'Account' query	EmailViewsWindow		“Hesap” sorgusu ekle
 Add 'From' query	EmailViewsWindow		“Kimden” sorgusu ekle
 Add 'To' query	EmailViewsWindow		“Kime” sorgusu ekle
 All emails	EmailViewsWindow		Tüm e-postalar
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		%count% iletiyi çöpe taşımak istediğinizden emin misiniz?
 Backup failed	EmailViewsWindow		Yedekleme başarısız
 Cancel	EmailViewsWindow		Vazgeç
-Check email	EmailViewsWindow		E-postayı denetle
-Check email	EmailViewsWindow	Toolbar, short as possible	E-postayı denetle
 Could not get email reference.	EmailViewsWindow		E-posta başvurusu alınamadı.
 Could not open email file.	EmailViewsWindow		E-posta dosyası açılamadı.
 Create anyway	EmailViewsWindow		Yine de oluştur
@@ -137,19 +140,12 @@ Error	EmailViewsWindow		Hata
 Failed to create query file.	EmailViewsWindow		Sorgu dosyası oluşturulamadı.
 Failed to start backup thread.	EmailViewsWindow		Yedek ileti dizisi başlatılamadı.
 Forward	EmailViewsWindow		İlet
-Forward	EmailViewsWindow	Toolbar, short as possible	İlet
 HTML message	EmailViewsWindow		HTML iletisi
 Mark as read	EmailViewsWindow		Okundu olarak imle
 Mark as unread	EmailViewsWindow		Okunmamış olarak imle
-Mark read	EmailViewsWindow		Okundu olarak imle
-Mark read	EmailViewsWindow	Toolbar, short as possible	Okundu olarak imle
-Mark unread	EmailViewsWindow		Okunmamış olarak imle
-Mark unread	EmailViewsWindow	Toolbar, short as possible	Okunmamış olarak imle
 Messages	EmailViewsWindow		İletiler
 Move to Trash	EmailViewsWindow		Çöpe taşı
 New email	EmailViewsWindow		Yeni ileti
-New email	EmailViewsWindow	Toolbar, short as possible	Yeni ileti
-Next	EmailViewsWindow	Toolbar, short as possible	Sonraki
 No emails found.	EmailViewsWindow		Bulunan ileti yok.
 No emails in Trash.	EmailViewsWindow		Çöpte ileti yok.
 No emails match your search.	EmailViewsWindow		Aramanızla eşleşen ileti yok.
@@ -159,12 +155,10 @@ Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailVie
 Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		%count% ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Çöpten 1 ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
 Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		1 ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
-Previous	EmailViewsWindow	Toolbar, short as possible	Önceki
 Queries	EmailViewsWindow		Sorgular
 Query exists	EmailViewsWindow		Sorgu var
 Quit	EmailViewsWindow		Çık
 Reply	EmailViewsWindow		Yanıtla
-Reply	EmailViewsWindow	Toolbar, short as possible	Yanıtla
 Reply all	EmailViewsWindow		Tümünü yanıtla
 Restore email	EmailViewsWindow		İletiyi geri yükle
 Save backup as	EmailViewsWindow		Yedeği farklı kaydet
@@ -179,8 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		Çöpte ileti yok.
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Bu ileti HTML biçimli.\nSaptanmış tarayıcıda açmak için aşağıya tıklayın.
 Time range:	EmailViewsWindow		Zaman erimi:
 To:	EmailViewsWindow		Kime:
-Trash	EmailViewsWindow		Çöp
-Trash	EmailViewsWindow	Toolbar, short as possible	Çöp
+Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
 Unread emails	EmailViewsWindow		Okunmamış iletiler
 Unread emails (%ld)	EmailViewsWindow		Okunmamış iletiler (%ld)
 View HTML version	EmailViewsWindow		HTML sürümünü görüntüle

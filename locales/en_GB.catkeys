@@ -1,0 +1,344 @@
+1	English (British)	application/x-vnd.EmailViews	4210084602
+ Read 	Toolbar	As short as possible	 Read 
+Attach	Toolbar	As short as possible	Attach
+Check email	Toolbar	As short as possible	Check email
+Forward	Toolbar	As short as possible	Forward
+Mark read	Toolbar	As short as possible	Mark read
+Mark unread	Toolbar	As short as possible	Mark unread
+New	Toolbar	As short as possible	New
+New email	Toolbar	As short as possible	New email
+Next	Toolbar	As short as possible	Next
+Previous	Toolbar	As short as possible	Previous
+Print	Toolbar	As short as possible	Print
+Reply	Toolbar	As short as possible	Reply
+Reply all	Toolbar	As short as possible	Reply all
+Save	Toolbar	As short as possible	Save
+Send	Toolbar	As short as possible	Send
+Signature	Toolbar	As short as possible	Signature
+Spam	Toolbar	As short as possible	Spam
+Trash	Toolbar	As short as possible	Trash
+Unread	Toolbar	As short as possible	Unread
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 day
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 month
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 week
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 year
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 days
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 months
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 weeks
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 years
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 days
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 months
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 weeks
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 days
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 days
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 years
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 days
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 months
+All	TimeRangeSlider	Time range slider label - keep as short as possible	All
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Today
+(Address unavailable)	EmailReaderWindow		(Address unavailable)
+(Date unavailable)	EmailReaderWindow		(Date unavailable)
+(Name unavailable)	EmailReaderWindow		(Name unavailable)
+Add attachment…	EmailReaderWindow		Add attachment…
+Add signature	EmailReaderWindow		Add signature
+Automatic	EmailReaderWindow		Automatic
+Cancel	EmailReaderWindow		Cancel
+Cc:	EmailReaderWindow		Cc:
+Check spelling	EmailReaderWindow		Check spelling
+Close	EmailReaderWindow		Close
+Composer	EmailReaderWindow		Composer
+Copy	EmailReaderWindow		Copy
+Copy to new	EmailReaderWindow		Copy to new
+Create Person file for	EmailReaderWindow		Create Person file for
+Cut	EmailReaderWindow		Cut
+Decrease quote level	EmailReaderWindow		Decrease quote level
+Don't save	EmailReaderWindow		Don't save
+Don't send	EmailReaderWindow		Don't send
+E-mail draft could not be saved!	EmailReaderWindow		E-mail draft could not be saved!
+Edit	EmailReaderWindow		Edit
+Edit signatures…	EmailReaderWindow		Edit signatures…
+Email accounts…	EmailReaderWindow		Email accounts…
+Email preferences…	EmailReaderWindow		Email preferences…
+Empty subject	EmailReaderWindow		Empty subject
+Encoding	EmailReaderWindow		Encoding
+File	EmailReaderWindow		File
+Find again	EmailReaderWindow		Find again
+Find…	EmailReaderWindow		Find…
+Forward	EmailReaderWindow		Forward
+Forward without attachments	EmailReaderWindow		Forward without attachments
+Increase quote level	EmailReaderWindow		Increase quote level
+Message	EmailReaderWindow		Message
+Move to trash	EmailReaderWindow		Move to trash
+Need Tracker to move items to trash	EmailReaderWindow		Need Tracker to move items to trash
+New mail message	EmailReaderWindow		New mail message
+Next message	EmailReaderWindow		Next message
+Next message, keep status	EmailReaderWindow		Next message, keep status
+No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/
+None	EmailReaderWindow		None
+OK	EmailReaderWindow		Alright
+Page setup…	EmailReaderWindow		Page setup…
+Paste	EmailReaderWindow		Paste
+Previous message	EmailReaderWindow		Previous message
+Previous message, keep status	EmailReaderWindow		Previous message, keep status
+Print…	EmailReaderWindow		Print…
+Redo	EmailReaderWindow		Redo
+Remove attachment	EmailReaderWindow		Remove attachment
+Reply	EmailReaderWindow		Reply
+Reply to all	EmailReaderWindow		Reply to all
+Reply to sender	EmailReaderWindow		Reply to sender
+Resend	EmailReaderWindow		Resend
+Save	EmailReaderWindow		Save
+Save as draft	EmailReaderWindow		Save as draft
+Save this message as a draft before closing?	EmailReaderWindow		Save this message as a draft before closing?
+Select all	EmailReaderWindow		Select all
+Send	EmailReaderWindow		Send
+Send message	EmailReaderWindow		Send message
+Send this message before closing?	EmailReaderWindow		Send this message before closing?
+Show header	EmailReaderWindow		Show header
+Show raw message	EmailReaderWindow		Show raw message
+Sorry	EmailReaderWindow		Sorry
+Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Sorry, could not find an application that supports the 'Person' data type.
+Start now	EmailReaderWindow		Start now
+The mail_daemon could not be started:\n\t	EmailReaderWindow		The mail_daemon could not be started:\n\t
+The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.
+The subject is empty. Do you want to send anyway?	EmailReaderWindow		The subject is empty. Do you want to send anyway?
+Undo	EmailReaderWindow		Undo
+Untitled	EmailReaderWindow		Untitled
+View	EmailReaderWindow		View
+View HTML version	EmailReaderWindow		View HTML version
+Viewer	EmailReaderWindow		Viewer
+Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.
+[Message truncated...]	EmailViewsWindow		[Message truncated...]
+[The draft has no body text to display]	EmailViewsWindow		[The draft has no body text to display]
+%d emails selected.	EmailViewsWindow		%d emails selected.
+%s emails	EmailViewsWindow		%s emails
+1 email	EmailViewsWindow		1 email
+A query named '%name%' already exists.	EmailViewsWindow		A query named '%name%' already exists.
+A query with the same search criteria already exists: '%name%'	EmailViewsWindow		A query with the same search criteria already exists: '%name%'
+About EmailViews…	EmailViewsWindow		About EmailViews…
+Account:	EmailViewsWindow		Account:
+Add 'Account' query	EmailViewsWindow		Add 'Account' query
+Add 'From' query	EmailViewsWindow		Add 'From' query
+Add 'To' query	EmailViewsWindow		Add 'To' query
+All emails	EmailViewsWindow		All emails
+Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Are you sure you want to move %count% emails to Trash?
+Backup failed	EmailViewsWindow		Backup failed
+Cancel	EmailViewsWindow		Cancel
+Could not get email reference.	EmailViewsWindow		Could not get email reference.
+Could not open email file.	EmailViewsWindow		Could not open email file.
+Create anyway	EmailViewsWindow		Create anyway
+Delete	EmailViewsWindow		Delete
+Delete emails	EmailViewsWindow		Delete emails
+Delete emails in Trash	EmailViewsWindow		Delete emails in Trash
+Deleting emails…	EmailViewsWindow		Deleting emails…
+Draft emails	EmailViewsWindow		Draft emails
+Draft emails (%ld)	EmailViewsWindow		Draft emails (%ld)
+Email accounts…	EmailViewsWindow		Email accounts…
+Email backup	EmailViewsWindow		Email backup
+Email preferences…	EmailViewsWindow		Email preferences…
+Error	EmailViewsWindow		Error
+Failed to create query file.	EmailViewsWindow		Failed to create query file.
+Failed to start backup thread.	EmailViewsWindow		Failed to start backup thread.
+Forward	EmailViewsWindow		Forward
+HTML message	EmailViewsWindow		HTML message
+Mark as read	EmailViewsWindow		Mark as read
+Mark as unread	EmailViewsWindow		Mark as unread
+Messages	EmailViewsWindow		Messages
+Move to Trash	EmailViewsWindow		Move to Trash
+New email	EmailViewsWindow		New email
+No emails found.	EmailViewsWindow		No emails found.
+No emails in Trash.	EmailViewsWindow		No emails in Trash.
+No emails match your search.	EmailViewsWindow		No emails match your search.
+OK	EmailViewsWindow		Alright
+Open queries folder	EmailViewsWindow		Open queries folder
+Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails from Trash?\n\nThis cannot be undone.
+Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails?\n\nThis cannot be undone.
+Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email from Trash?\n\nThis cannot be undone.
+Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email?\n\nThis cannot be undone.
+Queries	EmailViewsWindow		Queries
+Query exists	EmailViewsWindow		Query exists
+Quit	EmailViewsWindow		Quit
+Reply	EmailViewsWindow		Reply
+Reply all	EmailViewsWindow		Reply all
+Restore email	EmailViewsWindow		Restore email
+Save backup as	EmailViewsWindow		Save backup as
+Select an email to preview its contents.	EmailViewsWindow		Select an email to preview its contents.
+Select folder	EmailViewsWindow		Select folder
+Sent emails	EmailViewsWindow		Sent emails
+Show in Deskbar	EmailViewsWindow		Show in Deskbar
+Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Sorry, could not find an application that supports the 'Person' data type.
+Starred emails	EmailViewsWindow		Starred emails
+Subject:	EmailViewsWindow		Subject:
+There are no emails in the Trash.	EmailViewsWindow		There are no emails in the Trash.
+This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		This message is HTML formatted.\nClick below to open it in the default browser.
+Time range:	EmailViewsWindow		Time range:
+To:	EmailViewsWindow		To:
+Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
+Unread emails	EmailViewsWindow		Unread emails
+Unread emails (%ld)	EmailViewsWindow		Unread emails (%ld)
+View HTML version	EmailViewsWindow		View HTML version
+Volumes	EmailViewsWindow		Volumes
+With attachments	EmailViewsWindow		With attachments
+You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.
+You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
+\\n - Newline	Preferences		\\n - Newline
+%d - Date	Preferences		%d - Date
+%e - E-mail address	Preferences		%e - E-mail address
+%n - Full name	Preferences		%n - Full name
+<no account found>	Preferences		<no account found>
+Account from mail	Preferences		Account from mail
+Attach attributes:	Preferences		Attach attributes:
+Auto signature:	Preferences		Auto signature:
+Automatically mark mail as read:	Preferences		Automatically mark mail as read:
+Beginner	Preferences		Beginner
+Button bar:	Preferences		Button bar:
+Cancel	Preferences		Cancel
+Colored quotes:	Preferences		Coloured quotes:
+Default account:	Preferences		Default account:
+Email preferences	Preferences		Email preferences
+Expert	Preferences		Expert
+Font:	Preferences		Font:
+Include file attributes in attachments	Preferences		Include file attributes in attachments
+Initial spell check mode:	Preferences		Initial spell check mode:
+Mailing	Preferences		Mailing
+No file attributes, just plain data	Preferences		No file attributes, just plain data
+None	Preferences		None
+Off	Preferences		Off
+OK	Preferences		Alright
+On	Preferences		On
+Outgoing encoding:	Preferences		Outgoing encoding:
+Reply account:	Preferences		Reply account:
+Reply preamble:	Preferences		Reply preamble:
+Revert	Preferences		Revert
+Show icons & labels	Preferences		Show icons & labels
+Show icons only	Preferences		Show icons only
+Size:	Preferences		Size:
+Text wrapping:	Preferences		Text wrapping:
+Time range slider:	Preferences		Time range slider:
+Use default account	Preferences		Use default account
+User interface	Preferences		User interface
+Warn unencodable:	Preferences		Warn unencodable:
+%count% new emails	DeskbarReplicant		%count% new emails
+1 new email	DeskbarReplicant		1 new email
+About %app%…	DeskbarReplicant		About %app%…
+Create new email…	DeskbarReplicant		Create new email…
+Email accounts…	DeskbarReplicant		Email accounts…
+No new emails	DeskbarReplicant		No new emails
+Remove from Deskbar	DeskbarReplicant		Remove from Deskbar
+Send/Receive email	DeskbarReplicant		Send/Receive email
+Unread emails	DeskbarReplicant		Unread emails
+Unread emails (%count%)	DeskbarReplicant		Unread emails (%count%)
+%e wrote:\n	ReaderSettings		%e wrote:\n
+None	ReaderSettings		None
+<none>	HeaderView		<none>
+Bcc:	HeaderView		Bcc:
+Cc:	HeaderView		Cc:
+Date:	HeaderView		Date:
+From:	HeaderView		From:
+Subject:	HeaderView		Subject:
+To:	HeaderView		To:
+Unknown	HeaderView		Unknown
+Account	EmailColumnHeader		Account
+Account	EmailColumnHeader	Email list column header	Account
+Attachment	EmailColumnHeader		Attachment
+Date	EmailColumnHeader		Date
+Date	EmailColumnHeader	Email list column header	Date
+From	EmailColumnHeader		From
+From	EmailColumnHeader	Email list column header	From
+Star	EmailColumnHeader		Star
+Status	EmailColumnHeader		Status
+Status	EmailColumnHeader	Email list column header	Status
+Subject	EmailColumnHeader		Subject
+Subject	EmailColumnHeader	Email list column header	Subject
+To	EmailColumnHeader		To
+To	EmailColumnHeader	Email list column header	To
+Account	SearchBarView		Account
+Backup emails to ZIP file	SearchBarView		Backup emails to ZIP file
+Backup in progress…	SearchBarView		Backup in progress…
+Clear search box	SearchBarView		Clear search box
+contains	SearchBarView		contains
+Create query based on search criteria	SearchBarView		Create query based on search criteria
+Filter:	SearchBarView		Filter:
+From	SearchBarView		From
+matches	SearchBarView		matches
+Select attribute(s) to query	SearchBarView		Select attribute(s) to query
+Select search operator	SearchBarView		Select search operator
+Subject	SearchBarView		Subject
+To	SearchBarView		To
+Type text and press Enter…	SearchBarView		Type text and press Enter…
+Add	ContentView		Add
+An error occurred trying to open this signature.	ContentView		An error occurred trying to open this signature.
+An error occurred trying to save the attachment.	ContentView		An error occurred trying to save the attachment.
+Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Attachment: %name% (Type: %type%)
+Copy link location	ContentView		Copy link location
+Inconsistency occurred in the undo/redo buffer.	ContentView		Inconsistency occurred in the undo/redo buffer.
+No matches	ContentView		No matches
+OK	ContentView		Alright
+Open attachment	ContentView		Open attachment
+Open this link	ContentView		Open this link
+Save attachment…	ContentView		Save attachment…
+Sorry	ContentView		Sorry
+There is no installed handler for URL links.	ContentView		There is no installed handler for URL links.
+Add 'Account' query	EmailListView		Add 'Account' query
+Add 'From' query	EmailListView		Add 'From' query
+Add 'To' query	EmailListView		Add 'To' query
+Create Person file for	EmailListView		Create Person file for
+Delete permanently	EmailListView		Delete permanently
+Filter by 'Account'	EmailListView		Filter by 'Account'
+Filter by 'Recipient'	EmailListView		Filter by 'Recipient'
+Filter by 'Sender'	EmailListView		Filter by 'Sender'
+Filter by 'Subject'	EmailListView		Filter by 'Subject'
+Forward	EmailListView		Forward
+Mark as read	EmailListView		Mark as read
+Mark as unread	EmailListView		Mark as unread
+Move to Trash	EmailListView		Move to Trash
+New email to sender	EmailListView		New email to sender
+Reply	EmailListView		Reply
+Reply all	EmailListView		Reply all
+Restore	EmailListView		Restore
+Send as attachment	EmailListView		Send as attachment
+Star	EmailListView		Star
+Unstar	EmailListView		Unstar
+All people	AddressTextControl		All people
+An error occurred trying to save this signature.	SignatureWindow		An error occurred trying to save this signature.
+Cancel	SignatureWindow		Cancel
+Copy	SignatureWindow		Copy
+Couldn't open this signature. Sorry.	SignatureWindow		Couldn't open this signature. Sorry.
+Cut	SignatureWindow		Cut
+Delete	SignatureWindow		Delete
+Don't save	SignatureWindow		Don't save
+Edit	SignatureWindow		Edit
+New	SignatureWindow		New
+OK	SignatureWindow		Alright
+Open	SignatureWindow		Open
+Paste	SignatureWindow		Paste
+Really delete this signature? This cannot be undone.	SignatureWindow		Really delete this signature? This cannot be undone.
+Save	SignatureWindow		Save
+Save changes to this signature?	SignatureWindow		Save changes to this signature?
+Select all	SignatureWindow		Select all
+Signature	SignatureWindow		Signature
+Signature:	SignatureWindow		Signature:
+Signatures	SignatureWindow		Signatures
+Sorry	SignatureWindow		Sorry
+Title:	SignatureWindow		Title:
+Undo	SignatureWindow		Undo
+Attachments:	EnclosuresView		Attachments:
+OK	EnclosuresView		Alright
+Only files can be added as attachments.	EnclosuresView		Only files can be added as attachments.
+Open attachment	EnclosuresView		Open attachment
+Remove attachment	EnclosuresView		Remove attachment
+Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.
+Cancel	QueryNameDialog		Cancel
+Save	QueryNameDialog		Save
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Created with the assistance of AI tools.\nMaintained by Jorge Mare.
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organise and explore your emails effortlessly.
+OK	AboutWindow		Alright
+Delete emails in Trash	TrashItemView		Delete emails in Trash
+Emails in Trash	TrashItemView		Emails in Trash
+Find	FindWindow		Find
+Open	AttachmentStripView		Open
+Remove	AttachmentStripView		Remove
+Save as…	AttachmentStripView		Save as…
+Open query in Tracker…	QueryListView		Open query in Tracker…
+Remove query	QueryListView		Remove query
+Unread emails	QueryListView		Unread emails

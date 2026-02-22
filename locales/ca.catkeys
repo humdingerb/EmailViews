@@ -1,11 +1,46 @@
-1	Catalan	application/x-vnd.EmailViews	156248161
- Read 	EmailReaderWindow	Toolbar, short as possible	Llegeix
+1	Catalan	application/x-vnd.EmailViews	4210084602
+ Read 	Toolbar	As short as possible	 Read 
+Attach	Toolbar	As short as possible	Attach
+Check email	Toolbar	As short as possible	Check email
+Forward	Toolbar	As short as possible	Forward
+Mark read	Toolbar	As short as possible	Mark read
+Mark unread	Toolbar	As short as possible	Mark unread
+New	Toolbar	As short as possible	New
+New email	Toolbar	As short as possible	New email
+Next	Toolbar	As short as possible	Next
+Previous	Toolbar	As short as possible	Previous
+Print	Toolbar	As short as possible	Print
+Reply	Toolbar	As short as possible	Reply
+Reply all	Toolbar	As short as possible	Reply all
+Save	Toolbar	As short as possible	Save
+Send	Toolbar	As short as possible	Send
+Signature	Toolbar	As short as possible	Signature
+Spam	Toolbar	As short as possible	Spam
+Trash	Toolbar	As short as possible	Trash
+Unread	Toolbar	As short as possible	Unread
+-1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 dia
+-1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mes
+-1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 setmana
+-1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 any
+-2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 dies
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 mesos
+-2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 setmanes
+-2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 anys
+-3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 anys
+-3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 mesos
+-3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 setmanes
+-4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 dies
+-5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 dies
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 anys
+-6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 dies
+-6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 mesos
+All	TimeRangeSlider	Time range slider label - keep as short as possible	Tot
+Today	TimeRangeSlider	Time range slider label - keep as short as possible	Avui
 (Address unavailable)	EmailReaderWindow		(Adreça no disponible)
 (Date unavailable)	EmailReaderWindow		(Data no disponible)
 (Name unavailable)	EmailReaderWindow		(Nom no disponible)
 Add attachment…	EmailReaderWindow		Afegeix un fitxer adjunt...
 Add signature	EmailReaderWindow		Afegeix una signatura
-Attach	EmailReaderWindow	Toolbar, short as possible	Adjunta
 Automatic	EmailReaderWindow		Automàtic
 Cancel	EmailReaderWindow		Cancel·la
 Cc:	EmailReaderWindow		A/c:
@@ -30,15 +65,12 @@ File	EmailReaderWindow		Fitxer
 Find again	EmailReaderWindow		Torna a trobar
 Find…	EmailReaderWindow		Troba...
 Forward	EmailReaderWindow		Reenvia
-Forward	EmailReaderWindow	Toolbar, short as possible	Reenvia
 Forward without attachments	EmailReaderWindow		Reenvia sense fitxers adjunts
 Increase quote level	EmailReaderWindow		Augmenta la citació
 Message	EmailReaderWindow		Missatge
 Move to trash	EmailReaderWindow		Mou a la paperera
 Need Tracker to move items to trash	EmailReaderWindow		Cal el Rastejador per moure els elements a la paperera
-New	EmailReaderWindow	Toolbar, short as possible	Nou
 New mail message	EmailReaderWindow		Missatge nou
-Next	EmailReaderWindow	Toolbar, short as possible	Següent
 Next message	EmailReaderWindow		Missatge següent
 Next message, keep status	EmailReaderWindow		Missatge següent, mantén l'estat
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No s'ha trobat cap diccionari per al corrector ortogràfic.\n\nInstal·leu un fitxer \"words\" a:\n/boot/system/data/spell_check/word_dictionary/
@@ -46,64 +78,36 @@ None	EmailReaderWindow		Cap
 OK	EmailReaderWindow		D'acord
 Page setup…	EmailReaderWindow		Configuració de la pàgina...
 Paste	EmailReaderWindow		Enganxa
-Previous	EmailReaderWindow	Toolbar, short as possible	Anterior
 Previous message	EmailReaderWindow		Missatge anterior
 Previous message, keep status	EmailReaderWindow		Missatge anterior, mantén l'estat
-Print	EmailReaderWindow	Toolbar, short as possible	Imprimeix
 Print…	EmailReaderWindow		Imprimeix...
 Redo	EmailReaderWindow		Refés
 Remove attachment	EmailReaderWindow		Suprimeix el fitxer adjunt
 Reply	EmailReaderWindow		Respon
-Reply	EmailReaderWindow	Toolbar, short as possible	Respon
-Reply all	EmailReaderWindow	Toolbar, short as possible	Respon a tothom
 Reply to all	EmailReaderWindow		Respon a tothom
 Reply to sender	EmailReaderWindow		Respon al remitent
 Resend	EmailReaderWindow		Reenvia
 Save	EmailReaderWindow		Desa
-Save	EmailReaderWindow	Toolbar, short as possible	Desa
 Save as draft	EmailReaderWindow		Desa com a esborrany
 Save this message as a draft before closing?	EmailReaderWindow		Voleu desar aquest missatge com a esborrany abans de tancar?
 Select all	EmailReaderWindow		Selecciona-ho tot
 Send	EmailReaderWindow		Envia
-Send	EmailReaderWindow	Toolbar, short as possible	Envia
 Send message	EmailReaderWindow		Envia el missatge
 Send this message before closing?	EmailReaderWindow		Voleu enviar aquest missatge abans de tancar?
 Show header	EmailReaderWindow		Mostra la capçalera
 Show raw message	EmailReaderWindow		Mostra el missatge en brut
-Signature	EmailReaderWindow	Toolbar, short as possible	Signatura
 Sorry	EmailReaderWindow		Perdoneu
 Sorry, could not find an application that supports the 'Person' data type.	EmailReaderWindow		Perdoneu, no s'ha trobat cap aplicació que admeti el tipus de dades de persona.
-Spam	EmailReaderWindow	Toolbar, short as possible	Brossa
 Start now	EmailReaderWindow		Comença ara
 The mail_daemon could not be started:\n\t	EmailReaderWindow		No s'ha pogut iniciar mail_daemon:\n\t
 The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		El dimoni del correu no s'executa. El missatge és a la cua i s'enviarà quan s'iniciï.
 The subject is empty. Do you want to send anyway?	EmailReaderWindow		L'assumpte és buit. Voleu enviar-lo tanmateix?
-Trash	EmailReaderWindow	Toolbar, short as possible	Paperera
 Undo	EmailReaderWindow		Desfés
-Unread	EmailReaderWindow	Toolbar, short as possible	No llegit
 Untitled	EmailReaderWindow		Sense títol
 View	EmailReaderWindow		Visualització
 View HTML version	EmailReaderWindow		Mostra la versió HTML
 Viewer	EmailReaderWindow		Visualitzador
 Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		El text principal conté %ld caràcters no codificables. Potser un conjunt de caràcters diferent funcionaria millor? Premeu Envia per enviar-lo tanmateix (s'usarà un caràcter substitut en lloc dels no codificables) o seleccioneu Cancel·la per tornar enrere i intentar corregir-ho.
--1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 dia
--1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mes
--1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 setmana
--1 year	TimeRangeSlider	Time range slider label - keep as short as possible	-1 any
--2 days	TimeRangeSlider	Time range slider label - keep as short as possible	-2 dies
--2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 mesos
--2 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-2 setmanes
--2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 anys
--3 days	TimeRangeSlider	Time range slider label - keep as short as possible	-3 anys
--3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 mesos
--3 weeks	TimeRangeSlider	Time range slider label - keep as short as possible	-3 setmanes
--4 days	TimeRangeSlider	Time range slider label - keep as short as possible	-4 dies
--5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 dies
--5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 anys
--6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 dies
--6 months	TimeRangeSlider	Time range slider label - keep as short as possible	-6 mesos
-All	TimeRangeSlider	Time range slider label - keep as short as possible	Tot
-Today	TimeRangeSlider	Time range slider label - keep as short as possible	Avui
 [Message truncated...]	EmailViewsWindow		[Missatge truncat...]
 [The draft has no body text to display]	EmailViewsWindow		[L'esborrany no té text de cos per mostrar.]
 %d emails selected.	EmailViewsWindow		%d missatges seleccionats.
@@ -120,8 +124,6 @@ All emails	EmailViewsWindow		Tots els missatges
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Segur que voleu moure %count% missatges a la paperera?
 Backup failed	EmailViewsWindow		La còpia de seguretat ha fallat.
 Cancel	EmailViewsWindow		Cancel·la
-Check email	EmailViewsWindow		Comprova el correu electrònic
-Check email	EmailViewsWindow	Toolbar, short as possible	Comprova el correu electrònic
 Could not get email reference.	EmailViewsWindow		No s'ha pogut obtenir la referència del correu electrònic.
 Could not open email file.	EmailViewsWindow		No s'ha pogut obrir el fitxer de correu electrònic.
 Create anyway	EmailViewsWindow		Crea'l tanmateix
@@ -138,19 +140,12 @@ Error	EmailViewsWindow		Error
 Failed to create query file.	EmailViewsWindow		Ha fallat crear el fitxer de consulta.
 Failed to start backup thread.	EmailViewsWindow		Ha fallat iniciar el fil de còpia de seguretat.
 Forward	EmailViewsWindow		Reenvia
-Forward	EmailViewsWindow	Toolbar, short as possible	Reenvia
 HTML message	EmailViewsWindow		Missatge HTML
 Mark as read	EmailViewsWindow		Marca com a llegit
 Mark as unread	EmailViewsWindow		Marca com a no llegit
-Mark read	EmailViewsWindow		Marca com a llegit
-Mark read	EmailViewsWindow	Toolbar, short as possible	Llegit
-Mark unread	EmailViewsWindow		Marca com a no llegit
-Mark unread	EmailViewsWindow	Toolbar, short as possible	No llegit
 Messages	EmailViewsWindow		Missatges
 Move to Trash	EmailViewsWindow		Mou a la paperera
 New email	EmailViewsWindow		Missatge nou
-New email	EmailViewsWindow	Toolbar, short as possible	Missatge nou
-Next	EmailViewsWindow	Toolbar, short as possible	Següent
 No emails found.	EmailViewsWindow		No s'ha trobat cap missatge.
 No emails in Trash.	EmailViewsWindow		No hi ha missatges a la paperera.
 No emails match your search.	EmailViewsWindow		No hi ha cap missatge que coincideixi amb la cerca.
@@ -160,12 +155,10 @@ Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailVie
 Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment %count% missatges?\n\nAixò no es pot desfer.
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment 1 missatge de la paperera?\n\nAixò no es pot desfer.
 Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment 1 missatge?\n\nAixò no es pot desfer.
-Previous	EmailViewsWindow	Toolbar, short as possible	Anterior
 Queries	EmailViewsWindow		Consultes
 Query exists	EmailViewsWindow		La consulta existeix
 Quit	EmailViewsWindow		Surt
 Reply	EmailViewsWindow		Respon
-Reply	EmailViewsWindow	Toolbar, short as possible	Respon
 Reply all	EmailViewsWindow		Respon a tothom
 Restore email	EmailViewsWindow		Restaura el correu electrònic
 Save backup as	EmailViewsWindow		Desa la còpia de seguretat com a
@@ -180,8 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		No hi ha cap missatge a la p
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Aquest missatge té format HTML. Feu clic a continuació per obrir-lo al navegador predeterminat.
 Time range:	EmailViewsWindow		Interval de temps:
 To:	EmailViewsWindow		A:
-Trash	EmailViewsWindow		Paperera
-Trash	EmailViewsWindow	Toolbar, short as possible	Paperera
+Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
 Unread emails	EmailViewsWindow		Missatges no llegits
 Unread emails (%ld)	EmailViewsWindow		Missatges no llegits (%ld)
 View HTML version	EmailViewsWindow		Mostra'n la versió HTML
