@@ -1,8 +1,8 @@
 # EmailViews
 
-A native fast, lightweight email client for [Haiku](https://www.haiku-os.org) that uses live queries to organize and explore your emails effortlessly.
+EmailViews is a fast, lightweight native email client for the [Haiku](https://www.haiku-os.org) operating system that uses live queries to view, organize, and manage your emails effortlessly in a single, cohesive interface.
 
-EmailViews works with Haiku's built-in `mail_daemon` and mail kit — it reads emails already stored on disk as file attributes, so there is nothing to import or sync. Just point it at your mail and go.
+EmailViews integrates seamlessly with Haiku's built-in `mail_daemon` and Mail Kit, reading emails directly from disk — along with their file attributes — so there's no import or sync required. Just launch it, and it automatically finds and displays all your email messages. Start querying, composing, replying, and managing your mailboxes right away.
 
 ![EmailViews screenshot](screenshot.jpeg)
 
@@ -10,47 +10,30 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 
 ## Features
 
-**Three-pane interface** — Sidebar with mail views, sortable email list, and inline preview pane. Double-click any email to open it in a full reader window.
-
-**Built-in views** — All Emails, Unread, Sent, With Attachments, Drafts, and Starred. Each view shows an unread count badge that updates in real time.
-
-**Custom queries** — Create your own views filtered by subject, sender, recipient, or account. Custom queries are saved as standard Haiku query files and appear in the sidebar alongside built-in views.
-
-**Live updates** — Email views are powered by live `BQuery` objects and node monitors. New mail appears instantly without manual refresh.
-
-**Full reader and composer** — Open emails in a dedicated reader window with reply, forward, and signature support. Compose new messages with address auto-completion from People files and spell checking.
-
-**Attachment handling** — Visual attachment strip shows file icons, names, and sizes. Open attachments with their preferred application or save them to disk. Supports drag-and-drop.
-
-**HTML email support** — Emails with HTML content can be viewed in the default browser via a button in the preview pane, preserving the original formatting and character encoding.
-
-**Search and filter** — Search the current view by subject, sender, or recipient. An optional time range slider lets you narrow results to a specific date window.
-
-**Starred emails** — Star important emails with a single click. Stars are stored as a file attribute (`FILE:starred`) so they persist across sessions and are queryable.
-
-**Sortable columns** — Click any column header to sort by status, star, attachment, sender/recipient, subject, date, or account. Drag columns to reorder them. Column layout is saved per view.
-
-**Keyboard navigation** — Arrow keys, Page Up/Down, Home/End for list navigation. Enter to open, Delete to trash. Shift-click and Shift-arrows for multi-selection. Alt+A to select all emails in the current view.
-
-**Trash management** — Move emails to trash, restore them to their original location, or permanently delete them. The trash view shows a count badge and supports emptying all at once. A confirmation dialog is shown when moving 50 or more emails to trash at once.
-
-**Undo move to Trash** — Press Alt+Z (or use Messages → Undo Move to Trash) to restore the most recently trashed batch of emails back to their original location, without having to navigate to the Trash view. Supports up to 10 levels of undo.
-
-**Email backup** — Back up the current view's emails to a ZIP archive via the toolbar search bar's menu.
-
-**Deskbar integration** — An optional Deskbar replicant shows the unread mail count in the system tray with a popup menu for quick access.
-
-**Multi-volume support** — Query and manage emails across multiple mounted volumes. Select which volumes to include via the Volumes menu.
-
-**Dark theme support** — Respects Haiku's system colors and works with both light and dark themes.
-
-**Localization** — The app is localization ready.
+- **Three-pane interface** — Sidebar with mail views, sortable email list, and inline preview pane. Double-click any email to open it in a full reader window.
+- **Built-in views** — All Emails, Unread, Sent, With Attachments, Drafts, and Starred. Each view shows an unread count badge that updates in real time.
+- **Custom queries** — Create your own views filtered by subject, sender, recipient, or account. Custom queries are saved as standard Haiku query files and appear in the sidebar alongside built-in views.
+- **Live updates** — Email views are powered by live `BQuery` objects and node monitors. New mail appears instantly without manual refresh.
+- **Full reader and composer** — Open emails in a dedicated reader window with reply, forward, and signature support. Compose new messages with address auto-completion from People files and spell checking.
+- **Attachment handling** — Visual attachment strip shows file icons, names, and sizes. Open attachments with their preferred application or save them to disk. Supports drag-and-drop.
+- **HTML email support** — Emails with HTML content can be viewed in the default browser via a button in the preview pane, preserving the original formatting and character encoding.
+- **Search and filter** — Search the current view by subject, sender, or recipient. An optional time range slider lets you narrow results to a specific date window.
+- **Starred emails** — Star important emails with a single click. Stars are stored as a file attribute (`FILE:starred`) so they persist across sessions and are queryable.
+- **Sortable columns** — Click any column header to sort by status, star, attachment, sender/recipient, subject, date, or account. Drag columns to reorder them. Column layout is saved per view.
+- **Keyboard navigation** — Arrow keys, Page Up/Down, Home/End for list navigation. Enter to open, Delete to trash. Shift-click and Shift-arrows for multi-selection. Alt+A to select all emails in the current view.
+- **Trash management** — Move emails to trash, restore them to their original location, or permanently delete them. The trash view shows a count badge and supports emptying all at once. A confirmation dialog is shown when moving 50 or more emails to trash at once.
+- **Undo move to Trash** — Press Alt+Z (or use Messages → Undo Move to Trash) to restore the most recently trashed batch of emails back to their original location, without having to navigate to the Trash view. Supports up to 10 levels of undo.
+- **Email backup** — Back up the current view's emails to a ZIP archive via the toolbar search bar's menu.
+- **Deskbar integration** — An optional Deskbar replicant shows the unread mail count in the system tray with a popup menu for quick access.
+- **Multi-volume support** — Query and manage emails across multiple mounted volumes. Select which volumes to include via the Volumes menu.
+- **Dark theme support** — Respects Haiku's system colors and works with both light and dark themes.
+- **Localization** — The app is localization ready.
 
 ## Requirements
 
 - At least one email account configured in Haiku's E-mail preferences
 - `mail_daemon` running (starts automatically when email accounts are configured)
-- EmailViews was developed in 64-bit Haiku, but should compile and run on R1/beta 5 and after
+- EmailViews was developed in 64-bit Haiku, but should compile and ****run on R1/beta 5 and after
 
 ## Building
 
@@ -80,6 +63,13 @@ EmailViews
 
 On first run, EmailViews creates a `queries` directory in its settings folder (`~/config/settings/EmailViews/queries/`) to store any custom queries you create.
 
+### HaikuDepot availability
+
+EmailViews can now be installed from the HaikuDepot app or from terminal using the following command:
+
+```
+pkgman install emailviews
+```
 ## Usage tips
 
 - **Creating custom queries**: Right-click an email in the list and choose "Add 'From' query", "Add 'To' query", or "Add 'Account' query" from the Messages menu to create a filtered view for that sender, recipient, or account.
@@ -99,7 +89,7 @@ On first run, EmailViews creates a `queries` directory in its settings folder (`
 | Alt+R | Reply |
 | Alt+Shift+R | Reply all |
 | Alt+Shift+F | Forward |
-| Delete | Move to Trash |
+| Delete | Move selected email to Trash |
 | Alt+Z | Undo Move to Trash |
 | Alt+A | Select all |
 | Alt+S | Focus search |
@@ -121,7 +111,7 @@ EmailViews is built on the shoulders of Haiku's mail kit and draws inspiration f
 
 Icons from the Haiku and Zumi icon sets.
 
-Special thanks to **Humdinger** for meticulous testing, detailed bug reports, valuable feature suggestions, and code contributions.
+**Special thanks** to **Humdinger** for meticulous testing, detailed bug reports, valuable feature suggestions, and code contributions.
 
 ## License
 
