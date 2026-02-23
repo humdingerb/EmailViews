@@ -1,23 +1,23 @@
 1	French	application/x-vnd.EmailViews	4210084602
- Read 	Toolbar	As short as possible	 Read 
-Attach	Toolbar	As short as possible	Attach
-Check email	Toolbar	As short as possible	Check email
-Forward	Toolbar	As short as possible	Forward
-Mark read	Toolbar	As short as possible	Mark read
-Mark unread	Toolbar	As short as possible	Mark unread
-New	Toolbar	As short as possible	New
-New email	Toolbar	As short as possible	New email
-Next	Toolbar	As short as possible	Next
-Previous	Toolbar	As short as possible	Previous
-Print	Toolbar	As short as possible	Print
-Reply	Toolbar	As short as possible	Reply
-Reply all	Toolbar	As short as possible	Reply all
-Save	Toolbar	As short as possible	Save
-Send	Toolbar	As short as possible	Send
+ Read 	Toolbar	As short as possible	Lu
+Attach	Toolbar	As short as possible	Joindre
+Check email	Toolbar	As short as possible	Relever
+Forward	Toolbar	As short as possible	Transmettre
+Mark read	Toolbar	As short as possible	Marquer Lu
+Mark unread	Toolbar	As short as possible	Marquer Non-lu
+New	Toolbar	As short as possible	Nouveau
+New email	Toolbar	As short as possible	Nouveau courriel
+Next	Toolbar	As short as possible	Suivant
+Previous	Toolbar	As short as possible	Précédent
+Print	Toolbar	As short as possible	Imprimer
+Reply	Toolbar	As short as possible	Répondre
+Reply all	Toolbar	As short as possible	Répondre à tous
+Save	Toolbar	As short as possible	Enregistrer
+Send	Toolbar	As short as possible	Envoyer
 Signature	Toolbar	As short as possible	Signature
 Spam	Toolbar	As short as possible	Spam
-Trash	Toolbar	As short as possible	Trash
-Unread	Toolbar	As short as possible	Unread
+Trash	Toolbar	As short as possible	Corbeille
+Unread	Toolbar	As short as possible	Non-lu
 -1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 jour
 -1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mois
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 semaine
@@ -49,7 +49,7 @@ Close	EmailReaderWindow		Fermer
 Composer	EmailReaderWindow		Composer
 Copy	EmailReaderWindow		Copier
 Copy to new	EmailReaderWindow		Copier comme nouveau
-Create Person file for	EmailReaderWindow		Créer un fichier Personne pour
+Create Person file for	EmailReaderWindow		Créer un fichier Personne
 Cut	EmailReaderWindow		Couper
 Decrease quote level	EmailReaderWindow		Diminuer le niveau de citation
 Don't save	EmailReaderWindow		Ne pas enregistrer
@@ -118,8 +118,8 @@ A query with the same search criteria already exists: '%name%'	EmailViewsWindow	
 About EmailViews…	EmailViewsWindow		À propos d'EmailViews…
 Account:	EmailViewsWindow		Compte :
 Add 'Account' query	EmailViewsWindow		Ajouter une requête 'Compte'
-Add 'From' query	EmailViewsWindow		Ajouter une requête 'De'
-Add 'To' query	EmailViewsWindow		Ajouter une requête 'À'
+Add 'From' query	EmailViewsWindow		Ajouter une requête 'Expéditeur'
+Add 'To' query	EmailViewsWindow		Ajouter une requête 'Destinataire'
 All emails	EmailViewsWindow		Tous les courriels
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Êtes-vous certain de vouloir déplacer %count% courriels vers la corbeille ?
 Backup failed	EmailViewsWindow		Échec de la sauvegarde
@@ -173,7 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		Il n'a pas de courriel dans 
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Ce message est au format HTML.\nCliquer ci-dessous pour l'ouvrir dans le navigateur par défaut.
 Time range:	EmailViewsWindow		Intervalle de temps :
 To:	EmailViewsWindow		À :
-Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
+Undo Move to Trash	EmailViewsWindow		Défaire Déplacer vers la corbeille
 Unread emails	EmailViewsWindow		Courriels non-lus
 Unread emails (%ld)	EmailViewsWindow		Courriels non-lus (%ld)
 View HTML version	EmailViewsWindow		Voir la version HTML
@@ -225,7 +225,7 @@ Create new email…	DeskbarReplicant		Créer un nouveau courriel…
 Email accounts…	DeskbarReplicant		Comptes courriels…
 No new emails	DeskbarReplicant		Aucun nouveau courriel
 Remove from Deskbar	DeskbarReplicant		Supprimer de la Deskbar
-Send/Receive email	DeskbarReplicant		Envoyer/ Recevoir le courriel
+Send/Receive email	DeskbarReplicant		Envoyer/Recevoir le courriel
 Unread emails	DeskbarReplicant		Courriels non-lus
 Unread emails (%count%)	DeskbarReplicant		Courriels non-lus (%count%)
 %e wrote:\n	ReaderSettings		%e a écrit :\n
@@ -259,12 +259,12 @@ Clear search box	SearchBarView		Nettoyer la boîte de recherche
 contains	SearchBarView		contient
 Create query based on search criteria	SearchBarView		Créer une requête basée sur le critère de recherche
 Filter:	SearchBarView		Filtre :
-From	SearchBarView		De
-matches	SearchBarView		correspond à
+From	SearchBarView		L'expéditeur
+matches	SearchBarView		est
 Select attribute(s) to query	SearchBarView		Sélectionner le ou les attributs à rechercher
 Select search operator	SearchBarView		Sélectionner l'opérateur de recherhe
-Subject	SearchBarView		Sujet
-To	SearchBarView		À
+Subject	SearchBarView		Le sujet
+To	SearchBarView		Le destinataire
 Type text and press Enter…	SearchBarView		Saisir le texte et presser Entrée…
 Add	ContentView		Ajouter
 An error occurred trying to open this signature.	ContentView		Une erreur est apparue en essayant d'ouvrir cette signature.
@@ -280,9 +280,9 @@ Save attachment…	ContentView		Enregistrer la pièce jointe...
 Sorry	ContentView		Désolé
 There is no installed handler for URL links.	ContentView		Rien est installé pour gérer les liens URL.
 Add 'Account' query	EmailListView		Ajouter une requête 'Compte'
-Add 'From' query	EmailListView		Ajouter une requête 'De'
-Add 'To' query	EmailListView		Ajouter une requête 'À'
-Create Person file for	EmailListView		Créer un fichier Personne pour 
+Add 'From' query	EmailListView		Ajouter une requête 'Expéditeur'
+Add 'To' query	EmailListView		Ajouter une requête 'Destinataire'
+Create Person file for	EmailListView		Créer un fichier Personne 
 Delete permanently	EmailListView		Supprimer définitivement
 Filter by 'Account'	EmailListView		Filtrer par 'Compte'
 Filter by 'Recipient'	EmailListView		Filtrer par 'Destinataire'
@@ -307,7 +307,7 @@ Couldn't open this signature. Sorry.	SignatureWindow		Impossible d'ouvrir cette 
 Cut	SignatureWindow		Couper
 Delete	SignatureWindow		Supprimer
 Don't save	SignatureWindow		Ne pas enregistrer
-Edit	SignatureWindow		Éditer
+Edit	SignatureWindow		Édition
 New	SignatureWindow		Nouveau
 OK	SignatureWindow		D'accord
 Open	SignatureWindow		Ouvrir

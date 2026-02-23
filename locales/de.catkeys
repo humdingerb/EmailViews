@@ -1,23 +1,23 @@
 1	German	application/x-vnd.EmailViews	4210084602
- Read 	Toolbar	As short as possible	 Read 
-Attach	Toolbar	As short as possible	Attach
-Check email	Toolbar	As short as possible	Check email
-Forward	Toolbar	As short as possible	Forward
-Mark read	Toolbar	As short as possible	Mark read
-Mark unread	Toolbar	As short as possible	Mark unread
-New	Toolbar	As short as possible	New
-New email	Toolbar	As short as possible	New email
-Next	Toolbar	As short as possible	Next
-Previous	Toolbar	As short as possible	Previous
-Print	Toolbar	As short as possible	Print
-Reply	Toolbar	As short as possible	Reply
-Reply all	Toolbar	As short as possible	Reply all
-Save	Toolbar	As short as possible	Save
-Send	Toolbar	As short as possible	Send
-Signature	Toolbar	As short as possible	Signature
+ Read 	Toolbar	As short as possible	Gelesen
+Attach	Toolbar	As short as possible	Anhang
+Check email	Toolbar	As short as possible	Emails abrufen
+Forward	Toolbar	As short as possible	Weiterleiten
+Mark read	Toolbar	As short as possible	Gelesen mark.
+Mark unread	Toolbar	As short as possible	Ungelesen mark.
+New	Toolbar	As short as possible	Neu
+New email	Toolbar	As short as possible	Neue Email
+Next	Toolbar	As short as possible	Nächste
+Previous	Toolbar	As short as possible	Vorherige
+Print	Toolbar	As short as possible	Drucken
+Reply	Toolbar	As short as possible	Antworten
+Reply all	Toolbar	As short as possible	Allen antworten
+Save	Toolbar	As short as possible	Speichern
+Send	Toolbar	As short as possible	Senden
+Signature	Toolbar	As short as possible	Signatur
 Spam	Toolbar	As short as possible	Spam
-Trash	Toolbar	As short as possible	Trash
-Unread	Toolbar	As short as possible	Unread
+Trash	Toolbar	As short as possible	Papierkorb
+Unread	Toolbar	As short as possible	Ungelesen
 -1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Tag
 -1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Monat
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 Woche
@@ -173,7 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		Im Papierkorb befinden sich 
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Diese Nachricht ist HTML-formatiert.\nUnten klicken, um sie im Standard-Browser zu öffnen.
 Time range:	EmailViewsWindow		Zeitspanne:
 To:	EmailViewsWindow		An:
-Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
+Undo Move to Trash	EmailViewsWindow		Wieder aus Papierkorb holen
 Unread emails	EmailViewsWindow		Ungelesene Emails
 Unread emails (%ld)	EmailViewsWindow		Ungelesene Emails (%ld)
 View HTML version	EmailViewsWindow		HTML-Version anzeigen
