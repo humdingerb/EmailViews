@@ -1,23 +1,23 @@
 1	Catalan	application/x-vnd.EmailViews	4210084602
- Read 	Toolbar	As short as possible	 Read 
-Attach	Toolbar	As short as possible	Attach
-Check email	Toolbar	As short as possible	Check email
-Forward	Toolbar	As short as possible	Forward
-Mark read	Toolbar	As short as possible	Mark read
-Mark unread	Toolbar	As short as possible	Mark unread
-New	Toolbar	As short as possible	New
-New email	Toolbar	As short as possible	New email
-Next	Toolbar	As short as possible	Next
-Previous	Toolbar	As short as possible	Previous
-Print	Toolbar	As short as possible	Print
-Reply	Toolbar	As short as possible	Reply
-Reply all	Toolbar	As short as possible	Reply all
-Save	Toolbar	As short as possible	Save
-Send	Toolbar	As short as possible	Send
-Signature	Toolbar	As short as possible	Signature
-Spam	Toolbar	As short as possible	Spam
-Trash	Toolbar	As short as possible	Trash
-Unread	Toolbar	As short as possible	Unread
+ Read 	Toolbar	As short as possible	Llegit
+Attach	Toolbar	As short as possible	Adjunta
+Check email	Toolbar	As short as possible	Comprova el correu
+Forward	Toolbar	As short as possible	Reenvia
+Mark read	Toolbar	As short as possible	Marca com a llegit
+Mark unread	Toolbar	As short as possible	Marca com a no llegit
+New	Toolbar	As short as possible	Nou
+New email	Toolbar	As short as possible	Missatge nou
+Next	Toolbar	As short as possible	Següent
+Previous	Toolbar	As short as possible	Anterior
+Print	Toolbar	As short as possible	Imprimeix
+Reply	Toolbar	As short as possible	Respon
+Reply all	Toolbar	As short as possible	Respon a tothom
+Save	Toolbar	As short as possible	Desa
+Send	Toolbar	As short as possible	Envia
+Signature	Toolbar	As short as possible	Signatura
+Spam	Toolbar	As short as possible	Brossa
+Trash	Toolbar	As short as possible	Paperera
+Unread	Toolbar	As short as possible	No llegit
 -1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 dia
 -1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 mes
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 setmana
@@ -173,7 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		No hi ha cap missatge a la p
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Aquest missatge té format HTML. Feu clic a continuació per obrir-lo al navegador predeterminat.
 Time range:	EmailViewsWindow		Interval de temps:
 To:	EmailViewsWindow		A:
-Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
+Undo Move to Trash	EmailViewsWindow		Desfés el desplaçament a la paperera
 Unread emails	EmailViewsWindow		Missatges no llegits
 Unread emails (%ld)	EmailViewsWindow		Missatges no llegits (%ld)
 View HTML version	EmailViewsWindow		Mostra'n la versió HTML
