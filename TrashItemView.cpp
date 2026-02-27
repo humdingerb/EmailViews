@@ -34,15 +34,20 @@ TrashItemView::TrashItemView(BHandler* target)
 	SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 	// Size is controlled by the containing BScrollView
 
+	// Derive icon size from font metrics — same size as the other built-in
+	// sidebar query icons (ComposeIconSize(31)).
+	fIconSize = (float)be_control_look->ComposeIconSize(31).width + 1;
+
 	// Load trash icons from resources
 	BResources* resources = be_app->AppResources();
 	if (resources) {
 		size_t size;
+		BRect iconRect(0, 0, fIconSize - 1, fIconSize - 1);
 
 		// Load empty trash icon
 		const void* data = resources->LoadResource(B_VECTOR_ICON_TYPE, "MailTrashEmpty", &size);
 		if (data && size > 0) {
-			fIconEmpty = new BBitmap(BRect(0, 0, 23, 23), B_RGBA32);
+			fIconEmpty = new BBitmap(iconRect, B_RGBA32);
 			if (BIconUtils::GetVectorIcon((const uint8*)data, size, fIconEmpty) != B_OK) {
 				delete fIconEmpty;
 				fIconEmpty = NULL;
@@ -52,7 +57,7 @@ TrashItemView::TrashItemView(BHandler* target)
 		// Load full trash icon
 		data = resources->LoadResource(B_VECTOR_ICON_TYPE, "MailTrashFull", &size);
 		if (data && size > 0) {
-			fIconFull = new BBitmap(BRect(0, 0, 23, 23), B_RGBA32);
+			fIconFull = new BBitmap(iconRect, B_RGBA32);
 			if (BIconUtils::GetVectorIcon((const uint8*)data, size, fIconFull) != B_OK) {
 				delete fIconFull;
 				fIconFull = NULL;
@@ -105,9 +110,11 @@ TrashItemView::Draw(BRect updateRect)
 
 	// Draw icon (use full or empty based on count)
 	BBitmap* icon = (fCount > 0) ? fIconFull : fIconEmpty;
+	float spacing = be_control_look->DefaultLabelSpacing();
+	float iconLeft = spacing * 2;
 	if (icon) {
-		float iconTop = (bounds.Height() - 24) / 2;
-		BRect iconRect(6, iconTop, 29, iconTop + 23);
+		float iconTop = (bounds.Height() - fIconSize) / 2;
+		BRect iconRect(iconLeft, iconTop, iconLeft + fIconSize - 1, iconTop + fIconSize - 1);
 		SetDrawingMode(B_OP_ALPHA);
 		if (!enabled) {
 			// Draw icon with reduced opacity when disabled
@@ -123,12 +130,13 @@ TrashItemView::Draw(BRect updateRect)
 	font_height fh;
 	GetFontHeight(&fh);
 	float textY = (bounds.Height() + fh.ascent - fh.descent) / 2;
+	float textX = iconLeft + fIconSize + spacing;
 
 	BString text = fLabel;
 	if (fCount > 0) {
 		text << " (" << fCount << ")";
 	}
-	DrawString(text.String(), BPoint(34, textY));
+	DrawString(text.String(), BPoint(textX, textY));
 }
 
 

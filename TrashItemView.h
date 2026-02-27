@@ -38,6 +38,7 @@ private:
 	BHandler* fTarget;
 	BBitmap* fIconEmpty;
 	BBitmap* fIconFull;
+	float fIconSize;
 	BString fLabel;
 	int32 fCount;
 	bool fSelected;

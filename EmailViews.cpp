@@ -830,9 +830,11 @@ EmailViewsWindow::EmailViewsWindow()
     fTrashItem = new TrashItemView(this);
     BScrollView* trashScroll = new BScrollView("trashScroll", fTrashItem,
                                                 0, false, false, B_PLAIN_BORDER);  // No scrollbars
-    // Fix the height to match the trash item (32px) + border (1px plain border)
-    trashScroll->SetExplicitMinSize(BSize(B_SIZE_UNSET, 33));
-    trashScroll->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, 33));
+    // Height matches the built-in sidebar row height: ComposeIconSize(31) + one label spacing
+    float trashIconSize = (float)be_control_look->ComposeIconSize(31).width + 1;
+    float trashRowHeight = trashIconSize + be_control_look->DefaultLabelSpacing();
+    trashScroll->SetExplicitMinSize(BSize(B_SIZE_UNSET, trashRowHeight));
+    trashScroll->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, trashRowHeight));
     
     // Create container for query list + trash item
     // Use -1 top inset on trashScroll to merge with queryScroll's bottom border
@@ -1196,11 +1198,18 @@ void EmailViewsWindow::LoadQueries()
     // tells StartQuery() to enable attachmentsOnly filtering in the loader.
     // Each QueryItem owns its icon bitmap (freed in destructor).
     
-    // All Emails first
-    static const int32 kBuiltInIconSize = 32;
-    static const int32 kCustomIconSize = 20;
-    static const float kBuiltInTextOffset = 12 + kBuiltInIconSize + 4 + 4; // left margin + icon + gap + extra
-    static const float kCustomTextOffset = 12 + kCustomIconSize + 4 + 4;
+    // Derive icon sizes from the system font size via ComposeIconSize() so
+    // the sidebar scales correctly on HiDPI displays and at large font sizes.
+    // Built-in queries use the same icon size as the toolbar; custom queries
+    // use a smaller size to preserve the visual hierarchy.
+    const int32 kBuiltInIconSize = (int32)be_control_look->ComposeIconSize(31).width + 1;
+    const int32 kCustomIconSize  = (int32)be_control_look->ComposeIconSize(15).width + 1;
+
+    // Text offsets: left margin + icon + gap, all derived from the icon sizes above.
+    const float kLeftMargin       = be_control_look->DefaultLabelSpacing() * 2;
+    const float kIconTextGap      = be_control_look->DefaultLabelSpacing();
+    const float kBuiltInTextOffset = kLeftMargin + kBuiltInIconSize + kIconTextGap;
+    const float kCustomTextOffset  = kLeftMargin + kCustomIconSize  + kIconTextGap;
     
     fQueryList->AddItem(new QueryItem(B_TRANSLATE("All emails"), "((BEOS:TYPE==\"text/x-email\")&&(MAIL:subject=*))", LoadIconFromResource("MailQueryAllEmails", kBuiltInIconSize), true, false, kBuiltInIconSize));
     float allMailWidth = font.StringWidth(B_TRANSLATE("All emails")) + kBuiltInTextOffset;
@@ -4159,6 +4168,13 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 // Update status bar with running count during loading
                 UpdateEmailCountLabel();
                 
+                // Start loading dots only during an actual load, not on
+                // lightweight count-change notifications from live queries.
+                bool loading = false;
+                message->FindBool("loading", &loading);
+                if (loading)
+                    fEmailList->StartLoadingDots();
+                
                 // Signal loading in progress (disables backup button)
                 fSearchField->SetLoading(true);
                 
@@ -4176,7 +4192,8 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             }
             
             if (complete) {
-                // Loading finished — re-enable backup button
+                // Loading finished — stop loading dots and re-enable backup button
+                fEmailList->StopLoadingDots();
                 fSearchField->SetLoading(false);
                 
                 if (fIsSearchActive) {

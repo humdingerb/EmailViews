@@ -70,6 +70,22 @@ EmailColumnHeaderView::AttachedToWindow()
     font_height fontHeight;
     GetFontHeight(&fontHeight);
     fHeaderHeight = ceilf(fontHeight.ascent + fontHeight.descent + fontHeight.leading + 8.0f);
+
+    // Update icon column widths and min widths to match the header height
+    // so icons always fit. Only set initial width when state not restored;
+    // minWidth is always updated so the column can't be dragged narrower
+    // than the icon at the current font size. If a restored width is
+    // narrower than the new minWidth (e.g. font size increased), clamp it up.
+    for (int32 i = 0; i < fColumns.CountItems(); i++) {
+        ColumnInfo* col = fColumns.ItemAt(i);
+        if (col->id == kColumnStar || col->id == kColumnAttachment) {
+            col->minWidth = fHeaderHeight;
+            if (!fStateRestored)
+                col->width = fHeaderHeight;
+            else if (col->width < col->minWidth)
+                col->width = col->minWidth;
+        }
+    }
     
     // Set view color
     SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
@@ -613,8 +629,7 @@ EmailColumnHeaderView::RestoreState(const BMessage* from)
             for (int32 j = 0; j < fColumns.CountItems(); j++) {
                 ColumnInfo* info = fColumns.ItemAt(j);
                 if (info != NULL && (int32)info->id == colId) {
-                    if (!info->isIcon)
-                        info->width = width;
+                    info->width = max_c(width, info->minWidth);
                     info->visible = visible;
                     newOrder.AddItem(info);
                     break;
@@ -761,9 +776,6 @@ EmailColumnHeaderView::_ResizeBorderAt(float x) const
         
         // Check if within resize zone of this border
         if (x >= pos - kResizeZone && x <= pos + kResizeZone) {
-            // Don't allow resizing icon columns (they have fixed width)
-            if (info->isIcon)
-                continue;
             return i;
         }
     }

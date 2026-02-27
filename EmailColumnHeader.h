@@ -134,7 +134,9 @@ public:
     static const uint32     kMsgColumnClicked = 'cclk';
     static const uint32     kMsgColumnResized = 'crsz';
     static const uint32     kMsgColumnReordered = 'cord';
-    
+
+    float                   GetHeaderHeight() const { return fHeaderHeight; }
+
 private:
     void                    _RecalculateWidths();
     int32                   _ColumnAt(float x) const;

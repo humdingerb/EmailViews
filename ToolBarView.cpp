@@ -93,8 +93,11 @@ ToolBarButton::Draw(BRect updateRect)
 	be_control_look->DrawButtonBackground(this, bounds, updateRect, base,
 		flags);
 
+	// Use actual bitmap size so layout adapts when icon is scaled for HiDPI
+	float iconSize = (fIcon != NULL) ? fIcon->Bounds().Width() + 1 : kIconSize;
+
 	// Calculate icon position (centered within the content area)
-	float iconX = bounds.left + floorf((bounds.Width() - kIconSize) / 2);
+	float iconX = bounds.left + floorf((bounds.Width() - iconSize) / 2);
 	float iconY = bounds.top + kPaddingTop;
 
 	// Draw icon
@@ -120,7 +123,7 @@ ToolBarButton::Draw(BRect updateRect)
 		font_height fh;
 		GetFontHeight(&fh);
 
-		float labelY = iconY + kIconSize + kIconLabelGap + fh.ascent;
+		float labelY = iconY + iconSize + kIconLabelGap + fh.ascent;
 		float labelWidth = StringWidth(fLabel.String());
 		float labelX = bounds.left + floorf((bounds.Width() - labelWidth) / 2);
 
@@ -300,15 +303,17 @@ ToolBarButton::_CalculateSize()
 	if (fCachedSize.width >= 0)
 		return fCachedSize;
 
-	float width = kIconSize + kPaddingH * 2;
-	float height = kPaddingTop + kIconSize + kPaddingBottom;
+	float iconSize = (fIcon != NULL) ? fIcon->Bounds().Width() + 1 : kIconSize;
+
+	float width = iconSize + kPaddingH * 2;
+	float height = kPaddingTop + iconSize + kPaddingBottom;
 
 	if (fLabelVisible && fLabel.Length() > 0) {
 		font_height fh;
 		GetFontHeight(&fh);
 		float labelWidth = StringWidth(fLabel.String()) + kPaddingH * 2;
 		width = std::max(width, labelWidth);
-		height = kPaddingTop + kIconSize + kIconLabelGap
+		height = kPaddingTop + iconSize + kIconLabelGap
 			+ ceilf(fh.ascent + fh.descent) + kPaddingBottom;
 	}
 

@@ -223,6 +223,14 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 {
 	SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
 
+	// Derive button size from font metrics so the + and ZIP icons scale
+	// with the system font size, matching the search bar's natural height.
+	// The 1.4 multiplier gives ~20px at the default 12pt font, matching the
+	// original hardcoded size while scaling proportionally at larger sizes.
+	font_height fh0;
+	be_plain_font->GetHeight(&fh0);
+	fButtonSize = ceilf((fh0.ascent + fh0.descent) * 1.4f);
+
 	// Create attribute popup menu
 	BPopUpMenu* menu = new BPopUpMenu("attributes");
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Subject"), new BMessage(MSG_SEARCH_ATTRIBUTE)));
@@ -235,15 +243,9 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 	fAttributeMenu = new BMenuField("attribute", B_TRANSLATE("Filter:"), menu);
 	fAttributeMenu->SetToolTip(B_TRANSLATE("Select attribute(s) to query"));
 
-	// Calculate optimal width: label + widest item + arrow/padding
-	float maxItemWidth = 0;
-	for (int32 i = 0; i < menu->CountItems(); i++) {
-		float w = be_plain_font->StringWidth(menu->ItemAt(i)->Label());
-		if (w > maxItemWidth)
-			maxItemWidth = w;
-	}
-	float labelWidth = be_plain_font->StringWidth(B_TRANSLATE("Filter:")) + 8;
-	float menuWidth = labelWidth + maxItemWidth + 55;  // 55 for arrow, borders and padding
+	// Pin to the widget's own preferred width — tight but never clipped,
+	// and automatically font-size sensitive since BMenuField is font-aware.
+	float menuWidth = fAttributeMenu->PreferredSize().width;
 	fAttributeMenu->SetExplicitMinSize(BSize(menuWidth, B_SIZE_UNSET));
 	fAttributeMenu->SetExplicitMaxSize(BSize(menuWidth, B_SIZE_UNSET));
 
@@ -257,14 +259,8 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 	fOperatorMenu = new BMenuField("operator", NULL, operatorMenu);
 	fOperatorMenu->SetToolTip(B_TRANSLATE("Select search operator"));
 
-	// Calculate optimal width: widest item + arrow/padding (no label for this menu)
-	float maxOperatorWidth = 0;
-	for (int32 i = 0; i < operatorMenu->CountItems(); i++) {
-		float w = be_plain_font->StringWidth(operatorMenu->ItemAt(i)->Label());
-		if (w > maxOperatorWidth)
-			maxOperatorWidth = w;
-	}
-	float operatorMenuWidth = maxOperatorWidth + 55;  // 55 for arrow, borders and padding
+	// Same approach: pin to the widget's own preferred width
+	float operatorMenuWidth = fOperatorMenu->PreferredSize().width;
 	fOperatorMenu->SetExplicitMinSize(BSize(operatorMenuWidth, B_SIZE_UNSET));
 	fOperatorMenu->SetExplicitMaxSize(BSize(operatorMenuWidth, B_SIZE_UNSET));
 
@@ -295,6 +291,7 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 			.Add(fTextControl)
 			.Add(fClearButton)
 		.End()
+		.AddStrut(6)
 		.SetInsets(0, 0, buttonsWidth, 0);
 }
 

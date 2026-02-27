@@ -51,7 +51,6 @@
 #include <PopUpMenu.h>
 #include <Resources.h>
 #include <Roster.h>
-#include <StringView.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
 #include <Window.h>
@@ -68,95 +67,8 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "EmailListView"
 
-// Message for loading dots animation
-static const uint32 kMsgDotsPulse = 'dtpl';
+#include "LoadingDots.h"
 
-static const int32 kDotCount = 3;
-
-
-// ============================================================================
-// LoadingDots - animated dot sequence loading indicator
-// ============================================================================
-
-class LoadingDots : public BView {
-public:
-    LoadingDots(const char* name)
-        : BView(name, B_WILL_DRAW),
-          fActive(false),
-          fCurrentDot(0),
-          fRunner(NULL)
-    {
-        SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
-    }
-
-    ~LoadingDots()
-    {
-        delete fRunner;
-    }
-
-    void Start()
-    {
-        if (fActive)
-            return;
-        fActive = true;
-        fCurrentDot = 0;
-
-        delete fRunner;
-        BMessage msg(kMsgDotsPulse);
-        fRunner = new BMessageRunner(BMessenger(this), &msg, 450000);
-        Invalidate();
-    }
-
-    void Stop()
-    {
-        fActive = false;
-        fCurrentDot = 0;
-        delete fRunner;
-        fRunner = NULL;
-        Invalidate();
-    }
-
-    void Draw(BRect updateRect)
-    {
-        BRect bounds = Bounds();
-        rgb_color bg = ui_color(B_PANEL_BACKGROUND_COLOR);
-        SetHighColor(bg);
-        FillRect(bounds);
-
-        if (!fActive)
-            return;
-
-        rgb_color dimColor = tint_color(bg, B_DARKEN_2_TINT);
-        rgb_color litColor = ui_color(B_STATUS_BAR_COLOR);
-
-        float dotSize = floorf(bounds.Height() * 0.35f);
-        float spacing = dotSize * 1.8f;
-        float totalWidth = kDotCount * dotSize + (kDotCount - 1) * (spacing - dotSize);
-        float startX = bounds.left + (bounds.Width() - totalWidth) / 2.0f;
-        float centerY = bounds.top + bounds.Height() / 2.0f;
-
-        for (int32 i = 0; i < kDotCount; i++) {
-            float cx = startX + i * spacing + dotSize / 2.0f;
-            SetHighColor(i == fCurrentDot ? litColor : dimColor);
-            FillEllipse(BPoint(cx, centerY), dotSize / 2.0f, dotSize / 2.0f);
-        }
-    }
-
-    void MessageReceived(BMessage* message)
-    {
-        if (message->what == kMsgDotsPulse && fActive) {
-            fCurrentDot = (fCurrentDot + 1) % kDotCount;
-            Invalidate();
-        } else {
-            BView::MessageReceived(message);
-        }
-    }
-
-private:
-    bool            fActive;
-    int32           fCurrentDot;
-    BMessageRunner* fRunner;
-};
 
 // Internal message codes for loader thread → window thread communication.
 // kMsgLoaderBatch carries a batch of EmailRef pointers.
@@ -692,60 +604,57 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     //    Pass NULL as target initially, then set it
     fVScrollBar = new BScrollBar("vscroll", NULL, 0, 0, B_VERTICAL);
     fVScrollBar->SetTarget(fContentView);
-    fVScrollBar->SetExplicitMinSize(BSize(B_V_SCROLL_BAR_WIDTH, 0));
-    fVScrollBar->SetExplicitMaxSize(BSize(B_V_SCROLL_BAR_WIDTH, B_SIZE_UNLIMITED));
-    
+
     // 5. Horizontal scrollbar (separate)
     fHScrollBar = new BScrollBar("hscroll", NULL, 0, 0, B_HORIZONTAL);
     fHScrollBar->SetTarget(fContentView);
-    fHScrollBar->SetExplicitMinSize(BSize(0, B_H_SCROLL_BAR_HEIGHT));
-    fHScrollBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_H_SCROLL_BAR_HEIGHT));
-    
-    // 6. Status label (bottom-left)
+
+    // 6. Status label and loading dots — live left of the horizontal scrollbar,
+    //    sized from font metrics so they scale with the system font.
+    float hScrollHeight = fHScrollBar->PreferredSize().height;
     fStatusLabel = new BStringView("statusLabel", "");
     fStatusLabel->SetAlignment(B_ALIGN_LEFT);
-    
-    // Make status label font smaller
-    BFont font;
-    fStatusLabel->GetFont(&font);
-    font.SetSize(font.Size() * 0.85);
-    fStatusLabel->SetFont(&font);
-    
-    // Size label to fit "999,999 emails" (max 6 digits with comma)
-    float labelWidth = font.StringWidth("999,999 emails") + 4;
-    fStatusLabel->SetExplicitMinSize(BSize(labelWidth, B_H_SCROLL_BAR_HEIGHT));
-    fStatusLabel->SetExplicitMaxSize(BSize(labelWidth, B_H_SCROLL_BAR_HEIGHT));
-    
-    // Loading dots indicator - to the right of count
-    float dotsWidth = B_H_SCROLL_BAR_HEIGHT * 1.8f;
+    BFont statusFont;
+    fStatusLabel->GetFont(&statusFont);
+    // Measure "999,999 emails" as a representative worst-case width.
+    // Add generous padding (20%) to accommodate translated strings that may
+    // be longer than the English original.
+    float statusLabelWidth = statusFont.StringWidth("999,999 emails") * 1.2f + 4;
+    fStatusLabel->SetExplicitMinSize(BSize(statusLabelWidth, hScrollHeight));
+    fStatusLabel->SetExplicitMaxSize(BSize(statusLabelWidth, hScrollHeight));
+    fStatusLabel->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_VERTICAL_CENTER));
+
+    float dotAreaHeight = ceilf((statusFont.Size() * 1.0f));
+    float dotsWidth = dotAreaHeight * 2.5f;
     fLoadingDots = new LoadingDots("loadingDots");
-    fLoadingDots->SetExplicitMinSize(BSize(dotsWidth, B_H_SCROLL_BAR_HEIGHT));
-    fLoadingDots->SetExplicitMaxSize(BSize(dotsWidth, B_H_SCROLL_BAR_HEIGHT));
-    
+    fLoadingDots->SetExplicitMinSize(BSize(dotsWidth, hScrollHeight));
+    fLoadingDots->SetExplicitMaxSize(BSize(dotsWidth, hScrollHeight));
+    fLoadingDots->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_VERTICAL_CENTER));
+
     // 7. Corner spacer
     BView* cornerSpacer = new BView("cornerSpacer", 0);
-    cornerSpacer->SetExplicitMinSize(BSize(B_V_SCROLL_BAR_WIDTH, B_H_SCROLL_BAR_HEIGHT));
-    cornerSpacer->SetExplicitMaxSize(BSize(B_V_SCROLL_BAR_WIDTH, B_H_SCROLL_BAR_HEIGHT));
     cornerSpacer->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
-    
+    cornerSpacer->SetExplicitMinSize(BSize(0, hScrollHeight));
+    cornerSpacer->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, hScrollHeight));
+
     // Link column header to this list
     fColumnHeader->SetListView(this);
-    
+
     // Build layout with BBox providing the border.
     // BScrollView's own border can't span the column header and status bar,
     // so we use a BBox with B_FANCY_BORDER around the entire assembly:
     // ┌─────────────────────────────────────┐
     // │[Column Header           ][V-Scrollbar]│
     // │[Content View            ][           ]│
-    // │[Status][H-Scrollbar     ][Corner     ]│
+    // │[Status][Dots][H-Scrollbar][Corner    ]│
     // └─────────────────────────────────────┘
     SetExplicitMinSize(BSize(0, 0));
     SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
-    
+
     // Create a BBox with the border
     BBox* borderBox = new BBox("border");
     borderBox->SetBorder(B_FANCY_BORDER);
-    
+
     // Create the content layout - this creates a view we can add to BBox
     BGroupLayout* innerLayout = BLayoutBuilder::Group<>(B_HORIZONTAL, 0)
         // Left side: header + content + bottom bar
@@ -753,10 +662,8 @@ EmailListView::EmailListView(const char* name, BWindow* target)
             .Add(fColumnHeader)
             .Add(fScrollView, 1.0f)
             .AddGroup(B_HORIZONTAL, 0)
-                .AddStrut(4)
-                .Add(fStatusLabel)
-                .Add(fLoadingDots)
-                .AddStrut(6)
+                .Add(fStatusLabel, 0)
+                .Add(fLoadingDots, 0)
                 .Add(fHScrollBar, 1.0f)
             .End()
         .End()
@@ -828,15 +735,19 @@ EmailListView::AllAttached()
     fSelectedTextColor = ui_color(B_LIST_SELECTED_ITEM_TEXT_COLOR);
     _UpdateStripeColor();
     
-    // Load icons at row height size
+    // Load row icons at row height size
     _LoadIcons(fRowHeight - 4);
-    
-    // Set header icons for icon columns
+
+    // Set header icons for icon columns — loaded at header height so they
+    // fit within the header without overflowing at any font size.
     if (fColumnHeader != NULL) {
-        if (sStarIcon != NULL)
-            fColumnHeader->SetColumnHeaderIcon(kColumnStar, sStarIcon);
-        if (sAttachmentIcon != NULL)
-            fColumnHeader->SetColumnHeaderIcon(kColumnAttachment, sAttachmentIcon);
+        float headerIconSize = fColumnHeader->GetHeaderHeight() - 4;
+        BBitmap* starHeader = _LoadIconFromResource(kResStarred, headerIconSize);
+        BBitmap* attachHeader = _LoadIconFromResource(kResAttachment, headerIconSize);
+        if (starHeader != NULL)
+            fColumnHeader->SetColumnHeaderIcon(kColumnStar, starHeader);
+        if (attachHeader != NULL)
+            fColumnHeader->SetColumnHeaderIcon(kColumnAttachment, attachHeader);
     }
     
     _UpdateScrollBar();
@@ -3877,14 +3788,6 @@ EmailListView::_StopLiveQueries()
 void
 EmailListView::_SendLoadingUpdate(bool loading, bool complete)
 {
-    // Start/stop loading dots
-    if (fLoadingDots != NULL) {
-        if (loading && !complete)
-            fLoadingDots->Start();
-        else if (complete)
-            fLoadingDots->Stop();
-    }
-    
     if (fTarget == NULL)
         return;
     
@@ -3916,15 +3819,6 @@ EmailListView::_NotifyCountChanged()
 // =============================================================================
 // Container and status methods
 // =============================================================================
-
-void
-EmailListView::SetStatusText(const char* text)
-{
-    if (fStatusLabel != NULL) {
-        fStatusLabel->SetText(text);
-    }
-}
-
 
 status_t
 EmailListView::SaveColumnState(BMessage* into) const
@@ -3988,4 +3882,28 @@ EmailListView::RestoreColumnState(const BMessage* from)
     }
 
     return result;
+}
+
+
+void
+EmailListView::SetStatusText(const char* text)
+{
+    if (fStatusLabel != NULL)
+        fStatusLabel->SetText(text);
+}
+
+
+void
+EmailListView::StartLoadingDots()
+{
+    if (fLoadingDots != NULL)
+        fLoadingDots->Start();
+}
+
+
+void
+EmailListView::StopLoadingDots()
+{
+    if (fLoadingDots != NULL)
+        fLoadingDots->Stop();
 }

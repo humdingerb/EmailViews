@@ -18,6 +18,7 @@ SRCS = EmailViews.cpp \
        AttachmentStripView.cpp \
        TimeRangeSlider.cpp \
        PlaceholderTextView.cpp \
+       LoadingDots.cpp \
        reader/EmailReaderWindow.cpp \
        reader/Content.cpp \
        reader/Header.cpp \
@@ -42,7 +43,7 @@ SRCS = EmailViews.cpp \
 LIBS = be mail tracker textencoding localestub shared stdc++
 RDEFS = EmailViews.rdef
 LINKER_FLAGS = -Wl,--export-dynamic -s
-COMPILER_FLAGS = -I. -Ireader -I/boot/system/develop/headers/private/shared -I/boot/system/develop/headers/private/mail -I/boot/system/develop/headers/private/textencoding -I/boot/system/develop/headers/private/storage -DBUILD_TIMESTAMP="\"$(shell date '+%Y-%m-%d %H:%M')\""
+COMPILER_FLAGS = -I. -Ireader -I/boot/system/develop/headers/private/shared -I/boot/system/develop/headers/private/mail -I/boot/system/develop/headers/private/textencoding -I/boot/system/develop/headers/private/storage -I/boot/system/develop/headers/private/interface -DBUILD_TIMESTAMP="\"$(shell date '+%Y-%m-%d %H:%M')\""
 
 ## Include the Makefile rules
 DEVEL_DIRECTORY := $(shell findpaths -r "makefile_engine" B_FIND_PATH_DEVELOP_DIRECTORY)

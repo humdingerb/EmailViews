@@ -18,10 +18,10 @@
 #include <View.h>
 #include <ScrollBar.h>
 #include <ScrollView.h>
-#include <StringView.h>
 #include <ObjectList.h>
 #include <Font.h>
 #include <String.h>
+#include <StringView.h>
 #include <Window.h>
 #include <Query.h>
 #include <Volume.h>
@@ -32,11 +32,11 @@
 
 #include "EmailRef.h"
 #include "EmailColumnHeader.h"
+#include "LoadingDots.h"
 
 // Forward declarations
 class EmailItem;
 class EmailListView;
-class LoadingDots;
 
 // Hash function for node_ref to use with HashMap
 struct NodeRefHash {
@@ -263,8 +263,6 @@ public:
     
     void                SetShowingTrash(bool showingTrash);
     
-    void                SetStatusText(const char* text);
-    
     void                InvalidateItem(int32 index);
     
     // Called by column header when columns change
@@ -279,6 +277,10 @@ public:
     
     status_t            SaveColumnState(BMessage* into) const;
     status_t            RestoreColumnState(const BMessage* from);
+
+    void                SetStatusText(const char* text);
+    void                StartLoadingDots();
+    void                StopLoadingDots();
     
     // === Internal Component Access (for compatibility) ===
     

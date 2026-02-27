@@ -108,6 +108,7 @@ private:
 	float				fHandleWidth;
 	float				fHandleHeight;
 	float				fTrackHeight;
+	float				fTrackHorizInset;
 	float				fLabelHeight;
 };
 

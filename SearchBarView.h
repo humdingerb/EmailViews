@@ -112,6 +112,8 @@ public:
 	void SetBackupActive(bool active);
 	bool IsBackupActive() const { return fBackupActive; }
 
+	// Email count status and loading indicator
+
 private:
 	void _LoadIcons();
 	BRect _AddQueryButtonRect() const;

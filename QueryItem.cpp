@@ -16,6 +16,8 @@
 #include <Font.h>
 #include <View.h>
 
+#include <algorithm>
+
 
 // QueryItem implementation
 
@@ -55,14 +57,18 @@ QueryItem::Update(BView* owner, const BFont* font)
 	// Call parent to do default width calculation
 	BStringItem::Update(owner, font);
 
-	// Use icon size plus padding for items with icons
+	font_height fh;
+	font->GetHeight(&fh);
+	float fontHeight = ceilf(fh.ascent + fh.descent + fh.leading);
+
 	if (fIcon) {
-		SetHeight(fIconSize + 4.0);  // Icon height + padding
+		// Row must be tall enough for whichever is larger: the icon or the
+		// text. Use a single DefaultLabelSpacing() as total vertical padding
+		// for a compact but readable appearance.
+		float padding = be_control_look->DefaultLabelSpacing();
+		SetHeight(std::max(fIconSize, fontHeight) + padding);
 	} else {
-		// Calculate height based on font
-		font_height fh;
-		font->GetHeight(&fh);
-		SetHeight(fh.ascent + fh.descent + fh.leading + 6);  // Font height + padding
+		SetHeight(fontHeight + be_control_look->DefaultLabelSpacing());
 	}
 }
 
@@ -90,11 +96,13 @@ QueryItem::DrawItem(BView* owner, BRect frame, bool complete)
 	fillRect.left = 0;
 	owner->FillRect(fillRect);
 
-	// Draw icon if available (at fixed position from left edge)
+	// Draw icon if available
 	if (fIcon) {
+		float leftMargin = be_control_look->DefaultLabelSpacing() * 2;
 		// Center the icon vertically in the frame
 		float iconTop = frame.top + (frame.Height() - fIconSize) / 2;
-		BRect iconRect(12, iconTop, 12 + fIconSize - 1, iconTop + fIconSize - 1);
+		BRect iconRect(leftMargin, iconTop,
+			leftMargin + fIconSize - 1, iconTop + fIconSize - 1);
 		owner->SetDrawingMode(B_OP_ALPHA);
 		owner->DrawBitmap(fIcon, iconRect);
 		owner->SetDrawingMode(B_OP_COPY);
@@ -105,7 +113,9 @@ QueryItem::DrawItem(BView* owner, BRect frame, bool complete)
 	font_height fh;
 	owner->GetFontHeight(&fh);
 	float textY = frame.top + (frame.Height() + fh.ascent - fh.descent) / 2;
-	BPoint textPoint(fIcon ? (12 + fIconSize + 4) : 12, textY);
+	float leftMargin = be_control_look->DefaultLabelSpacing() * 2;
+	float gap = be_control_look->DefaultLabelSpacing();
+	BPoint textPoint(fIcon ? (leftMargin + fIconSize + gap) : leftMargin, textY);
 	owner->DrawString(Text(), textPoint);
 }
 
@@ -124,7 +134,10 @@ void
 SeparatorItem::Update(BView* owner, const BFont* font)
 {
 	BListItem::Update(owner, font);
-	SetHeight(8.0);  // Thin separator
+	// Scale separator height with the font so it stays proportional.
+	font_height fh;
+	font->GetHeight(&fh);
+	SetHeight(ceilf((fh.ascent + fh.descent) / 2));
 }
 
 
@@ -144,5 +157,6 @@ SeparatorItem::DrawItem(BView* owner, BRect frame, bool complete)
 	rgb_color lineColor = tint_color(backgroundColor, B_DARKEN_1_TINT);
 	owner->SetHighColor(lineColor);
 	float middle = frame.top + frame.Height() / 2;
-	owner->StrokeLine(BPoint(12, middle), BPoint(frame.right - 12, middle));
+	float margin = be_control_look->DefaultLabelSpacing() * 2;
+	owner->StrokeLine(BPoint(margin, middle), BPoint(frame.right - margin, middle));
 }

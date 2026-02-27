@@ -25,12 +25,8 @@
 
 // Layout constants
 static const float kMinTrackWidth = 100.0f;
-static const float kHandleWidth = 9.0f;
-static const float kHandleHeight = 16.0f;
-static const float kTrackHeight = 8.0f;
 static const float kLabelGap = 2.0f;		// Gap between label and handle
 static const float kLabelPadding = 4.0f;	// Horizontal padding for labels
-static const float kTrackHorizInset = 24.0f;	// Horizontal inset for track to leave room for labels
 
 // Time constants (in seconds)
 static const time_t kSecondsPerDay = 24 * 60 * 60;
@@ -83,9 +79,10 @@ TimeRangeSlider::TimeRangeSlider(const char* name, BMessage* message)
 	fHoveredHandle(0),
 	fDragOffset(0.0f),
 	fModificationMessage(message),
-	fHandleWidth(kHandleWidth),
-	fHandleHeight(kHandleHeight),
-	fTrackHeight(kTrackHeight),
+	fHandleWidth(9.0f),
+	fHandleHeight(16.0f),
+	fTrackHeight(8.0f),
+	fTrackHorizInset(24.0f),
 	fLabelHeight(0.0f)
 {
 	SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
@@ -103,10 +100,22 @@ TimeRangeSlider::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 	
-	// Calculate label height from font metrics
+	// Derive all layout dimensions from font metrics so the slider
+	// scales correctly at any system font size.
 	font_height fh;
 	GetFontHeight(&fh);
 	fLabelHeight = ceilf(fh.ascent + fh.descent);
+
+	// Handle height proportional to font, width keeps a comfortable aspect ratio
+	fHandleHeight = ceilf(fLabelHeight * 1.0f);
+	fHandleWidth  = ceilf(fHandleHeight * 0.55f);
+
+	// Track is half the handle height
+	fTrackHeight  = ceilf(fHandleHeight * 0.5f);
+
+	// Horizontal inset wide enough for the widest label (value 0.0 = "Today")
+	// so labels never get clipped regardless of font size or language.
+	fTrackHorizInset = StringWidth(_FormatTimeLabel(0.0f).String()) + kLabelPadding * 2;
 }
 
 
@@ -385,8 +394,8 @@ TimeRangeSlider::_TrackRect() const
 {
 	BRect bounds = Bounds();
 	float top = fLabelHeight + kLabelGap + (fHandleHeight - fTrackHeight) / 2;
-	return BRect(bounds.left + kTrackHorizInset, top, 
-	             bounds.right - kTrackHorizInset, top + fTrackHeight);
+	return BRect(bounds.left + fTrackHorizInset, top, 
+	             bounds.right - fTrackHorizInset, top + fTrackHeight);
 }
 
 
@@ -635,10 +644,10 @@ TimeRangeSlider::_DrawLabel(const char* text, BPoint handleTop, bool isLeft)
 	float x;
 	if (strcmp(text, "Today") == 0 || strcmp(text, "All") == 0) {
 		// Center the label above the handle
-		x = handleTop.x + kHandleWidth / 2 - textWidth / 2;
+		x = handleTop.x + fHandleWidth / 2 - textWidth / 2;
 	} else if (isLeft) {
 		// Left label: align right edge of text with right edge of handle
-		x = handleTop.x + kHandleWidth - textWidth;
+		x = handleTop.x + fHandleWidth - textWidth;
 	} else {
 		// Right label: align left edge of text with left edge of handle
 		x = handleTop.x;
