@@ -70,6 +70,7 @@ TReaderSettings::TReaderSettings()
 	fAutoMarkRead(true),
 	fShowTimeRange(true),
 	fShowSpamGUI(true),
+	fUseSystemFontSize(true),
 	fDefaultAccount(-1),
 	fUseAccountFrom(ACCOUNT_USE_DEFAULT),
 	fMailCharacterSet(B_MAIL_UTF8_CONVERSION),
@@ -109,7 +110,7 @@ TReaderSettings::Init()
 {
 	_LoadSettings();
 	fLastMailWindowFrame = fMailWindowFrame;
-	
+
 	// Check for spam filter existence to enable/disable spam GUI
 	_CheckForSpamFilterExistence();
 	
@@ -339,6 +340,24 @@ TReaderSettings::SetShowTimeRange(bool show)
 }
 
 
+bool
+TReaderSettings::UseSystemFontSize()
+{
+	BAutolock locker(fWindowListLock);
+	return fUseSystemFontSize;
+}
+
+
+void
+TReaderSettings::SetUseSystemFontSize(bool use)
+{
+	BAutolock locker(fWindowListLock);
+	fUseSystemFontSize = use;
+	if (use)
+		fContentFont.SetSize(be_fixed_font->Size());
+}
+
+
 void
 TReaderSettings::SetDefaultAccount(int32 account)
 {
@@ -375,6 +394,8 @@ const BFont&
 TReaderSettings::ContentFont()
 {
 	BAutolock locker(fWindowListLock);
+	if (fUseSystemFontSize)
+		fContentFont.SetSize(be_fixed_font->Size());
 	return fContentFont;
 }
 
@@ -390,7 +411,8 @@ TReaderSettings::ShowPrefsWindow()
 			&fColoredQuotes, &fDefaultAccount, &fUseAccountFrom,
 			&fReplyPreamble, &fSignature, &fMailCharacterSet,
 			&fWarnAboutUnencodableCharacters, &fStartWithSpellCheckOn,
-			&fAutoMarkRead, &fShowToolBar, &fShowTimeRange);
+			&fAutoMarkRead, &fShowToolBar, &fShowTimeRange,
+			&fUseSystemFontSize);
 		
 		if (fPrefsWindowPos.x <= 0 || fPrefsWindowPos.y <= 0) {
 			fPrefsWindow->CenterOnScreen();
@@ -492,6 +514,7 @@ TReaderSettings::_SaveSettings()
 	settings.AddBool("WarnAboutUnencodableCharacters", fWarnAboutUnencodableCharacters);
 	settings.AddBool("StartWithSpellCheck", fStartWithSpellCheckOn);
 	settings.AddBool("ShowTimeRange", fShowTimeRange);
+	settings.AddBool("UseSystemFontSize", fUseSystemFontSize);
 
 	BEntry entry;
 	status = entry.SetTo(path.Path());
@@ -611,6 +634,11 @@ TReaderSettings::_LoadSettings()
 
 	if (settings.FindBool("ShowTimeRange", &boolValue) == B_OK)
 		fShowTimeRange = boolValue;
+
+	if (settings.FindBool("UseSystemFontSize", &boolValue) == B_OK)
+		fUseSystemFontSize = boolValue;
+	else
+		fUseSystemFontSize = true;
 
 	return B_OK;
 }

@@ -34,6 +34,9 @@ of their respective holders. All rights reserved.
 
 
 #include "Prefs.h"
+#include "ReaderSettings.h"
+
+#include <private/interface/Spinner.h>
 
 #include <Catalog.h>
 #include <stdio.h>
@@ -69,7 +72,8 @@ enum P_MESSAGES {
 	P_SIG, P_ENC, P_WARN_UNENCODABLE,
 	P_SPELL_CHECK_START_ON, P_BUTTON_BAR,
 	P_ACCOUNT, P_REPLYTO, P_REPLY_PREAMBLE,
-	P_COLORED_QUOTES, P_MARK_READ, P_SHOW_TIME_RANGE
+	P_COLORED_QUOTES, P_MARK_READ, P_SHOW_TIME_RANGE,
+	P_USE_SYSTEM_FONT_SIZE
 };
 
 
@@ -90,7 +94,7 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 	bool* wrap, bool* attachAttributes, bool* cquotes, int32* account,
 	int32* replyTo, char** preamble, char** sig, uint32* encoding,
 	bool* warnUnencodable, bool* spellCheckStartOn, bool* autoMarkRead,
-	uint8* buttonBar, bool* showTimeRange)
+	uint8* buttonBar, bool* showTimeRange, bool* useSystemFontSize)
 	:
 	BWindow(BRect(leftTop.x, leftTop.y, leftTop.x + 100, leftTop.y + 100),
 		B_TRANSLATE("Email preferences"),
@@ -136,7 +140,9 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 	fAutoMarkRead(*autoMarkRead),
 
 	fNewShowTimeRange(showTimeRange),
-	fShowTimeRange(*showTimeRange)
+	fShowTimeRange(*showTimeRange),
+	fNewUseSystemFontSize(useSystemFontSize),
+	fUseSystemFontSize(*useSystemFontSize)
 {
 	strcpy(fSignature, *fNewSignature);
 
@@ -188,9 +194,30 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 	menu = new BMenuField("font", B_TRANSLATE("Font:"), fFontMenu);
 	add_menu_to_layout(menu, interfaceLayout, layoutRow);
 
-	fSizeMenu = _BuildSizeMenu(font);
-	menu = new BMenuField("size", B_TRANSLATE("Size:"), fSizeMenu);
-	add_menu_to_layout(menu, interfaceLayout, layoutRow);
+	// Size spinner + "Use system font size" checkbox on the same row.
+	// If the flag is on, show the current system size and disable the spinner.
+	int32 currentSize = (int32)gReaderSettings->ContentFont().Size();
+
+	fSizeSpinner = new BSpinner("size", B_TRANSLATE("Size:"),
+		new BMessage(P_SIZE));
+	fSizeSpinner->SetRange(7, 72);
+	fSizeSpinner->SetValue(currentSize);
+	fSizeSpinner->SetEnabled(!fUseSystemFontSize);
+	fSizeSpinner->SetAlignment(B_ALIGN_RIGHT);
+
+	fUseSystemFontSizeCheckBox = new BCheckBox("useSystemFontSize",
+		B_TRANSLATE("Use system font size"),
+		new BMessage(P_USE_SYSTEM_FONT_SIZE));
+	fUseSystemFontSizeCheckBox->SetValue(
+		fUseSystemFontSize ? B_CONTROL_ON : B_CONTROL_OFF);
+
+	// Place spinner label in col 0, spinner control in col 1,
+	// checkbox in col 2 — all on the same row.
+	fSizeSpinner->SetAlignment(B_ALIGN_RIGHT);
+	interfaceLayout->AddItem(fSizeSpinner->CreateLabelLayoutItem(), 0, layoutRow);
+	interfaceLayout->AddItem(fSizeSpinner->CreateTextViewLayoutItem(), 1, layoutRow);
+	interfaceLayout->AddView(fUseSystemFontSizeCheckBox, 2, layoutRow);
+	layoutRow++;
 
 	fColoredQuotesMenu = _BuildColoredQuotesMenu(fColoredQuotes);
 	menu = new BMenuField("cquotes", B_TRANSLATE("Colored quotes:"),
@@ -332,12 +359,8 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 				}
 
 				fNewFont->SetSize(old_size);
-				if (revert) {
-					sprintf(label, "%" B_PRId32, old_size);
-					item = fSizeMenu->FindItem(label);
-					if (item != NULL)
-						item->SetMarked(true);
-				}
+				if (revert)
+					fSizeSpinner->SetValue(old_size);
 				message.what = M_FONT;
 				be_app->PostMessage(&message);
 			}
@@ -356,6 +379,12 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 			*fNewAutoMarkRead = fAutoMarkRead;
 			*fNewButtonBar = fButtonBar;
 			*fNewShowTimeRange = fShowTimeRange;
+			*fNewUseSystemFontSize = fUseSystemFontSize;
+			if (revert) {
+				fUseSystemFontSizeCheckBox->SetValue(
+					fUseSystemFontSize ? B_CONTROL_ON : B_CONTROL_OFF);
+				fSizeSpinner->SetEnabled(!fUseSystemFontSize);
+			}
 
 			be_app->PostMessage(PREFS_CHANGED);
 
@@ -439,13 +468,9 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 			break;
 
 		case P_SIZE:
-			old_size = (int32) fNewFont->Size();
-			msg->FindInt32("size", &new_size);
-			if (old_size != new_size) {
-				fNewFont->SetSize(new_size);
-				message.what = M_FONT;
-				be_app->PostMessage(&message);
-			}
+			fNewFont->SetSize(fSizeSpinner->Value());
+			message.what = M_FONT;
+			be_app->PostMessage(&message);
 			break;
 
 		case P_WRAP:
@@ -515,14 +540,34 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 			be_app->PostMessage(PREFS_CHANGED);
 			break;
 
+		case P_USE_SYSTEM_FONT_SIZE:
+		{
+			bool use = (fUseSystemFontSizeCheckBox->Value() == B_CONTROL_ON);
+			*fNewUseSystemFontSize = use;
+			if (gReaderSettings != NULL)
+				gReaderSettings->SetUseSystemFontSize(use);
+			if (use) {
+				int32 systemSize = (int32)be_fixed_font->Size();
+				fSizeSpinner->SetValue(systemSize);
+				fNewFont->SetSize(systemSize);
+			}
+			fSizeSpinner->SetEnabled(!use);
+			{
+				BMessage fontMsg(M_FONT);
+				be_app->PostMessage(&fontMsg);
+			}
+			be_app->PostMessage(PREFS_CHANGED);
+			break;
+		}
+
 		default:
 			BWindow::MessageReceived(msg);
 	}
 
 	fFont.GetFamilyAndStyle(&old_family, &old_style);
 	fNewFont->GetFamilyAndStyle(&new_family, &new_style);
-	old_size = (int32) fFont.Size();
-	new_size = (int32) fNewFont->Size();
+	old_size = (int32)fFont.Size();
+	new_size = fSizeSpinner->Value();
 	bool changed = old_size != new_size
 		|| fWrap != *fNewWrap
 		|| fAttachAttributes != *fNewAttachAttributes
@@ -538,7 +583,8 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 		|| fSpellCheckStartOn != *fNewSpellCheckStartOn
 		|| fAutoMarkRead != *fNewAutoMarkRead
 		|| fButtonBar != *fNewButtonBar
-		|| fShowTimeRange != *fNewShowTimeRange;
+		|| fShowTimeRange != *fNewShowTimeRange
+		|| fUseSystemFontSize != *fNewUseSystemFontSize;
 	fRevert->SetEnabled(changed);
 }
 
@@ -733,31 +779,6 @@ TPrefsWindow::_BuildSignatureMenu(char* sig)
 			if (!strcmp(sig, name))
 				item->SetMarked(true);
 		}
-	}
-	return menu;
-}
-
-
-BPopUpMenu*
-TPrefsWindow::_BuildSizeMenu(BFont* font)
-{
-	char label[16];
-	uint32 loop;
-	int32 sizes[] = {9, 10, 11, 12, 14, 18, 24};
-	float size;
-	BMenuItem* item;
-	BMessage* msg;
-	BPopUpMenu* menu;
-
-	menu = new BPopUpMenu("");
-	size = font->Size();
-	for (loop = 0; loop < sizeof(sizes) / sizeof(int32); loop++) {
-		msg = new BMessage(P_SIZE);
-		msg->AddInt32("size", sizes[loop]);
-		sprintf(label, "%" B_PRId32, sizes[loop]);
-		menu->AddItem(item = new BMenuItem(label, msg));
-		if (sizes[loop] == (int32)size)
-			item->SetMarked(true);
 	}
 	return menu;
 }

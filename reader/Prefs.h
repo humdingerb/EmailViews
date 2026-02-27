@@ -39,8 +39,10 @@ All rights reserved.
 #include <Window.h>
 
 class BButton;
+class BCheckBox;
 class BMenu;
 class BPopUpMenu;
+class BSpinner;
 class BTextControl;
 
 
@@ -70,7 +72,8 @@ public:
 									uint32* encoding, bool* warnUnencodable,
 									bool* spellCheckStartOn,
 									bool* autoMarkRead, uint8* buttonBar,
-									bool* showTimeRange);
+									bool* showTimeRange,
+									bool* useSystemFontSize);
 	virtual						~TPrefsWindow();
 
 	virtual	void				MessageReceived(BMessage* message);
@@ -82,7 +85,6 @@ private:
 			BPopUpMenu*			_BuildReplyToMenu(int32);
 			BMenu*				_BuildReplyPreambleMenu();
 			BPopUpMenu*			_BuildSignatureMenu(char*);
-			BPopUpMenu*			_BuildSizeMenu(BFont*);
 			BPopUpMenu*			_BuildWrapMenu(bool);
 			BPopUpMenu*			_BuildAttachAttributesMenu(bool);
 			BPopUpMenu*			_BuildColoredQuotesMenu(bool quote);
@@ -128,11 +130,14 @@ private:
 			bool				fAutoMarkRead;
 			bool*				fNewShowTimeRange;
 			bool				fShowTimeRange;
+			bool*				fNewUseSystemFontSize;
+			bool				fUseSystemFontSize;
 
 			BButton*			fRevert;
 
 			BPopUpMenu*			fFontMenu;
-			BPopUpMenu*			fSizeMenu;
+			BSpinner*			fSizeSpinner;
+			BCheckBox*			fUseSystemFontSizeCheckBox;
 			BPopUpMenu*			fWrapMenu;
 			BPopUpMenu*			fColoredQuotesMenu;
 			BPopUpMenu*			fAttachAttributesMenu;

@@ -72,6 +72,8 @@ public:
 			bool				ShowTimeRange();
 			void				SetShowTimeRange(bool show);
 			bool				ShowSpamGUI() const { return fShowSpamGUI; }
+			bool				UseSystemFontSize();
+			void				SetUseSystemFontSize(bool use);
 			void				SetDefaultAccount(int32 account);
 			int32				DefaultAccount();
 			int32				UseAccountFrom();
@@ -129,6 +131,7 @@ private:
 			bool				fAutoMarkRead;
 			bool				fShowTimeRange;
 			bool				fShowSpamGUI;
+			bool				fUseSystemFontSize;
 			int32				fDefaultAccount;
 			int32				fUseAccountFrom;
 			uint32				fMailCharacterSet;
