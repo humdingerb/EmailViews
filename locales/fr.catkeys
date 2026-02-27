@@ -1,4 +1,4 @@
-1	French	application/x-vnd.EmailViews	4210084602
+1	French	application/x-vnd.EmailViews	1358517771
  Read 	Toolbar	As short as possible	Lu
 Attach	Toolbar	As short as possible	Joindre
 Check email	Toolbar	As short as possible	Relever
@@ -216,6 +216,7 @@ Size:	Preferences		Taille :
 Text wrapping:	Preferences		Renvoi à la ligne :
 Time range slider:	Preferences		Coulisse d'intervalle de temps :
 Use default account	Preferences		Utiliser le compte par défaut
+Use system font size	Preferences		Use system font size
 User interface	Preferences		Interface utilisateur
 Warn unencodable:	Preferences		Avertissement si non encodable :
 %count% new emails	DeskbarReplicant		%count% nouveaux courriels

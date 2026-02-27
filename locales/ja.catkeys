@@ -1,7 +1,7 @@
-1	Japanese	application/x-vnd.EmailViews	4210084602
+1	Japanese	application/x-vnd.EmailViews	1358517771
  Read 	Toolbar	As short as possible	既読
 Attach	Toolbar	As short as possible	添付
-Check email	Toolbar	As short as possible	メールチェック
+Check email	Toolbar	As short as possible	更新
 Forward	Toolbar	As short as possible	転送
 Mark read	Toolbar	As short as possible	既読
 Mark unread	Toolbar	As short as possible	未既読
@@ -216,6 +216,7 @@ Size:	Preferences		サイズ:
 Text wrapping:	Preferences		テキスト折り返し:
 Time range slider:	Preferences		対象期間スライダー:
 Use default account	Preferences		デフォルトアカウントを使用
+Use system font size	Preferences		システムフォントサイズを使う
 User interface	Preferences		ユーザインターフェース
 Warn unencodable:	Preferences		エンコード不可警告:
 %count% new emails	DeskbarReplicant		未既読メール %count% 通

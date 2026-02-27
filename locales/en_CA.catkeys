@@ -1,4 +1,4 @@
-1	English (Canada)	application/x-vnd.EmailViews	4210084602
+1	English (Canada)	application/x-vnd.EmailViews	1358517771
  Read 	Toolbar	As short as possible	 Read 
 Attach	Toolbar	As short as possible	Attach
 Check email	Toolbar	As short as possible	Check email
@@ -216,6 +216,7 @@ Size:	Preferences		Size:
 Text wrapping:	Preferences		Text wrapping:
 Time range slider:	Preferences		Time range slider:
 Use default account	Preferences		Use default account
+Use system font size	Preferences		Use system font size
 User interface	Preferences		User interface
 Warn unencodable:	Preferences		Warn unencodable:
 %count% new emails	DeskbarReplicant		%count% new emails

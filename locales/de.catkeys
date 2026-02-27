@@ -1,4 +1,4 @@
-1	German	application/x-vnd.EmailViews	4210084602
+1	German	application/x-vnd.EmailViews	1358517771
  Read 	Toolbar	As short as possible	Gelesen
 Attach	Toolbar	As short as possible	Anhang
 Check email	Toolbar	As short as possible	Emails abrufen
@@ -216,6 +216,7 @@ Size:	Preferences		Größe:
 Text wrapping:	Preferences		Zeilenumbruch:
 Time range slider:	Preferences		Zeitraum Schieberegler:
 Use default account	Preferences		Standardkonto:
+Use system font size	Preferences		Use system font size
 User interface	Preferences		Programmoberfläche
 Warn unencodable:	Preferences		Warnung bei nicht-kodierbaren Zeichen:
 %count% new emails	DeskbarReplicant		%count% neue Emails

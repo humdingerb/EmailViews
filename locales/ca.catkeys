@@ -1,4 +1,4 @@
-1	Catalan	application/x-vnd.EmailViews	4210084602
+1	Catalan	application/x-vnd.EmailViews	1358517771
  Read 	Toolbar	As short as possible	Llegit
 Attach	Toolbar	As short as possible	Adjunta
 Check email	Toolbar	As short as possible	Comprova el correu
@@ -216,6 +216,7 @@ Size:	Preferences		Mida:
 Text wrapping:	Preferences		Embolcall del text:
 Time range slider:	Preferences		Control lliscant de l'interval de temps:
 Use default account	Preferences		Usa el compte predeterminat
+Use system font size	Preferences		Use system font size
 User interface	Preferences		Interfície de l'usuari
 Warn unencodable:	Preferences		Avís no codificable:
 %count% new emails	DeskbarReplicant		%count% missatges nous

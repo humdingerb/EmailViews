@@ -1,4 +1,4 @@
-1	Turkish	application/x-vnd.EmailViews	4210084602
+1	Turkish	application/x-vnd.EmailViews	1358517771
  Read 	Toolbar	As short as possible	 Read 
 Attach	Toolbar	As short as possible	Attach
 Check email	Toolbar	As short as possible	Check email
@@ -216,6 +216,7 @@ Size:	Preferences		Boyut:
 Text wrapping:	Preferences		Metin kaydırma:
 Time range slider:	Preferences		Zaman erimi sürgüsü:
 Use default account	Preferences		Saptanmış hesabı kullan
+Use system font size	Preferences		Use system font size
 User interface	Preferences		Kullanıcı arayüzü
 Warn unencodable:	Preferences		Kodlanamayanda uyar
 %count% new emails	DeskbarReplicant		%count% yeni ileti
