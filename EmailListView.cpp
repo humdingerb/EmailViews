@@ -70,6 +70,70 @@
 #include "LoadingDots.h"
 
 
+// A view that draws only a left border line. Used as the outermost
+// container so the left border spans the full height of the email list.
+class LeftBorderView : public BView {
+public:
+    LeftBorderView(const char* name)
+        : BView(name, B_WILL_DRAW | B_DRAW_ON_CHILDREN | B_FRAME_EVENTS)
+    {
+        SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+        SetLayout(new BGroupLayout(B_VERTICAL, 0));
+    }
+
+    virtual void DrawAfterChildren(BRect updateRect)
+    {
+        BRect bounds = Bounds();
+        SetHighColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR),
+            B_DARKEN_2_TINT));
+        StrokeLine(bounds.LeftTop(), bounds.LeftBottom());
+    }
+};
+
+
+// A wrapper view for the status label and loading dots that draws
+// top and bottom borders to match the scrollbar border lines.
+class StatusAreaView : public BView {
+public:
+    StatusAreaView(const char* name)
+        : BView(name, B_WILL_DRAW | B_DRAW_ON_CHILDREN | B_FRAME_EVENTS)
+    {
+        SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+    }
+
+    virtual void DrawAfterChildren(BRect updateRect)
+    {
+        BRect bounds = Bounds();
+        SetHighColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR),
+            B_DARKEN_2_TINT));
+        StrokeLine(bounds.LeftTop(), bounds.RightTop());
+        StrokeLine(bounds.LeftBottom(), bounds.RightBottom());
+    }
+};
+
+// A spacer view for the corner below the vertical scrollbar.
+// Draws bottom and right borders to complete the border frame.
+class CornerSpacerView : public BView {
+public:
+    CornerSpacerView(const char* name)
+        : BView(name, B_WILL_DRAW)
+    {
+        SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+    }
+
+    virtual void Draw(BRect updateRect)
+    {
+        BRect bounds = Bounds();
+        SetHighColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR),
+            B_DARKEN_2_TINT));
+        // Bottom border
+        StrokeLine(bounds.LeftBottom(), bounds.RightBottom());
+        // Right border
+        StrokeLine(bounds.RightTop(), bounds.RightBottom());
+    }
+};
+
+
 // Internal message codes for loader thread → window thread communication.
 // kMsgLoaderBatch carries a batch of EmailRef pointers.
 // kMsgPhase1Done / kMsgPhase2Done signal phase completion (trigger next phase or finalize).
@@ -593,7 +657,8 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     // 2. Content view (the scrollable list)
     fContentView = new ContentView(this);
     
-    // 3. Scroll view WITHOUT scrollbars and NO border (outer BBox provides border)
+    // 3. Scroll view WITHOUT scrollbars and NO border (scrollbars are separate,
+    //    individual components draw their own border lines)
     //    BScrollView takes ownership of fContentView and adds it as child
     fScrollView = new BScrollView("scrollView", fContentView,
         B_WILL_DRAW | B_FRAME_EVENTS, false, false, B_NO_BORDER);
@@ -644,17 +709,20 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     fLoadingDots->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_VERTICAL_CENTER));
 
     // 7. Corner spacer
-    BView* cornerSpacer = new BView("cornerSpacer", 0);
-    cornerSpacer->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+    BView* cornerSpacer = new CornerSpacerView("cornerSpacer");
     cornerSpacer->SetExplicitMinSize(BSize(0, hScrollHeight));
     cornerSpacer->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, hScrollHeight));
 
     // Link column header to this list
     fColumnHeader->SetListView(this);
 
-    // Build layout with BBox providing the border.
-    // BScrollView's own border can't span the column header and status bar,
-    // so we use a BBox with B_FANCY_BORDER around the entire assembly:
+    // Build layout with individual border drawing on each component.
+    // - Column header draws its own top and bottom borders
+    // - LeftBorderView draws left border spanning full height
+    // - StatusAreaView draws bottom border under status/loading area
+    // - CornerSpacerView draws bottom and right borders
+    // - Scrollbars draw their own complete borders
+    // - Right border provided by window frame (view pushed to edge)
     // ┌─────────────────────────────────────┐
     // │[Column Header           ][V-Scrollbar]│
     // │[Content View            ][           ]│
@@ -663,19 +731,24 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     SetExplicitMinSize(BSize(0, 0));
     SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNLIMITED));
 
-    // Create a BBox with the border
-    BBox* borderBox = new BBox("border");
-    borderBox->SetBorder(B_FANCY_BORDER);
+    // Create a view that draws only the left border
+    LeftBorderView* borderView = new LeftBorderView("border");
 
-    // Create the content layout - this creates a view we can add to BBox
+    // StatusAreaView wraps status label + loading dots and draws bottom border
+    StatusAreaView* statusArea = new StatusAreaView("statusArea");
+    BLayoutBuilder::Group<>(statusArea, B_HORIZONTAL, 0)
+        .SetInsets(be_control_look->DefaultLabelSpacing(), 0, 0, 0)
+        .Add(fStatusLabel, 0)
+        .Add(fLoadingDots, 0);
+
+    // Create the content layout
     BGroupLayout* innerLayout = BLayoutBuilder::Group<>(B_HORIZONTAL, 0)
         // Left side: header + content + bottom bar
         .AddGroup(B_VERTICAL, 0, 1.0f)
             .Add(fColumnHeader)
             .Add(fScrollView, 1.0f)
             .AddGroup(B_HORIZONTAL, 0)
-                .Add(fStatusLabel, 0)
-                .Add(fLoadingDots, 0)
+                .Add(statusArea, 0)
                 .Add(fHScrollBar, 1.0f)
             .End()
         .End()
@@ -684,15 +757,15 @@ EmailListView::EmailListView(const char* name, BWindow* target)
             .Add(fVScrollBar, 1.0f)
             .Add(cornerSpacer)
         .End()
-        .SetInsets(1, -1, -1, -1);
+        .SetInsets(1, 0, 0, 0);
     
-    // Add the layout's view to the BBox (documented pattern for BBox + layouts)
-    borderBox->AddChild(innerLayout->View());
+    // Add the layout's view to the border view
+    borderView->AddChild(innerLayout->View());
     
-    // Add the BBox to this GroupView
+    // Add the border view to this GroupView
     BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
-        .Add(borderBox, 1.0f)
-        .SetInsets(0, 0 , -1, 0);
+        .Add(borderView, 1.0f)
+        .SetInsets(0);
 }
 
 

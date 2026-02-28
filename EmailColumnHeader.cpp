@@ -131,6 +131,10 @@ EmailColumnHeaderView::Draw(BRect updateRect)
     StrokeLine(BPoint(bounds.left, bounds.bottom),
                BPoint(bounds.right, bounds.bottom));
     
+    // Draw top border
+    StrokeLine(BPoint(bounds.left, bounds.top),
+               BPoint(bounds.right, bounds.top));
+    
     // Draw floating dragged column on top
     if (fDragging) {
         _DrawDraggedColumn();
