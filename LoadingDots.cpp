@@ -64,7 +64,7 @@ LoadingDots::Draw(BRect updateRect)
 	if (!fActive)
 		return;
 
-	rgb_color dimColor = tint_color(bg, B_DARKEN_2_TINT);
+	rgb_color dimColor = tint_color(bg, B_DISABLED_LABEL_TINT);
 	rgb_color litColor = ui_color(B_STATUS_BAR_COLOR);
 
 	float dotSize = floorf(bounds.Height() * 0.35f);
