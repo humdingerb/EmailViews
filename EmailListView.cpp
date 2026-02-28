@@ -616,13 +616,25 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     fStatusLabel->SetAlignment(B_ALIGN_LEFT);
     BFont statusFont;
     fStatusLabel->GetFont(&statusFont);
+
+    // Scale font down if it doesn't fit in the scrollbar height.
+    // Leave 2px padding (1px top + 1px bottom) for visual breathing room.
+    float availableHeight = hScrollHeight - 2.0f;
+    font_height fh;
+    statusFont.GetHeight(&fh);
+    float textHeight = fh.ascent + fh.descent;
+    if (textHeight > availableHeight && availableHeight > 0) {
+        float scale = availableHeight / textHeight;
+        statusFont.SetSize(floorf(statusFont.Size() * scale));
+        fStatusLabel->SetFont(&statusFont);
+    }
+
     // Measure "999,999 emails" as a representative worst-case width.
     // Add generous padding (20%) to accommodate translated strings that may
     // be longer than the English original.
     float statusLabelWidth = statusFont.StringWidth("999,999 emails") * 1.2f + 4;
     fStatusLabel->SetExplicitMinSize(BSize(statusLabelWidth, hScrollHeight));
     fStatusLabel->SetExplicitMaxSize(BSize(statusLabelWidth, hScrollHeight));
-    fStatusLabel->SetExplicitAlignment(BAlignment(B_ALIGN_LEFT, B_ALIGN_VERTICAL_CENTER));
 
     float dotAreaHeight = ceilf((statusFont.Size() * 1.0f));
     float dotsWidth = dotAreaHeight * 2.5f;
