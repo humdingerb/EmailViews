@@ -37,18 +37,28 @@ static const char* kAppAuthors =
 	B_TRANSLATE("Created with the assistance of AI tools.\n"
 	"Maintained by Jorge Mare.");
 
-static const char* kAppCredits = 
-	"Credits:\n"
-	"Haiku Mail application by the Haiku Project.\n"
-	"Icons from Haiku and Zumi icon sets.\n\n"
-	"Sources of inspiration:\n"
-	"Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\n"
+// Credits section — headers are translated separately so they can be
+// both inserted into the text and used as FindFirst() keys for bold styling.
+static const char* kCreditsHeader =
+	B_TRANSLATE("Credits:");
+static const char* kCreditsBody =
+	B_TRANSLATE("Haiku Mail application by the Haiku Project.\n"
+	"Icons from Haiku and Zumi icon sets.");
+
+static const char* kInspirationHeader =
+	B_TRANSLATE("Sources of inspiration:");
+static const char* kInspirationBody =
+	B_TRANSLATE("Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, "
+	"attachment caching).\n"
 	"QuickLaunch by Humdinger (Deskbar replicant integration).\n"
-	"Tracker by the Haiku Project.\n\n"
-	"Special thanks:\n"
-	"Special thanks go to Humdinger for his meticulous testing, detailed bug "
+	"Tracker by the Haiku Project.");
+
+static const char* kThanksHeader =
+	B_TRANSLATE("Special thanks:");
+static const char* kThanksBody =
+	B_TRANSLATE("Special thanks go to Humdinger for his meticulous testing, detailed bug "
 	"reports, valuable feature suggestions, and unwavering commitment to "
-	"improving this software.\n";
+	"improving this software.");
 
 
 // Helper function to get version string from app resources
@@ -160,26 +170,35 @@ AboutWindow::AboutWindow(BBitmap* icon)
 	BString descText;
 	descText << kAppDescription << "\n\n"
 		 << kAppAuthors << "\n\n"
-		 << kAppCredits;
+		 << kCreditsHeader << "\n" << kCreditsBody << "\n\n"
+		 << kInspirationHeader << "\n" << kInspirationBody << "\n\n"
+		 << kThanksHeader << "\n" << kThanksBody << "\n";
 	fTextView->SetText(descText.String());
 
 	// Apply text color to all text
 	rgb_color textColor = ui_color(B_LIST_ITEM_TEXT_COLOR);
 	fTextView->SetFontAndColor(0, descText.Length(), NULL, B_FONT_ALL, &textColor);
 
-	// Apply bold to section headers
+	// Apply bold to section headers using the same translated strings
 	BFont sectionFont(be_bold_font);
-	int32 creditsPos = descText.FindFirst("Credits:");
+
+	int32 creditsPos = descText.FindFirst(kCreditsHeader);
 	if (creditsPos >= 0) {
-		fTextView->SetFontAndColor(creditsPos, creditsPos + 8, &sectionFont, B_FONT_ALL, &textColor);
+		fTextView->SetFontAndColor(creditsPos,
+			creditsPos + strlen(kCreditsHeader),
+			&sectionFont, B_FONT_ALL, &textColor);
 	}
-	int32 sourcesPos = descText.FindFirst("Sources of inspiration:");
+	int32 sourcesPos = descText.FindFirst(kInspirationHeader);
 	if (sourcesPos >= 0) {
-		fTextView->SetFontAndColor(sourcesPos, sourcesPos + 23, &sectionFont, B_FONT_ALL, &textColor);
+		fTextView->SetFontAndColor(sourcesPos,
+			sourcesPos + strlen(kInspirationHeader),
+			&sectionFont, B_FONT_ALL, &textColor);
 	}
-	int32 thanksPos = descText.FindFirst("Special thanks:");
+	int32 thanksPos = descText.FindFirst(kThanksHeader);
 	if (thanksPos >= 0) {
-		fTextView->SetFontAndColor(thanksPos, thanksPos + 15, &sectionFont, B_FONT_ALL, &textColor);
+		fTextView->SetFontAndColor(thanksPos,
+			thanksPos + strlen(kThanksHeader),
+			&sectionFont, B_FONT_ALL, &textColor);
 	}
 
 	BScrollView* scrollView = new BScrollView("scroll", fTextView,
