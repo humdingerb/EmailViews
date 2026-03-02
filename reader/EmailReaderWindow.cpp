@@ -2079,6 +2079,16 @@ EmailReaderWindow::Reply(entry_ref* ref, EmailReaderWindow* window, uint32 type)
 		name = B_TRANSLATE("(Name unavailable)");
 
 	BString address(mail->From());
+	if (address.Length() > 0) {
+		// Extract just the email address from "Name <email>" format
+		int32 open = address.FindFirst('<');
+		int32 close = address.FindFirst('>', open);
+		if (open >= 0 && close > open) {
+			BString email;
+			address.CopyInto(email, open + 1, close - open - 1);
+			address = email;
+		}
+	}
 	if (address.Length() <= 0)
 		address = B_TRANSLATE("(Address unavailable)");
 
@@ -2199,6 +2209,16 @@ EmailReaderWindow::ComposeReplyTo(entry_ref* ref, uint32 type)
 		name = B_TRANSLATE("(Name unavailable)");
 
 	BString address(sourceMail->From());
+	if (address.Length() > 0) {
+		// Extract just the email address from "Name <email>" format
+		int32 open = address.FindFirst('<');
+		int32 close = address.FindFirst('>', open);
+		if (open >= 0 && close > open) {
+			BString email;
+			address.CopyInto(email, open + 1, close - open - 1);
+			address = email;
+		}
+	}
 	if (address.Length() <= 0)
 		address = B_TRANSLATE("(Address unavailable)");
 
