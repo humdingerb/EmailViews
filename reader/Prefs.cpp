@@ -504,12 +504,22 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 			}
 
 			BTextView *text = fReplyPreamble->TextView();
-			int32 selectionStart;
-			int32 selectionEnd;
-			text->GetSelection(&selectionStart, &selectionEnd);
-			if (selectionStart != selectionEnd)
-				text->Delete(selectionStart, selectionEnd);
-			text->Insert(preambleItem->Label(), 2);
+			int32 start;
+			int32 end;
+			text->GetSelection(&start, &end);
+
+			// If nothing is explicitly selected (e.g. text control lost
+			// focus when clicking the dropdown), append at the end instead
+			// of replacing the entire text.
+			if (start == 0 && end == text->TextLength()) {
+				start = end;
+			} else if (start != end) {
+				text->Delete(start, end);
+			}
+
+			text->Insert(start, preambleItem->Label(), 2);
+			text->Select(start + 2, start + 2);
+			break;
 		}
 		case P_SIG:
 			free(*fNewSignature);
