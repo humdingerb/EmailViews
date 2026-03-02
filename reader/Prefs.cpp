@@ -55,6 +55,7 @@ of their respective holders. All rights reserved.
 #include <mail_encoding.h>
 #include <StorageKit.h>
 #include <String.h>
+#include <TabView.h>
 
 using namespace BPrivate;
 
@@ -148,21 +149,23 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 
 	BMenuField* menu;
 
-	// group boxes
+	// Tab view with separate tabs for User Interface and Mailing settings.
+	// Each tab has its own independent grid layout, avoiding column width
+	// coupling that caused the Reply preamble text field to be too narrow.
 
-	BGridView* interfaceView = new BGridView();
+	BTabView* tabView = new BTabView("prefTabs", B_WIDTH_FROM_LABEL);
+
+	BGridView* interfaceView = new BGridView(B_TRANSLATE("User interface"));
 	BGridLayout* interfaceLayout = interfaceView->GridLayout();
-	BGridView* mailView = new BGridView();
-	BGridLayout* mailLayout = mailView->GridLayout();
-
 	interfaceLayout->SetInsets(B_USE_DEFAULT_SPACING);
-	interfaceLayout->AlignLayoutWith(mailLayout, B_HORIZONTAL);
+
+	BGridView* mailView = new BGridView(B_TRANSLATE("Mailing"));
+	BGridLayout* mailLayout = mailView->GridLayout();
 	mailLayout->SetInsets(B_USE_DEFAULT_SPACING);
 
-	BBox* interfaceBox = new BBox(B_FANCY_BORDER, interfaceView);
-	interfaceBox->SetLabel(B_TRANSLATE("User interface"));
-	BBox* mailBox = new BBox(B_FANCY_BORDER, mailView);
-	mailBox->SetLabel(B_TRANSLATE("Mailing"));
+	tabView->AddTab(interfaceView);
+	tabView->AddTab(mailView);
+	tabView->SetBorder(B_NO_BORDER);
 
 	// revert, ok & cancel
 
@@ -289,16 +292,17 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 		fAttachAttributesMenu);
 	add_menu_to_layout(menu, mailLayout, layoutRow);
 
-	BLayoutBuilder::Group<>(this, B_VERTICAL)
-		.Add(interfaceBox)
-		.Add(mailBox)
+	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+		.SetInsets(0, B_USE_DEFAULT_SPACING, 0, B_USE_DEFAULT_SPACING)
+		.Add(tabView)
 		.AddGroup(B_HORIZONTAL)
 			.Add(fRevert)
 			.AddGlue()
 			.Add(cancelButton)
 			.Add(okButton)
-		.End()
-		.SetInsets(B_USE_WINDOW_SPACING);
+			.SetInsets(B_USE_WINDOW_SPACING, B_USE_DEFAULT_SPACING,
+				B_USE_WINDOW_SPACING, 0)
+		.End();
 }
 
 
