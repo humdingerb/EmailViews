@@ -56,9 +56,7 @@ static const char* kInspirationBody =
 static const char* kThanksHeader =
 	B_TRANSLATE("Special thanks:");
 static const char* kThanksBody =
-	B_TRANSLATE("Special thanks go to Humdinger for his meticulous testing, detailed bug "
-	"reports, valuable feature suggestions, and unwavering commitment to "
-	"improving this software.");
+	B_TRANSLATE("Humdinger, for ideas, testing, bug reports, and code contributions.");
 
 
 // Helper function to get version string from app resources
