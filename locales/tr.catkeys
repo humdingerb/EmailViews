@@ -1,23 +1,23 @@
-1	Turkish	application/x-vnd.EmailViews	1358517771
- Read 	Toolbar	As short as possible	 Read 
-Attach	Toolbar	As short as possible	Attach
-Check email	Toolbar	As short as possible	Check email
-Forward	Toolbar	As short as possible	Forward
-Mark read	Toolbar	As short as possible	Mark read
-Mark unread	Toolbar	As short as possible	Mark unread
-New	Toolbar	As short as possible	New
-New email	Toolbar	As short as possible	New email
-Next	Toolbar	As short as possible	Next
-Previous	Toolbar	As short as possible	Previous
-Print	Toolbar	As short as possible	Print
-Reply	Toolbar	As short as possible	Reply
-Reply all	Toolbar	As short as possible	Reply all
-Save	Toolbar	As short as possible	Save
-Send	Toolbar	As short as possible	Send
-Signature	Toolbar	As short as possible	Signature
-Spam	Toolbar	As short as possible	Spam
-Trash	Toolbar	As short as possible	Trash
-Unread	Toolbar	As short as possible	Unread
+1	Turkish	application/x-vnd.EmailViews	373761629
+ Read 	Toolbar	As short as possible	Oku
+Attach	Toolbar	As short as possible	İliştir
+Check email	Toolbar	As short as possible	E-postayı denetle
+Forward	Toolbar	As short as possible	İlet
+Mark read	Toolbar	As short as possible	Okundu olarak imle
+Mark unread	Toolbar	As short as possible	Okunmadı olarak imle
+New	Toolbar	As short as possible	Yeni
+New email	Toolbar	As short as possible	Yeni ileti
+Next	Toolbar	As short as possible	Sonraki
+Previous	Toolbar	As short as possible	Önceki
+Print	Toolbar	As short as possible	Yazdır
+Reply	Toolbar	As short as possible	Yanıtla
+Reply all	Toolbar	As short as possible	Tümünü yanıtla
+Save	Toolbar	As short as possible	Kaydet
+Send	Toolbar	As short as possible	Gönder
+Signature	Toolbar	As short as possible	İmza
+Spam	Toolbar	As short as possible	İstenmeyen
+Trash	Toolbar	As short as possible	Çöpe at
+Unread	Toolbar	As short as possible	Okunmamış
 -1 day	TimeRangeSlider	Time range slider label - keep as short as possible	−1 gün
 -1 month	TimeRangeSlider	Time range slider label - keep as short as possible	−1 ay
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	−1 hafta
@@ -173,7 +173,7 @@ There are no emails in the Trash.	EmailViewsWindow		Çöpte ileti yok.
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		Bu ileti HTML biçimli.\nSaptanmış tarayıcıda açmak için aşağıya tıklayın.
 Time range:	EmailViewsWindow		Zaman erimi:
 To:	EmailViewsWindow		Kime:
-Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
+Undo Move to Trash	EmailViewsWindow		Çöpe atmayı geri al
 Unread emails	EmailViewsWindow		Okunmamış iletiler
 Unread emails (%ld)	EmailViewsWindow		Okunmamış iletiler (%ld)
 View HTML version	EmailViewsWindow		HTML sürümünü görüntüle
@@ -216,7 +216,7 @@ Size:	Preferences		Boyut:
 Text wrapping:	Preferences		Metin kaydırma:
 Time range slider:	Preferences		Zaman erimi sürgüsü:
 Use default account	Preferences		Saptanmış hesabı kullan
-Use system font size	Preferences		Use system font size
+Use system font size	Preferences		Sistem yazıtipi puntosunu kullan
 User interface	Preferences		Kullanıcı arayüzü
 Warn unencodable:	Preferences		Kodlanamayanda uyar
 %count% new emails	DeskbarReplicant		%count% yeni ileti
@@ -329,11 +329,17 @@ Only files can be added as attachments.	EnclosuresView		Ek olarak yalnızca dosy
 Open attachment	EnclosuresView		Eki aç
 Remove attachment	EnclosuresView		Eki kaldır
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		İletilen bir iletideki ekleri kaldırmak henüz desteklenmiyor!\nDoğru çalışmayacaktır.
+Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Beam, Oliver Tappe tarafından (öznitelik arama arayüzü, sürükle–bırak işlemesi, ilişik önbelleği).\nQuickLaunch, Humdinger tarafından (Masaüstü Çubuğu yineleneni tümleşimi).\nTracker, Haiku Projesi tarafından.
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Yapay zekâ araçlarının yardımıyla oluşturulmuştur.\nBakımı, Jorge Mare tarafından yapılır.
+Credits:	AboutWindow		Emeği geçenler:
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews, Haiku için hızlı ve hafif bir e-posta görüntüleyicisidir. E-postalarınızı efektif olarak organize etmek ve taramanıza olanak tanımak adına Haiku’nun sorgular sistemini kullanır.
+Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Posta uygulaması, Haiku Projesi tarafından.\nSimgeler, Haiku ve Zumi simge kümelerinden alınmıştır.
+OK	AboutWindow		Tamam
+Sources of inspiration:	AboutWindow		Esinlenmeler:
+Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Titiz sınamaları, ayrıntılı hata raporları, değerli özellik önerileri ve bu yazılımı geliştirmeye yönelik sarsılmaz bağlılığı için Humdinger’e özel teşekkürlerimizi sunuyoruz.
+Special thanks:	AboutWindow		Özel teşekkürler:
 Cancel	QueryNameDialog		Vazgeç
 Save	QueryNameDialog		Kaydet
-Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Yapay zekâ araçlarının yardımıyla oluşturulmuştur.\nBakımı, Jorge Mare tarafından yapılır.
-EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews, Haiku için hızlı ve hafif bir e-posta görüntüleyicisidir. E-postalarınızı efektif olarak organize etmek ve taramanıza olanak tanımak adına Haiku’nun sorgular sistemini kullanır.
-OK	AboutWindow		Tamam
 Delete emails in Trash	TrashItemView		Çöpteki iletileri sil
 Emails in Trash	TrashItemView		Çöpteki iletiler
 Find	FindWindow		Bul

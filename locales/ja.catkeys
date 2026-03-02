@@ -1,4 +1,4 @@
-1	Japanese	application/x-vnd.EmailViews	1358517771
+1	Japanese	application/x-vnd.EmailViews	373761629
  Read 	Toolbar	As short as possible	既読
 Attach	Toolbar	As short as possible	添付
 Check email	Toolbar	As short as possible	更新
@@ -329,11 +329,17 @@ Only files can be added as attachments.	EnclosuresView		添付として追加で
 Open attachment	EnclosuresView		添付ファイルを開く
 Remove attachment	EnclosuresView		添付ファイルを削除
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		転送されたメールから添付ファイルを削除する機能はまだ実装されていませんので、正しく動作しません。
+Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Oliver Tappe 氏の Beam メールクライアント (属性検索 UI、ドラグ＆ドロップ処理、添付ファイルキャッシュ)\nHumdinger 氏の QuickLaunch (Deskbar レプリカント統合)\nHaiku プロジェクトの Tracker ファイルマネージャ
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		AI ツールの支援を受けて開発されました。\nJorge Mare によってメンテナンスされています。
+Credits:	AboutWindow		クレジット：
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViewsは、ライブクエリを活用してメールを手軽に整理・閲覧できる、Haiku用の高速で軽量なメールビューアです。
+Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku プロジェクトのメールアプリケーション\nHaiku および Zumi アイコンセットのアイコン
+OK	AboutWindow		OK
+Sources of inspiration:	AboutWindow		参考にしたプロジェクト：
+Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Humdinger氏には、細心のテスト、詳細なバグ報告、貴重な機能提案、そしてこのソフトウェアの改善に対する揺るぎない献身に対して、特別な感謝を申し上げます。
+Special thanks:	AboutWindow		特別な感謝：
 Cancel	QueryNameDialog		中止
 Save	QueryNameDialog		保存
-Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		AI ツールの支援を受けて開発されました。\nJorge Mare によってメンテナンスされています。
-EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViewsは、ライブクエリを活用してメールを手軽に整理・閲覧できる、Haiku用の高速で軽量なメールビューアです。
-OK	AboutWindow		OK
 Delete emails in Trash	TrashItemView		ごみ箱にあるメールを完全削除
 Emails in Trash	TrashItemView		メールごみ箱
 Find	FindWindow		検索

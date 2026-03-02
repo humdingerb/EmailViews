@@ -1,4 +1,4 @@
-1	French	application/x-vnd.EmailViews	1358517771
+1	French	application/x-vnd.EmailViews	373761629
  Read 	Toolbar	As short as possible	Lu
 Attach	Toolbar	As short as possible	Joindre
 Check email	Toolbar	As short as possible	Relever
@@ -216,7 +216,7 @@ Size:	Preferences		Taille :
 Text wrapping:	Preferences		Renvoi à la ligne :
 Time range slider:	Preferences		Coulisse d'intervalle de temps :
 Use default account	Preferences		Utiliser le compte par défaut
-Use system font size	Preferences		Use system font size
+Use system font size	Preferences		Taille du système
 User interface	Preferences		Interface utilisateur
 Warn unencodable:	Preferences		Avertissement si non encodable :
 %count% new emails	DeskbarReplicant		%count% nouveaux courriels
@@ -329,11 +329,17 @@ Only files can be added as attachments.	EnclosuresView		Seuls des fichiers peuve
 Open attachment	EnclosuresView		Ouvrir la pièce jointe
 Remove attachment	EnclosuresView		Supprimer la pièce jointe
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Supprimer les pièces jointes d'un courriel transmit n'est pas encore implémenté !\nCela ne fonctionnera pas encore bien.
+Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Beam de Oliver Tappe (IU de recherche d'attributs, gestion du glisser-déposer, mise en cache des pièces jointes).\nQuickLaunch de Humdinger (Intégration du répliquant dans la Deskbar).\nTracker du Projet Haiku.
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Créé avec l'assistance d'outils IA.\nMaintenu par by Jorge Mare.
+Credits:	AboutWindow		Crédits :
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews est un visionneur de courriels pour Haiku rapide et léger qui utilise les requêtes actives pour organiser et explorer vos courriels sans efforts.
+Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		L'application Mail de Haiku du Projet Haiku.\nLes icones de Haiku et des collections d'icones de Zumi.
+OK	AboutWindow		D'accord
+Sources of inspiration:	AboutWindow		Sources d'inspiration :
+Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		De grands merci à Humdinger pour ses tests méticuleux, ses rapports de bogues détaillés, ses suggestions de fonctionnalités pertinentes, et son engagement inébranlable à améliorer ce logiciel.
+Special thanks:	AboutWindow		Remerciements spéciaux :
 Cancel	QueryNameDialog		Annuler
 Save	QueryNameDialog		Enregistrer
-Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Créé avec l'assistance d'outils IA.\nMaintenu par by Jorge Mare.
-EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews est un visionneur de courriels pour Haiku rapide et léger qui utilise les requêtes actives pour organiser et explorer vos courriels sans efforts.
-OK	AboutWindow		D'accord
 Delete emails in Trash	TrashItemView		Supprimer les courriels dans la corbeille
 Emails in Trash	TrashItemView		Courriels dans la corbeille
 Find	FindWindow		Rechercher

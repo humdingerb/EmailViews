@@ -1,4 +1,4 @@
-1	English (British)	application/x-vnd.EmailViews	1358517771
+1	English (British)	application/x-vnd.EmailViews	373761629
  Read 	Toolbar	As short as possible	 Read 
 Attach	Toolbar	As short as possible	Attach
 Check email	Toolbar	As short as possible	Check email
@@ -329,11 +329,17 @@ Only files can be added as attachments.	EnclosuresView		Only files can be added 
 Open attachment	EnclosuresView		Open attachment
 Remove attachment	EnclosuresView		Remove attachment
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.
+Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.
+Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Created with the assistance of AI tools.\nMaintained by Jorge Mare.
+Credits:	AboutWindow		Credits:
+EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organise and explore your emails effortlessly.
+Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.
+OK	AboutWindow		Alright
+Sources of inspiration:	AboutWindow		Sources of inspiration:
+Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.
+Special thanks:	AboutWindow		Special thanks:
 Cancel	QueryNameDialog		Cancel
 Save	QueryNameDialog		Save
-Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Created with the assistance of AI tools.\nMaintained by Jorge Mare.
-EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organise and explore your emails effortlessly.
-OK	AboutWindow		Alright
 Delete emails in Trash	TrashItemView		Delete emails in Trash
 Emails in Trash	TrashItemView		Emails in Trash
 Find	FindWindow		Find

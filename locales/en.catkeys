@@ -1,4 +1,4 @@
-1	English	application/x-vnd.EmailViews	1358517771
+1	English	application/x-vnd.EmailViews	373761629
 Open attachment	ContentView		Open attachment
 Attach	Toolbar	As short as possible	Attach
 Cancel	QueryNameDialog		Cancel
@@ -22,8 +22,8 @@ New	Toolbar	As short as possible	New
 Unread emails	EmailViewsWindow		Unread emails
 Save changes to this signature?	SignatureWindow		Save changes to this signature?
 Select folder	EmailViewsWindow		Select folder
-Cut	EmailReaderWindow		Cut
 Reply to sender	EmailReaderWindow		Reply to sender
+Cut	EmailReaderWindow		Cut
 Signatures	SignatureWindow		Signatures
 Date	EmailColumnHeader	Email list column header	Date
 Sent emails	EmailViewsWindow		Sent emails
@@ -67,11 +67,12 @@ Draft emails (%ld)	EmailViewsWindow		Draft emails (%ld)
 Permanently delete %count% emails?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails?\n\nThis cannot be undone.
 Open	SignatureWindow		Open
 Include file attributes in attachments	Preferences		Include file attributes in attachments
-Unread emails (%count%)	DeskbarReplicant		Unread emails (%count%)
 Message	EmailReaderWindow		Message
+Unread emails (%count%)	DeskbarReplicant		Unread emails (%count%)
 New mail message	EmailReaderWindow		New mail message
 No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/	EmailReaderWindow		No spell check dictionary was found.\n\nPlease install a \"words\" file in:\n/boot/system/data/spell_check/word_dictionary/
 Save attachment…	ContentView		Save attachment…
+Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.
 %count% new emails	DeskbarReplicant		%count% new emails
 -6 days	TimeRangeSlider	Time range slider label - keep as short as possible	-6 days
 Restore	EmailListView		Restore
@@ -118,6 +119,7 @@ Save	QueryNameDialog		Save
 Mark as read	EmailViewsWindow		Mark as read
 Save this message as a draft before closing?	EmailReaderWindow		Save this message as a draft before closing?
 Mark as read	EmailListView		Mark as read
+Credits:	AboutWindow		Credits:
 Email backup	EmailViewsWindow		Email backup
 New email	EmailViewsWindow		New email
 Reply	EmailViewsWindow		Reply
@@ -129,8 +131,10 @@ Off	Preferences		Off
 -1 day	TimeRangeSlider	Time range slider label - keep as short as possible	-1 day
 Date:	HeaderView		Date:
 New email to sender	EmailListView		New email to sender
+Sources of inspiration:	AboutWindow		Sources of inspiration:
 Outgoing encoding:	Preferences		Outgoing encoding:
 -3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 months
+Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.
 To	SearchBarView		To
 Signature:	SignatureWindow		Signature:
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
@@ -171,8 +175,8 @@ Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Permanen
 Close	EmailReaderWindow		Close
 Sorry	SignatureWindow		Sorry
 Email preferences	Preferences		Email preferences
-Delete emails in Trash	TrashItemView		Delete emails in Trash
 Save backup as	EmailViewsWindow		Save backup as
+Delete emails in Trash	TrashItemView		Delete emails in Trash
 Mark unread	Toolbar	As short as possible	Mark unread
 Use system font size	Preferences		Use system font size
 Add 'To' query	EmailListView		Add 'To' query
@@ -270,6 +274,7 @@ Attachment	EmailColumnHeader		Attachment
 Spam	Toolbar	As short as possible	Spam
 Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Created with the assistance of AI tools.\nMaintained by Jorge Mare.
 Star	EmailListView		Star
+Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.
 Send as attachment	EmailListView		Send as attachment
 Font:	Preferences		Font:
 Unread emails	DeskbarReplicant		Unread emails
@@ -341,5 +346,6 @@ Send this message before closing?	EmailReaderWindow		Send this message before cl
 Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
 Find again	EmailReaderWindow		Find again
 Send	Toolbar	As short as possible	Send
+Special thanks:	AboutWindow		Special thanks:
 Previous message, keep status	EmailReaderWindow		Previous message, keep status
 Starred emails	EmailViewsWindow		Starred emails
