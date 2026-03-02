@@ -254,6 +254,9 @@ private:
     void LoadColumnPrefsForView(QueryItem* item);
     BString GetColumnPrefsKey(QueryItem* item);
     
+    // Sidebar keyboard navigation (Alt+Up/Down)
+    void _NavigateQueryList(int32 direction);
+    
     // Tracker scripting support (for Mail Next/Previous navigation)
     bool _HandleTrackerScripting(BMessage* message);
     bool _HandleSetSelection(BMessage* message);

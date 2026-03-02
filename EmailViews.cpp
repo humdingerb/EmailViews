@@ -51,6 +51,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <Message.h>
+#include <MessageFilter.h>
 #include <Messenger.h>
 #include <MessageRunner.h>
 #include <IconUtils.h>
@@ -91,6 +92,56 @@ static const char* kDeskbarReplicantName = "EmailViews";
 const int32 OP_REPLY = 1;
 const int32 OP_REPLY_ALL = 2;
 const int32 OP_FORWARD = 3;
+
+// Internal message for Alt+Up/Down sidebar navigation
+static const uint32 MSG_NAVIGATE_QUERY_LIST = 'nqls';
+
+// Message filter that intercepts Alt+Up/Down to navigate the query sidebar.
+// Installed on the window so it fires regardless of which child view has focus.
+class QueryNavFilter : public BMessageFilter {
+public:
+    QueryNavFilter(BWindow* window)
+        : BMessageFilter(B_KEY_DOWN),
+          fWindow(window)
+    {
+    }
+
+    virtual filter_result Filter(BMessage* message, BHandler** _target)
+    {
+        int32 modifiers;
+        if (message->FindInt32("modifiers", &modifiers) != B_OK)
+            return B_DISPATCH_MESSAGE;
+
+        // Only act on Alt (Command key on Haiku) without other modifiers
+        // (allow Alt+Shift etc. to pass through)
+        if ((modifiers & (B_COMMAND_KEY | B_CONTROL_KEY | B_SHIFT_KEY | B_OPTION_KEY))
+                != B_COMMAND_KEY)
+            return B_DISPATCH_MESSAGE;
+
+        int32 rawChar;
+        if (message->FindInt32("raw_char", &rawChar) != B_OK)
+            return B_DISPATCH_MESSAGE;
+
+        int32 direction = 0;
+        if (rawChar == B_UP_ARROW)
+            direction = -1;
+        else if (rawChar == B_DOWN_ARROW)
+            direction = 1;
+
+        if (direction == 0)
+            return B_DISPATCH_MESSAGE;
+
+        // Post navigation message to the window
+        BMessage nav(MSG_NAVIGATE_QUERY_LIST);
+        nav.AddInt32("direction", direction);
+        fWindow->PostMessage(&nav);
+
+        return B_SKIP_MESSAGE;
+    }
+
+private:
+    BWindow* fWindow;
+};
 
 // Zip backup worker thread data (uses piped input to handle large file lists)
 struct ZipWorkerData {
@@ -1047,6 +1098,9 @@ EmailViewsWindow::EmailViewsWindow()
     AddShortcut('A', B_COMMAND_KEY, new BMessage(MSG_SELECT_ALL_EMAILS));
     AddShortcut('S', B_COMMAND_KEY, new BMessage(MSG_FOCUS_SEARCH));
     AddShortcut('Z', B_COMMAND_KEY, new BMessage(MSG_UNDO_DELETE));
+    
+    // Alt+Up/Down navigates the query sidebar regardless of focus
+    AddCommonFilter(new QueryNavFilter(this));
     
     // Load volume selection BEFORE loading queries (queries need selected volumes)
     LoadVolumeSelection();
@@ -3071,6 +3125,13 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 fPreviewPane->Invalidate();
             }
             // Theme colors are handled internally by EmailListView
+            break;
+        }
+        
+        case MSG_NAVIGATE_QUERY_LIST: {
+            int32 direction;
+            if (message->FindInt32("direction", &direction) == B_OK)
+                _NavigateQueryList(direction);
             break;
         }
         
@@ -5985,6 +6046,69 @@ void EmailViewsWindow::SelectEmailByRef(const entry_ref* ref)
     fEmailList->Select(index);
     fEmailList->ScrollToItem(index);
     UnlockLooper();
+}
+
+
+void EmailViewsWindow::_NavigateQueryList(int32 direction)
+{
+    int32 count = fQueryList->CountItems();
+    if (count == 0)
+        return;
+
+    bool trashHasItems = (fCachedTrashCount > 0);
+
+    // Determine starting point: current query list selection, or trash if
+    // the trash view is active, or -1/count to seed first navigation
+    int32 current = fQueryList->CurrentSelection();
+    if (current < 0 && fShowTrashOnly) {
+        // Trash is selected (it's not in the list view).
+        // Up from trash goes to the last selectable query item.
+        // Down from trash does nothing (trash is the bottom, no wrapping).
+        if (direction < 0) {
+            for (int32 i = count - 1; i >= 0; i--) {
+                if (fQueryList->ItemAt(i)->IsEnabled()) {
+                    fQueryList->Select(i);
+                    fQueryList->ScrollToSelection();
+                    PostMessage(MSG_QUERY_SELECTED);
+                    return;
+                }
+            }
+        }
+        return;
+    }
+
+    if (current < 0) {
+        // Nothing selected at all — seed so the first step lands on an item
+        current = (direction > 0) ? -1 : count;
+    }
+
+    // Walk in the requested direction, skipping disabled items (separators)
+    int32 next = current;
+    for (;;) {
+        next += direction;
+
+        // Down past the last item → select trash if non-empty, else stop
+        if (next >= count) {
+            if (trashHasItems) {
+                fQueryList->DeselectAll();
+                PostMessage(MSG_TRASH_SELECTED);
+            }
+            return;
+        }
+
+        // Up past the first item → stop (no wrapping)
+        if (next < 0)
+            return;
+
+        BListItem* item = fQueryList->ItemAt(next);
+        if (item != NULL && item->IsEnabled()) {
+            fQueryList->Select(next);
+            fQueryList->ScrollToSelection();
+            PostMessage(MSG_QUERY_SELECTED);
+            return;
+        }
+        // Skip disabled items (separators) and keep going
+    }
 }
 
 
