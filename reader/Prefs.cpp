@@ -201,12 +201,13 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 	// If the flag is on, show the current system size and disable the spinner.
 	int32 currentSize = (int32)gReaderSettings->ContentFont().Size();
 
-	fSizeSpinner = new BSpinner("size", B_TRANSLATE("Size:"),
-		new BMessage(P_SIZE));
+	BStringView* sizeLabel = new BStringView("sizeLabel", B_TRANSLATE("Size:"));
+	sizeLabel->SetAlignment(B_ALIGN_RIGHT);
+
+	fSizeSpinner = new BSpinner("size", "", new BMessage(P_SIZE));
 	fSizeSpinner->SetRange(7, 72);
 	fSizeSpinner->SetValue(currentSize);
 	fSizeSpinner->SetEnabled(!fUseSystemFontSize);
-	fSizeSpinner->SetAlignment(B_ALIGN_RIGHT);
 
 	fUseSystemFontSizeCheckBox = new BCheckBox("useSystemFontSize",
 		B_TRANSLATE("Use system font size"),
@@ -214,11 +215,11 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 	fUseSystemFontSizeCheckBox->SetValue(
 		fUseSystemFontSize ? B_CONTROL_ON : B_CONTROL_OFF);
 
-	// Place spinner label in col 0, spinner control in col 1,
-	// checkbox in col 2 — all on the same row.
-	fSizeSpinner->SetAlignment(B_ALIGN_RIGHT);
-	interfaceLayout->AddItem(fSizeSpinner->CreateLabelLayoutItem(), 0, layoutRow);
-	interfaceLayout->AddItem(fSizeSpinner->CreateTextViewLayoutItem(), 1, layoutRow);
+	// Separate label in col 0 for alignment with other rows.
+	// Spinner as whole view in col 1 for correct row height.
+	// Checkbox in col 2.
+	interfaceLayout->AddView(sizeLabel, 0, layoutRow);
+	interfaceLayout->AddView(fSizeSpinner, 1, layoutRow);
 	interfaceLayout->AddView(fUseSystemFontSizeCheckBox, 2, layoutRow);
 	layoutRow++;
 
@@ -742,7 +743,7 @@ TPrefsWindow::_BuildReplyPreambleMenu()
 	menu->AddItem(new BMenuItem(B_TRANSLATE("%n - Full name"),
 		new BMessage(P_REPLY_PREAMBLE)));
 
-	menu->AddItem(new BMenuItem(B_TRANSLATE("%e - E-mail address"),
+	menu->AddItem(new BMenuItem(B_TRANSLATE("%e - Email address"),
 		new BMessage(P_REPLY_PREAMBLE)));
 
 	menu->AddItem(new BMenuItem(B_TRANSLATE("%d - Date"),
@@ -750,7 +751,7 @@ TPrefsWindow::_BuildReplyPreambleMenu()
 
 	menu->AddSeparatorItem();
 
-	menu->AddItem(new BMenuItem(B_TRANSLATE("\\n - Newline"),
+	menu->AddItem(new BMenuItem(B_TRANSLATE("\\n - Line break"),
 		new BMessage(P_REPLY_PREAMBLE)));
 
 	return menu;
