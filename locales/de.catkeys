@@ -181,9 +181,9 @@ Volumes	EmailViewsWindow		Datenträger
 With attachments	EmailViewsWindow		Mit Anhängen
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		%count% Nachrichten eines nicht auf diesem System angelegten Kontos, konnten nicht wiederhergestellt werden. Bitte den Zielordner für das Wiederherstellen dieser Emails wählen.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Eine Nachricht eines nicht auf diesem System angelegten Kontos, konnte nicht wiederhergestellt werden. Bitte den Zielordner für das Wiederherstellen dieser Email wählen.
-\\n - Line break	Preferences		\\n - Line break
+\\n - Line break	Preferences		\\n - Zeilenumbruch
 %d - Date	Preferences		%d - Datum
-%e - Email address	Preferences		%e - Email address
+%e - Email address	Preferences		%e - Email-Adresse
 %n - Full name	Preferences		%n - Voller Name
 <no account found>	Preferences		<kein Konto gefunden>
 Account from mail	Preferences		Konto der Nachricht
@@ -219,7 +219,7 @@ Use default account	Preferences		Standardkonto:
 Use system font size	Preferences		System-Schriftgröße verwenden
 User interface	Preferences		Programmoberfläche
 Warn unencodable:	Preferences		Warnung bei nicht-kodierbaren Zeichen:
-\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		Hallo %n,\\n\\nAm %d schrieb %n:\\n
 None	ReaderSettings		Keine
 %count% new emails	DeskbarReplicant		%count% neue Emails
 1 new email	DeskbarReplicant		1 neue Email
@@ -334,7 +334,7 @@ Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow	
 Credits:	AboutWindow		Danke für:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews ist ein schneller Email Viewer für Haiku, der dessen Live-Queries nutzt, um Emails mühelos zu finden und zu verwalten.
 Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Mail Anwendung vom Haiku Project.\nIcons von Haiku und Zumi Iconsätze.
-Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, für Ideen, Tests, Bugreports, und Code-Beiträge.
 OK	AboutWindow		OK
 Sources of inspiration:	AboutWindow		Quellen der Inspiration:
 Special thanks:	AboutWindow		Besonderen Dank:

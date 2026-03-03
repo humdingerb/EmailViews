@@ -181,9 +181,9 @@ Volumes	EmailViewsWindow		Volums
 With attachments	EmailViewsWindow		Amb adjunts
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		Intenteu restaurar %count% missatges que pertanyen a un compte que no està configurat al sistema. Seleccioneu la carpeta de destinació on els voleu restaurar.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Intenteu restaurar 1 missatge que pertany a un compte que no està configurat al sistema. Seleccioneu la carpeta de destinació on el voleu restaurar.
-\\n - Line break	Preferences		\\n - Line break
+\\n - Line break	Preferences		\\n - Salt de línia
 %d - Date	Preferences		%d - Data
-%e - Email address	Preferences		%e - Email address
+%e - Email address	Preferences		%e - Adreça electrònica
 %n - Full name	Preferences		%n - Nom complet
 <no account found>	Preferences		<no s'ha trobat cap compte>
 Account from mail	Preferences		Compte del missatge
@@ -219,7 +219,7 @@ Use default account	Preferences		Usa el compte predeterminat
 Use system font size	Preferences		Usa la mida de lletra del sistema.
 User interface	Preferences		Interfície de l'usuari
 Warn unencodable:	Preferences		Avís no codificable:
-\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nEl %n %d va escriure el següent:\\n
 None	ReaderSettings		Cap
 %count% new emails	DeskbarReplicant		%count% missatges nous
 1 new email	DeskbarReplicant		1 missatge nou
@@ -334,7 +334,7 @@ Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow	
 Credits:	AboutWindow		Crèdits:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews és un visualitzador de correu electrònic ràpid i lleuger per al Haiku que usa consultes en directe per organitzar i explorar els missatges de correu electrònic sense esforç.
 Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Aplicació Haiku Mail del Projecte Haiku. Icones dels conjunts d'icones Haiku i Zumi.
-Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, per idees, proves, informes d'errors i contribucions de codi.
 OK	AboutWindow		D'acord
 Sources of inspiration:	AboutWindow		Fonts d'inspiració:
 Special thanks:	AboutWindow		Agraïment especial:
