@@ -36,6 +36,7 @@ of their respective holders. All rights reserved.
 #include "EmailReaderWindow.h"
 
 #include <fcntl.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
@@ -53,6 +54,7 @@ of their respective holders. All rights reserved.
 #include <private/textencoding/CharacterSetRoster.h>
 #include <Clipboard.h>
 #include <ControlLook.h>
+#include <DateTimeFormat.h>
 #include <Debug.h>
 #include <Directory.h>
 #include <E-mail.h>
@@ -141,6 +143,29 @@ static const char* kSpamMenuItemTextArray[] = {
 
 
 static const int kCopyBufferSize = 64 * 1024;	// 64 KB
+
+
+// Extract timezone offset (e.g. "+0900", "-0500") from an RFC 2822 Date header.
+// Returns an empty string if no offset is found.
+static BString
+_ExtractTimezoneOffset(const char* rawDate)
+{
+	if (rawDate == NULL)
+		return BString();
+
+	// Scan backwards for a +HHMM or -HHMM pattern
+	int32 len = strlen(rawDate);
+	for (int32 i = len - 1; i >= 4; i--) {
+		if ((rawDate[i - 4] == '+' || rawDate[i - 4] == '-')
+			&& isdigit(rawDate[i - 3]) && isdigit(rawDate[i - 2])
+			&& isdigit(rawDate[i - 1]) && isdigit(rawDate[i])) {
+			BString tz;
+			tz.SetTo(rawDate + i - 4, 5);
+			return tz;
+		}
+	}
+	return BString();
+}
 
 
 // static bitmap cache
@@ -2092,7 +2117,32 @@ EmailReaderWindow::Reply(entry_ref* ref, EmailReaderWindow* window, uint32 type)
 	if (address.Length() <= 0)
 		address = B_TRANSLATE("(Address unavailable)");
 
-	BString date(mail->HeaderField("Date"));
+	BString date;
+	{
+		BNode node(window->fRef);
+		time_t when = 0;
+		// Try 8-byte time_t first, then fall back to 4-byte
+		ssize_t size = node.ReadAttr("MAIL:when", B_TIME_TYPE,
+			0, &when, sizeof(time_t));
+		if (size < (ssize_t)sizeof(time_t)) {
+			int32 when32 = 0;
+			size = node.ReadAttr("MAIL:when", B_TIME_TYPE,
+				0, &when32, sizeof(int32));
+			if (size == sizeof(int32))
+				when = (time_t)when32;
+		}
+		if (when > 0) {
+			BDateTimeFormat formatter;
+			formatter.Format(date, when,
+				B_SHORT_DATE_FORMAT, B_SHORT_TIME_FORMAT);
+
+			// Append sender's timezone offset if available
+			BString tz = _ExtractTimezoneOffset(
+				mail->HeaderField("Date"));
+			if (tz.Length() > 0)
+				date << " (" << tz << ")";
+		}
+	}
 	if (date.Length() <= 0)
 		date = B_TRANSLATE("(Date unavailable)");
 
@@ -2222,7 +2272,32 @@ EmailReaderWindow::ComposeReplyTo(entry_ref* ref, uint32 type)
 	if (address.Length() <= 0)
 		address = B_TRANSLATE("(Address unavailable)");
 
-	BString date(sourceMail->HeaderField("Date"));
+	BString date;
+	{
+		BNode node(ref);
+		time_t when = 0;
+		// Try 8-byte time_t first, then fall back to 4-byte
+		ssize_t size = node.ReadAttr("MAIL:when", B_TIME_TYPE,
+			0, &when, sizeof(time_t));
+		if (size < (ssize_t)sizeof(time_t)) {
+			int32 when32 = 0;
+			size = node.ReadAttr("MAIL:when", B_TIME_TYPE,
+				0, &when32, sizeof(int32));
+			if (size == sizeof(int32))
+				when = (time_t)when32;
+		}
+		if (when > 0) {
+			BDateTimeFormat formatter;
+			formatter.Format(date, when,
+				B_SHORT_DATE_FORMAT, B_SHORT_TIME_FORMAT);
+
+			// Append sender's timezone offset if available
+			BString tz = _ExtractTimezoneOffset(
+				sourceMail->HeaderField("Date"));
+			if (tz.Length() > 0)
+				date << " (" << tz << ")";
+		}
+	}
 	if (date.Length() <= 0)
 		date = B_TRANSLATE("(Date unavailable)");
 

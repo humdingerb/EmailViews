@@ -80,7 +80,7 @@ TReaderSettings::TReaderSettings()
 {
 	// Set default values
 	fSignature = strdup(B_TRANSLATE("None"));
-	fReplyPreamble = strdup(B_TRANSLATE("%e wrote:\n"));
+	fReplyPreamble = strdup(B_TRANSLATE("\\n\\nOn %d %n wrote:\\n"));
 
 	fMailWindowFrame.Set(0, 0, 0, 0);
 	fWindowCount = 0;
@@ -509,7 +509,12 @@ TReaderSettings::_SaveSettings()
 	settings.AddInt8("ShowButtonBar", fShowToolBar);
 	settings.AddInt32("UseAccountFrom", fUseAccountFrom);
 	settings.AddBool("ColoredQuotes", fColoredQuotes);
-	settings.AddString("ReplyPreamble", fReplyPreamble);
+	// Only save the preamble if the user customized it. If it matches the
+	// translated default, omit it so language changes and future default
+	// updates take effect automatically.
+	BString defaultPreamble(B_TRANSLATE("\\n\\nOn %d %n wrote:\\n"));
+	if (defaultPreamble != fReplyPreamble)
+		settings.AddString("ReplyPreamble", fReplyPreamble);
 	settings.AddBool("AttachAttributes", fAttachAttributes);
 	settings.AddBool("WarnAboutUnencodableCharacters", fWarnAboutUnencodableCharacters);
 	settings.AddBool("StartWithSpellCheck", fStartWithSpellCheckOn);
