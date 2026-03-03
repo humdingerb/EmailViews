@@ -1,4 +1,4 @@
-1	English	application/x-vnd.EmailViews	373761629
+1	English	application/x-vnd.EmailViews	2348483962
 Open attachment	ContentView		Open attachment
 Attach	Toolbar	As short as possible	Attach
 Cancel	QueryNameDialog		Cancel
@@ -50,6 +50,7 @@ Don't save	SignatureWindow		Don't save
 Select all	SignatureWindow		Select all
 Sorry	ContentView		Sorry
 Add 'Account' query	EmailListView		Add 'Account' query
+\\n - Line break	Preferences		\\n - Line break
 The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.	EmailReaderWindow		The mail_daemon is not running. The message is queued and will be sent when the mail_daemon is started.
 Account from mail	Preferences		Account from mail
 Check spelling	EmailReaderWindow		Check spelling
@@ -82,6 +83,7 @@ Cc:	HeaderView		Cc:
 An error occurred trying to save the attachment.	ContentView		An error occurred trying to save the attachment.
 Start now	EmailReaderWindow		Start now
 Open queries folder	EmailViewsWindow		Open queries folder
+%e - Email address	Preferences		%e - Email address
 -5 days	TimeRangeSlider	Time range slider label - keep as short as possible	-5 days
 The mail_daemon could not be started:\n\t	EmailReaderWindow		The mail_daemon could not be started:\n\t
 Backup emails to ZIP file	SearchBarView		Backup emails to ZIP file
@@ -105,7 +107,6 @@ Copy link location	ContentView		Copy link location
 Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.
 Clear search box	SearchBarView		Clear search box
 Mailing	Preferences		Mailing
-%e - E-mail address	Preferences		%e - E-mail address
 No new emails	DeskbarReplicant		No new emails
 Previous	Toolbar	As short as possible	Previous
 -1 month	TimeRangeSlider	Time range slider label - keep as short as possible	-1 month
@@ -134,7 +135,6 @@ New email to sender	EmailListView		New email to sender
 Sources of inspiration:	AboutWindow		Sources of inspiration:
 Outgoing encoding:	Preferences		Outgoing encoding:
 -3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 months
-Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.
 To	SearchBarView		To
 Signature:	SignatureWindow		Signature:
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
@@ -185,6 +185,7 @@ Open query in Tracker…	QueryListView		Open query in Tracker…
 All	TimeRangeSlider	Time range slider label - keep as short as possible	All
 Cancel	SignatureWindow		Cancel
 Paste	EmailReaderWindow		Paste
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
 Cut	SignatureWindow		Cut
 Create anyway	EmailViewsWindow		Create anyway
 Remove from Deskbar	DeskbarReplicant		Remove from Deskbar
@@ -235,7 +236,6 @@ Create new email…	DeskbarReplicant		Create new email…
 Messages	EmailViewsWindow		Messages
 Filter by 'Subject'	EmailListView		Filter by 'Subject'
 From	EmailColumnHeader	Email list column header	From
-%e wrote:\n	ReaderSettings		%e wrote:\n
 OK	AboutWindow		OK
 Edit signatures…	EmailReaderWindow		Edit signatures…
 Unread emails	QueryListView		Unread emails
@@ -331,8 +331,8 @@ Next message	EmailReaderWindow		Next message
 Reply	EmailReaderWindow		Reply
 Emails in Trash	TrashItemView		Emails in Trash
 Bcc:	HeaderView		Bcc:
-\\n - Newline	Preferences		\\n - Newline
 Select all	EmailReaderWindow		Select all
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
 Email accounts…	EmailViewsWindow		Email accounts…
 Unread	Toolbar	As short as possible	Unread
 Cancel	EmailReaderWindow		Cancel

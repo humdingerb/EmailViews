@@ -1,4 +1,4 @@
-1	German	application/x-vnd.EmailViews	373761629
+1	German	application/x-vnd.EmailViews	2348483962
  Read 	Toolbar	As short as possible	Gelesen
 Attach	Toolbar	As short as possible	Anhang
 Check email	Toolbar	As short as possible	Emails abrufen
@@ -181,9 +181,9 @@ Volumes	EmailViewsWindow		Datenträger
 With attachments	EmailViewsWindow		Mit Anhängen
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		%count% Nachrichten eines nicht auf diesem System angelegten Kontos, konnten nicht wiederhergestellt werden. Bitte den Zielordner für das Wiederherstellen dieser Emails wählen.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Eine Nachricht eines nicht auf diesem System angelegten Kontos, konnte nicht wiederhergestellt werden. Bitte den Zielordner für das Wiederherstellen dieser Email wählen.
-\\n - Newline	Preferences		\\n - Zeilenumbruch
+\\n - Line break	Preferences		\\n - Line break
 %d - Date	Preferences		%d - Datum
-%e - E-mail address	Preferences		%e - E-mail Adresse
+%e - Email address	Preferences		%e - Email address
 %n - Full name	Preferences		%n - Voller Name
 <no account found>	Preferences		<kein Konto gefunden>
 Account from mail	Preferences		Konto der Nachricht
@@ -219,6 +219,8 @@ Use default account	Preferences		Standardkonto:
 Use system font size	Preferences		System-Schriftgröße verwenden
 User interface	Preferences		Programmoberfläche
 Warn unencodable:	Preferences		Warnung bei nicht-kodierbaren Zeichen:
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+None	ReaderSettings		Keine
 %count% new emails	DeskbarReplicant		%count% neue Emails
 1 new email	DeskbarReplicant		1 neue Email
 About %app%…	DeskbarReplicant		Über %app% …
@@ -229,8 +231,6 @@ Remove from Deskbar	DeskbarReplicant		Von Deskbar entfernen
 Send/Receive email	DeskbarReplicant		Emails senden/empfangen
 Unread emails	DeskbarReplicant		Ungelesene Emails
 Unread emails (%count%)	DeskbarReplicant		Ungelesene Emails (%count%)
-%e wrote:\n	ReaderSettings		%e schrieb:\n
-None	ReaderSettings		Keine
 <none>	HeaderView		<kein>
 Bcc:	HeaderView		Bcc:
 Cc:	HeaderView		Cc:
@@ -334,9 +334,9 @@ Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow	
 Credits:	AboutWindow		Danke für:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews ist ein schneller Email Viewer für Haiku, der dessen Live-Queries nutzt, um Emails mühelos zu finden und zu verwalten.
 Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Mail Anwendung vom Haiku Project.\nIcons von Haiku und Zumi Iconsätze.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
 OK	AboutWindow		OK
 Sources of inspiration:	AboutWindow		Quellen der Inspiration:
-Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Besonderen Dank an Humdinger ausgiebiges testen, detailierte Bugreports, wertvolle Vorschläge zu neuen Features, und Engagement zur Verbesserung dieser Software.
 Special thanks:	AboutWindow		Besonderen Dank:
 Cancel	QueryNameDialog		Abbrechen
 Save	QueryNameDialog		Speichern

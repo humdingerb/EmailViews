@@ -1,4 +1,4 @@
-1	Turkish	application/x-vnd.EmailViews	373761629
+1	Turkish	application/x-vnd.EmailViews	2348483962
  Read 	Toolbar	As short as possible	Oku
 Attach	Toolbar	As short as possible	İliştir
 Check email	Toolbar	As short as possible	E-postayı denetle
@@ -181,9 +181,9 @@ Volumes	EmailViewsWindow		Ciltler
 With attachments	EmailViewsWindow		Ek ile
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		Sisteminizde yapılandırılmış olmayan bir hesaba ait %count% iletiyi geri yüklemeye çalışıyorsunuz. Bu iletileri geri yüklemek istediğiniz klasörü seçin.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Sisteminizde yapılandırılmış olmayan bir hesaba ait 1 iletiyi geri yüklemeye çalışıyorsunuz. Bu iletileri geri yüklemek istediğiniz klasörü seçin.
-\\n - Newline	Preferences		\\n — Yenisatır
+\\n - Line break	Preferences		\\n - Line break
 %d - Date	Preferences		%d — Tarih
-%e - E-mail address	Preferences		%e — E-posta adresi
+%e - Email address	Preferences		%e - Email address
 %n - Full name	Preferences		%n — Tam ad
 <no account found>	Preferences		<bulunan hesap yok>
 Account from mail	Preferences		Postadan hesap
@@ -219,6 +219,8 @@ Use default account	Preferences		Saptanmış hesabı kullan
 Use system font size	Preferences		Sistem yazıtipi puntosunu kullan
 User interface	Preferences		Kullanıcı arayüzü
 Warn unencodable:	Preferences		Kodlanamayanda uyar
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+None	ReaderSettings		Yok
 %count% new emails	DeskbarReplicant		%count% yeni ileti
 1 new email	DeskbarReplicant		1 yeni ileti
 About %app%…	DeskbarReplicant		%app% hakkında…
@@ -229,8 +231,6 @@ Remove from Deskbar	DeskbarReplicant		Masaüstü Çubuğu’ndan kaldır
 Send/Receive email	DeskbarReplicant		E-posta gönder/al
 Unread emails	DeskbarReplicant		Okunmamış iletiler
 Unread emails (%count%)	DeskbarReplicant		Okunmamış iletiler (%count%)
-%e wrote:\n	ReaderSettings		%e şunu yazdı:\n
-None	ReaderSettings		Yok
 <none>	HeaderView		<yok>
 Bcc:	HeaderView		Gizli kopya:
 Cc:	HeaderView		Kopya:
@@ -334,9 +334,9 @@ Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow	
 Credits:	AboutWindow		Emeği geçenler:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews, Haiku için hızlı ve hafif bir e-posta görüntüleyicisidir. E-postalarınızı efektif olarak organize etmek ve taramanıza olanak tanımak adına Haiku’nun sorgular sistemini kullanır.
 Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Posta uygulaması, Haiku Projesi tarafından.\nSimgeler, Haiku ve Zumi simge kümelerinden alınmıştır.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
 OK	AboutWindow		Tamam
 Sources of inspiration:	AboutWindow		Esinlenmeler:
-Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Titiz sınamaları, ayrıntılı hata raporları, değerli özellik önerileri ve bu yazılımı geliştirmeye yönelik sarsılmaz bağlılığı için Humdinger’e özel teşekkürlerimizi sunuyoruz.
 Special thanks:	AboutWindow		Özel teşekkürler:
 Cancel	QueryNameDialog		Vazgeç
 Save	QueryNameDialog		Kaydet

@@ -1,4 +1,4 @@
-1	English (Canada)	application/x-vnd.EmailViews	373761629
+1	English (Canada)	application/x-vnd.EmailViews	2348483962
  Read 	Toolbar	As short as possible	 Read 
 Attach	Toolbar	As short as possible	Attach
 Check email	Toolbar	As short as possible	Check email
@@ -181,9 +181,9 @@ Volumes	EmailViewsWindow		Volumes
 With attachments	EmailViewsWindow		With attachments
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
-\\n - Newline	Preferences		\\n - Newline
+\\n - Line break	Preferences		\\n - Line break
 %d - Date	Preferences		%d - Date
-%e - E-mail address	Preferences		%e - E-mail address
+%e - Email address	Preferences		%e - Email address
 %n - Full name	Preferences		%n - Full name
 <no account found>	Preferences		<no account found>
 Account from mail	Preferences		Account from mail
@@ -219,6 +219,8 @@ Use default account	Preferences		Use default account
 Use system font size	Preferences		Use system font size
 User interface	Preferences		User interface
 Warn unencodable:	Preferences		Warn unencodable:
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+None	ReaderSettings		None
 %count% new emails	DeskbarReplicant		%count% new emails
 1 new email	DeskbarReplicant		1 new email
 About %app%…	DeskbarReplicant		About %app%…
@@ -229,8 +231,6 @@ Remove from Deskbar	DeskbarReplicant		Remove from Deskbar
 Send/Receive email	DeskbarReplicant		Send/Receive email
 Unread emails	DeskbarReplicant		Unread emails
 Unread emails (%count%)	DeskbarReplicant		Unread emails (%count%)
-%e wrote:\n	ReaderSettings		%e wrote:\n
-None	ReaderSettings		None
 <none>	HeaderView		<none>
 Bcc:	HeaderView		Bcc:
 Cc:	HeaderView		Cc:
@@ -334,9 +334,9 @@ Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow	
 Credits:	AboutWindow		Credits:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.
 Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
 OK	AboutWindow		Alright
 Sources of inspiration:	AboutWindow		Sources of inspiration:
-Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.	AboutWindow		Special thanks go to Humdinger for his meticulous testing, detailed bug reports, valuable feature suggestions, and unwavering commitment to improving this software.
 Special thanks:	AboutWindow		Special thanks:
 Cancel	QueryNameDialog		Cancel
 Save	QueryNameDialog		Save
