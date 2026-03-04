@@ -251,6 +251,8 @@ private:
     void _UpdateToolBar();
     void _UpdateToolBarLabel(uint32 command, const char* label, bool show);
     void _UpdateNavigationButtons();
+    void _UpdateMenuItemStates(bool state);
+    void _DisableToolBarIcons();
     
     void _AddToDeskbar();
     void _RemoveFromDeskbar();
@@ -282,14 +284,13 @@ private:
     BSplitView* fVerticalSplit;
     
     ToolBarView* fToolBar;
-    
+
+    BMenuBar*  fMenuBar;
     BMenuItem* fMarkReadMenuItem;
     BMenuItem* fMarkUnreadMenuItem;
     BMenuItem* fMarkSpamMenuItem;
     BMenuItem* fUnmarkSpamMenuItem;
-    BMenuItem* fAddFromQueryMenuItem;
-    BMenuItem* fAddToQueryMenuItem;
-    BMenuItem* fAddAccountQueryMenuItem;
+    BMenuItem* fTimeRangeMenuItem;
     BMenuItem* fDeskbarMenuItem;
     
     BString fMailDirectory;
