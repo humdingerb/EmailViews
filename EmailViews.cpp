@@ -795,7 +795,7 @@ EmailViewsWindow::EmailViewsWindow()
                                           new BMessage(MSG_ABOUT)));
     mailViewerMenu->AddSeparatorItem();
     BMenuItem* emailSettingsItem = new BMenuItem(B_TRANSLATE("Email preferences" B_UTF8_ELLIPSIS), 
-                                          new BMessage(M_PREFS), ',');
+                                          new BMessage(M_PREFS));
     emailSettingsItem->SetTarget(be_app);
     mailViewerMenu->AddItem(emailSettingsItem);
     mailViewerMenu->AddItem(new BMenuItem(B_TRANSLATE("Email accounts" B_UTF8_ELLIPSIS), 
@@ -814,7 +814,7 @@ EmailViewsWindow::EmailViewsWindow()
     messagesMenu->AddItem(new BMenuItem(B_TRANSLATE("Reply all"), new BMessage(MSG_REPLY_ALL), 'R', B_SHIFT_KEY));
     messagesMenu->AddItem(new BMenuItem(B_TRANSLATE("Forward"), new BMessage(MSG_FORWARD), 'F', B_SHIFT_KEY));
     messagesMenu->AddSeparatorItem();
-    fMarkReadMenuItem = new BMenuItem(B_TRANSLATE("Mark as read"), new BMessage(MSG_MARK_READ), 'M');
+    fMarkReadMenuItem = new BMenuItem(B_TRANSLATE("Mark as read"), new BMessage(MSG_MARK_READ));
     fMarkReadMenuItem->SetEnabled(false);
     messagesMenu->AddItem(fMarkReadMenuItem);
     fMarkUnreadMenuItem = new BMenuItem(B_TRANSLATE("Mark as unread"), new BMessage(MSG_MARK_UNREAD));
@@ -4548,6 +4548,7 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 ClearPreviewPane();
             }
 
+            UpdateEmailCountLabel();
             ScheduleQueryCountUpdate();
             break;
         }
@@ -4674,6 +4675,7 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 ClearPreviewPane();
             }
 
+            UpdateEmailCountLabel();
             ScheduleQueryCountUpdate();
             break;
         }
