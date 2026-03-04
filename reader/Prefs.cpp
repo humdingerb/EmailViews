@@ -47,15 +47,24 @@ of their respective holders. All rights reserved.
 #include <private/textencoding/CharacterSet.h>
 #include <private/textencoding/CharacterSetRoster.h>
 #include <E-mail.h>
+#include <FindDirectory.h>
 #include <GridView.h>
 #include <LayoutBuilder.h>
 #include <InterfaceKit.h>
 #include <Locale.h>
+#include <ListView.h>
 #include <MailSettings.h>
 #include <mail_encoding.h>
+#include <Node.h>
+#include <Path.h>
+#include <Query.h>
+#include <ScrollView.h>
 #include <StorageKit.h>
 #include <String.h>
+#include <StringList.h>
 #include <TabView.h>
+#include <Volume.h>
+#include <VolumeRoster.h>
 
 using namespace BPrivate;
 
@@ -74,7 +83,8 @@ enum P_MESSAGES {
 	P_SPELL_CHECK_START_ON, P_BUTTON_BAR,
 	P_ACCOUNT, P_REPLYTO, P_REPLY_PREAMBLE,
 	P_COLORED_QUOTES, P_MARK_READ, P_SHOW_TIME_RANGE,
-	P_USE_SYSTEM_FONT_SIZE
+	P_USE_SYSTEM_FONT_SIZE,
+	P_BLOCK_ADD, P_BLOCK_REMOVE, P_BLOCK_SELECTION
 };
 
 
@@ -165,6 +175,42 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 
 	tabView->AddTab(interfaceView);
 	tabView->AddTab(mailView);
+
+	// Spam filtering tab
+	BView* spamView = new BView(B_TRANSLATE("Spam filtering"), 0);
+	spamView->SetViewUIColor(B_PANEL_BACKGROUND_COLOR);
+
+	fBlocklistView = new BListView("blocklist");
+	fBlocklistView->SetSelectionMessage(new BMessage(P_BLOCK_SELECTION));
+	fBlocklistScrollView = new BScrollView("blocklist_scroll",
+		fBlocklistView, 0, false, true);
+
+	fBlockAddressField = new BTextControl("blockAddress", NULL,
+		"", NULL);
+	fBlockAddressField->SetExplicitMinSize(BSize(200, B_SIZE_UNSET));
+
+	fAddBlockButton = new BButton("add", B_TRANSLATE("Add"),
+		new BMessage(P_BLOCK_ADD));
+	fRemoveBlockButton = new BButton("remove", B_TRANSLATE("Remove"),
+		new BMessage(P_BLOCK_REMOVE));
+	fRemoveBlockButton->SetEnabled(false);
+
+	BLayoutBuilder::Group<>(spamView, B_VERTICAL, B_USE_DEFAULT_SPACING)
+		.SetInsets(B_USE_DEFAULT_SPACING)
+		.Add(new BStringView("blockLabel",
+			B_TRANSLATE("Blocked senders and domains:")))
+		.Add(fBlocklistScrollView, 1.0f)
+		.AddGroup(B_HORIZONTAL)
+			.Add(fBlockAddressField)
+			.Add(fAddBlockButton)
+			.Add(fRemoveBlockButton)
+			.AddGlue()
+		.End();
+
+	_LoadBlocklist();
+
+	tabView->AddTab(spamView);
+
 	tabView->SetBorder(B_NO_BORDER);
 
 	// revert, ok & cancel
@@ -341,6 +387,7 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 					= (char *)malloc(strlen(fReplyPreamble->Text()) + 1);
 				strcpy(*fNewPreamble, fReplyPreamble->Text());
 			}
+			_SaveBlocklist();
 			be_app->PostMessage(PREFS_CHANGED);
 			Quit();
 			break;
@@ -574,6 +621,49 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 			be_app->PostMessage(PREFS_CHANGED);
 			break;
 		}
+
+		case P_BLOCK_ADD:
+		{
+			BString address(fBlockAddressField->Text());
+			address.Trim();
+			address.ToLower();
+			if (address.Length() == 0)
+				break;
+
+			// Check for duplicates
+			bool found = false;
+			for (int32 i = 0; i < fBlocklistView->CountItems(); i++) {
+				BStringItem* existing = dynamic_cast<BStringItem*>(
+					fBlocklistView->ItemAt(i));
+				if (existing != NULL
+					&& BString(existing->Text()).ICompare(address) == 0) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				fBlocklistView->AddItem(new BStringItem(address.String()));
+				fBlockAddressField->SetText("");
+			}
+			break;
+		}
+
+		case P_BLOCK_REMOVE:
+		{
+			int32 selected = fBlocklistView->CurrentSelection();
+			if (selected >= 0) {
+				BListItem* item = fBlocklistView->RemoveItem(selected);
+				delete item;
+				fRemoveBlockButton->SetEnabled(
+					fBlocklistView->CurrentSelection() >= 0);
+			}
+			break;
+		}
+
+		case P_BLOCK_SELECTION:
+			fRemoveBlockButton->SetEnabled(
+				fBlocklistView->CurrentSelection() >= 0);
+			break;
 
 		default:
 			BWindow::MessageReceived(msg);
@@ -953,5 +1043,162 @@ BPopUpMenu*
 TPrefsWindow::_BuildShowTimeRangeMenu(bool showTimeRange)
 {
 	return _BuildBoolMenu(P_SHOW_TIME_RANGE, "showTimeRange", showTimeRange);
+}
+
+
+void
+TPrefsWindow::_LoadBlocklist()
+{
+	BPath path;
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &path) != B_OK)
+		return;
+	path.Append("EmailViews/blocked_senders");
+
+	FILE* f = fopen(path.Path(), "r");
+	if (f == NULL)
+		return;
+
+	char line[512];
+	while (fgets(line, sizeof(line), f) != NULL) {
+		BString entry(line);
+		entry.Trim();
+		if (entry.Length() > 0 && entry.ByteAt(0) != '#') {
+			fBlocklistView->AddItem(new BStringItem(entry.String()));
+			fOriginalBlocklist.Add(entry);
+		}
+	}
+	fclose(f);
+}
+
+
+void
+TPrefsWindow::_SaveBlocklist()
+{
+	// Find which entries were removed
+	_UnclassifyRemovedSenders();
+
+	BPath path;
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &path) != B_OK)
+		return;
+	path.Append("EmailViews");
+
+	// Ensure directory exists
+	create_directory(path.Path(), 0755);
+
+	path.Append("blocked_senders");
+
+	FILE* f = fopen(path.Path(), "w");
+	if (f == NULL)
+		return;
+
+	for (int32 i = 0; i < fBlocklistView->CountItems(); i++) {
+		BStringItem* item = dynamic_cast<BStringItem*>(
+			fBlocklistView->ItemAt(i));
+		if (item != NULL)
+			fprintf(f, "%s\n", item->Text());
+	}
+	fclose(f);
+}
+
+
+void
+TPrefsWindow::_UnclassifyRemovedSenders()
+{
+	// Build set of current entries for fast lookup
+	BStringList currentList;
+	for (int32 i = 0; i < fBlocklistView->CountItems(); i++) {
+		BStringItem* item = dynamic_cast<BStringItem*>(
+			fBlocklistView->ItemAt(i));
+		if (item != NULL) {
+			BString entry(item->Text());
+			entry.ToLower();
+			currentList.Add(entry);
+		}
+	}
+
+	// Find entries that were in the original but are no longer present
+	BStringList removed;
+	for (int32 i = 0; i < fOriginalBlocklist.CountStrings(); i++) {
+		BString entry = fOriginalBlocklist.StringAt(i);
+		entry.ToLower();
+		if (!currentList.HasString(entry))
+			removed.Add(entry);
+	}
+
+	if (removed.IsEmpty())
+		return;
+
+	// Query all spam-classified emails and clear classification
+	// for those matching removed senders
+	BVolumeRoster volumeRoster;
+	BVolume volume;
+	volumeRoster.GetBootVolume(&volume);
+
+	BQuery query;
+	query.SetVolume(&volume);
+	query.SetPredicate("(BEOS:TYPE==\"text/x-email\")"
+		"&&(MAIL:classification==Spam)");
+
+	if (query.Fetch() != B_OK)
+		return;
+
+	// Collect matching refs first to avoid index update race
+	BList matchingRefs;
+	entry_ref ref;
+	while (query.GetNextRef(&ref) == B_OK) {
+		BNode node(&ref);
+		if (node.InitCheck() != B_OK)
+			continue;
+
+		char fromBuf[256] = "";
+		node.ReadAttr("MAIL:from", B_STRING_TYPE, 0,
+			fromBuf, sizeof(fromBuf) - 1);
+		if (fromBuf[0] == '\0')
+			continue;
+
+		// Extract bare email address
+		BString fromStr(fromBuf);
+		BString addr;
+		int32 open = fromStr.FindFirst('<');
+		int32 close = fromStr.FindFirst('>', open);
+		if (open >= 0 && close > open)
+			fromStr.CopyInto(addr, open + 1, close - open - 1);
+		else
+			addr = fromStr;
+		addr.Trim();
+		addr.ToLower();
+
+		// Check if this sender matches any removed entry
+		bool matches = false;
+		for (int32 i = 0; i < removed.CountStrings(); i++) {
+			BString entry = removed.StringAt(i);
+			if (entry == addr) {
+				matches = true;
+				break;
+			}
+			// Check @domain match
+			int32 at = addr.FindFirst('@');
+			if (at >= 0) {
+				BString domain;
+				addr.CopyInto(domain, at, addr.Length() - at);
+				if (entry == domain) {
+					matches = true;
+					break;
+				}
+			}
+		}
+
+		if (matches)
+			matchingRefs.AddItem(new entry_ref(ref));
+	}
+
+	// Now clear attributes on collected refs
+	for (int32 i = 0; i < matchingRefs.CountItems(); i++) {
+		entry_ref* matchRef = (entry_ref*)matchingRefs.ItemAt(i);
+		BNode node(matchRef);
+		if (node.InitCheck() == B_OK)
+			node.RemoveAttr("MAIL:classification");
+		delete matchRef;
+	}
 }
 

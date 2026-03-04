@@ -1,4 +1,4 @@
-1	English (Australian)	application/x-vnd.EmailViews	2348483962
+1	English (Australian)	application/x-vnd.EmailViews	2728492662
  Read 	Toolbar	As short as possible	 Read 
 Attach	Toolbar	As short as possible	Attach
 Check email	Toolbar	As short as possible	Check email
@@ -142,6 +142,7 @@ Failed to start backup thread.	EmailViewsWindow		Failed to start backup thread.
 Forward	EmailViewsWindow		Forward
 HTML message	EmailViewsWindow		HTML message
 Mark as read	EmailViewsWindow		Mark as read
+Mark as spam	EmailViewsWindow		Mark as spam
 Mark as unread	EmailViewsWindow		Mark as unread
 Messages	EmailViewsWindow		Messages
 Move to Trash	EmailViewsWindow		Move to Trash
@@ -149,6 +150,7 @@ New email	EmailViewsWindow		New email
 No emails found.	EmailViewsWindow		No emails found.
 No emails in Trash.	EmailViewsWindow		No emails in Trash.
 No emails match your search.	EmailViewsWindow		No emails match your search.
+Not spam	EmailViewsWindow		Not spam
 OK	EmailViewsWindow		OK
 Open queries folder	EmailViewsWindow		Open queries folder
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete %count% emails from Trash?\n\nThis cannot be undone.
@@ -167,6 +169,8 @@ Select folder	EmailViewsWindow		Select folder
 Sent emails	EmailViewsWindow		Sent emails
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Sorry, could not find an application that supports the 'Person' data type.
+Spam	EmailViewsWindow		Spam
+Spam (%ld)	EmailViewsWindow		Spam (%ld)
 Starred emails	EmailViewsWindow		Starred emails
 Subject:	EmailViewsWindow		Subject:
 There are no emails in the Trash.	EmailViewsWindow		There are no emails in the Trash.
@@ -187,10 +191,12 @@ You are trying to restore 1 message that belongs to an account that is not confi
 %n - Full name	Preferences		%n - Full name
 <no account found>	Preferences		<no account found>
 Account from mail	Preferences		Account from mail
+Add	Preferences		Add
 Attach attributes:	Preferences		Attach attributes:
 Auto signature:	Preferences		Auto signature:
 Automatically mark mail as read:	Preferences		Automatically mark mail as read:
 Beginner	Preferences		Beginner
+Blocked senders and domains:	Preferences		Blocked senders and domains:
 Button bar:	Preferences		Button bar:
 Cancel	Preferences		Cancel
 Colored quotes:	Preferences		Coloured quotes:
@@ -207,12 +213,14 @@ Off	Preferences		Off
 OK	Preferences		OK
 On	Preferences		On
 Outgoing encoding:	Preferences		Outgoing encoding:
+Remove	Preferences		Remove
 Reply account:	Preferences		Reply account:
 Reply preamble:	Preferences		Reply preamble:
 Revert	Preferences		Revert
 Show icons & labels	Preferences		Show icons & labels
 Show icons only	Preferences		Show icons only
 Size:	Preferences		Size:
+Spam filtering	Preferences		Spam filtering
 Text wrapping:	Preferences		Text wrapping:
 Time range slider:	Preferences		Time range slider:
 Use default account	Preferences		Use default account
@@ -291,9 +299,11 @@ Filter by 'Sender'	EmailListView		Filter by 'Sender'
 Filter by 'Subject'	EmailListView		Filter by 'Subject'
 Forward	EmailListView		Forward
 Mark as read	EmailListView		Mark as read
+Mark as spam	EmailListView		Mark as spam
 Mark as unread	EmailListView		Mark as unread
 Move to Trash	EmailListView		Move to Trash
 New email to sender	EmailListView		New email to sender
+Not spam	EmailListView		Not spam
 Reply	EmailListView		Reply
 Reply all	EmailListView		Reply all
 Restore	EmailListView		Restore

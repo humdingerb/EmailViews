@@ -147,6 +147,7 @@ public:
                                    BObjectList<BVolume>* volumes = NULL,
 #endif
                                    bool showTrash = false,
+                                   bool showSpam = false,
                                    bool attachmentsOnly = false);
     void                StopQuery();
     void                InvalidateQueryId() { fCurrentQueryId++; }
@@ -262,6 +263,8 @@ public:
     // === Appearance ===
     
     void                SetShowingTrash(bool showingTrash);
+    void                SetShowingSpam(bool showingSpam);
+    void                SetSpamBlocklist(const std::set<BString>& blocklist);
     
     void                InvalidateItem(int32 index);
     
@@ -371,6 +374,8 @@ private:
     // State
     bool                fBulkLoading;
     bool                fShowingTrash;
+    bool                fShowingSpam;
+    std::set<BString>   fSpamBlocklist;
     
     // Internal components (owned by this view)
     ContentView*        fContentView;
@@ -403,6 +408,7 @@ private:
     BObjectList<BVolume> fQueryVolumes;
 #endif
     bool                fQueryShowTrash;
+    bool                fQueryShowSpam;
     bool                fQueryAttachmentsOnly;
     time_t              fQueryCutoffTime;
     int32               fLoadedCount;

@@ -36,12 +36,15 @@ All rights reserved.
 
 
 #include <Font.h>
+#include <StringList.h>
 #include <Window.h>
 
 class BButton;
 class BCheckBox;
+class BListView;
 class BMenu;
 class BPopUpMenu;
+class BScrollView;
 class BSpinner;
 class BTextControl;
 
@@ -101,6 +104,12 @@ private:
 			BPopUpMenu*			_BuildBoolMenu(uint32 msg,
 									const char* boolItem, bool isTrue);
 
+			void				_LoadBlocklist();
+			void				_SaveBlocklist();
+			void				_UnclassifyRemovedSenders();
+
+			BStringList			fOriginalBlocklist;
+
 			bool*				fNewWrap;
 			bool				fWrap;
 			bool*				fNewAttachAttributes;
@@ -152,6 +161,12 @@ private:
 			BPopUpMenu*			fButtonBarMenu;
 			BPopUpMenu*			fAutoMarkReadMenu;
 			BPopUpMenu*			fShowTimeRangeMenu;
+
+			BListView*			fBlocklistView;
+			BScrollView*		fBlocklistScrollView;
+			BTextControl*		fBlockAddressField;
+			BButton*			fAddBlockButton;
+			BButton*			fRemoveBlockButton;
 };
 
 #endif	/* _PREFS_H */

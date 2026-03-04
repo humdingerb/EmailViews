@@ -63,6 +63,7 @@
 #include <cstring>
 #include <memory>
 #include <vector>
+#include <set>
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "EmailListView"
@@ -232,7 +233,9 @@ struct LoaderData {
     BObjectList<BVolume> volumes;  // Does NOT own items - we delete manually
 #endif
     bool                showTrash;
+    bool                showSpam;
     bool                attachmentsOnly;
+    std::set<BString>   spamBlocklist;  // copy of sender blocklist for background filtering
     std::shared_ptr<volatile bool> stopFlag;  // Shared ownership with EmailListView
     volatile int32*     currentQueryId; // Points to EmailListView::fCurrentQueryId for staleness check
     time_t              cutoffTime;     // 30 days ago timestamp
@@ -632,6 +635,7 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     fSortOrder(kSortDescending),
     fBulkLoading(false),
     fShowingTrash(false),
+    fShowingSpam(false),
     fContentView(NULL),
     fColumnHeader(NULL),
     fScrollView(NULL),
@@ -644,6 +648,7 @@ EmailListView::EmailListView(const char* name, BWindow* target)
     fLoaderThread(-1),
     fCurrentQueryId(0),
     fQueryShowTrash(false),
+    fQueryShowSpam(false),
     fQueryAttachmentsOnly(false),
     fQueryCutoffTime(0),
     fLoadedCount(0),
@@ -929,7 +934,9 @@ EmailListView::MessageReceived(BMessage* message)
             data->messenger = BMessenger(this);
             data->predicate = fQueryPredicate;
             data->showTrash = fQueryShowTrash;
+            data->showSpam = fQueryShowSpam;
             data->attachmentsOnly = fQueryAttachmentsOnly;
+            data->spamBlocklist = fSpamBlocklist;
             data->stopFlag = fCurrentStopFlag;
             data->currentQueryId = &fCurrentQueryId;
             data->cutoffTime = fQueryCutoffTime;
@@ -1242,6 +1249,56 @@ EmailListView::MessageReceived(BMessage* message)
                             if (!fQueryShowTrash && inTrash)
                                 break;
                         }
+                    }
+                    
+                    // Filter by spam classification
+                    {
+                        BNode attrNode(&ref);
+                        BString classification;
+                        bool isSpam = (attrNode.InitCheck() == B_OK
+                            && attrNode.ReadAttrString("MAIL:classification",
+                                &classification) == B_OK
+                            && classification.ICompare("Spam") == 0);
+
+                        // Check sender against blocklist for newly arrived emails
+                        if (!isSpam && !fSpamBlocklist.empty()
+                            && attrNode.InitCheck() == B_OK) {
+                            char fromBuf[256] = "";
+                            attrNode.ReadAttr("MAIL:from", B_STRING_TYPE, 0,
+                                fromBuf, sizeof(fromBuf) - 1);
+                            if (fromBuf[0] != '\0') {
+                                BString fromStr(fromBuf);
+                                BString addr;
+                                int32 open = fromStr.FindFirst('<');
+                                int32 close = fromStr.FindFirst('>', open);
+                                if (open >= 0 && close > open)
+                                    fromStr.CopyInto(addr, open + 1, close - open - 1);
+                                else
+                                    addr = fromStr;
+                                addr.Trim();
+                                addr.ToLower();
+
+                                bool blocked = (fSpamBlocklist.count(addr) > 0);
+                                if (!blocked) {
+                                    int32 at = addr.FindFirst('@');
+                                    if (at >= 0) {
+                                        BString domain;
+                                        addr.CopyInto(domain, at, addr.Length() - at);
+                                        blocked = (fSpamBlocklist.count(domain) > 0);
+                                    }
+                                }
+                                if (blocked) {
+                                    BString spam("Spam");
+                                    attrNode.WriteAttrString("MAIL:classification", &spam);
+                                    isSpam = true;
+                                }
+                            }
+                        }
+
+                        if (fQueryShowSpam && !isSpam)
+                            break;
+                        if (!fQueryShowSpam && !fQueryShowTrash && isSpam)
+                            break;
                     }
                     
                     // Filter by attachments if needed
@@ -2747,6 +2804,52 @@ EmailListView::_ShowContextMenu(BPoint where)
         return;
     }
     
+    if (fShowingSpam) {
+        // Spam view: Not spam, mark read/unread, and Move to Trash
+        menu->AddItem(new BMenuItem(B_TRANSLATE("Not spam"),
+            new BMessage('uspm')));  // MSG_UNMARK_SPAM
+        menu->AddSeparatorItem();
+
+        // Check selection status for mark read/unread
+        bool hasNew = false;
+        bool hasRead = false;
+        for (int32 index : fSelectedIndices) {
+            EmailItem* item = fItems.ItemAt(index);
+            if (item == NULL)
+                continue;
+            const char* status = item->Status();
+            if (status != NULL) {
+                if (strcmp(status, "New") == 0)
+                    hasNew = true;
+                else if (strcmp(status, "Read") == 0)
+                    hasRead = true;
+            }
+        }
+
+        BMenuItem* markReadItem = new BMenuItem(B_TRANSLATE("Mark as read"),
+            new BMessage('mred'));  // MSG_MARK_READ
+        markReadItem->SetEnabled(hasNew);
+        menu->AddItem(markReadItem);
+
+        BMenuItem* markUnreadItem = new BMenuItem(B_TRANSLATE("Mark as unread"),
+            new BMessage('murd'));  // MSG_MARK_UNREAD
+        markUnreadItem->SetEnabled(hasRead);
+        menu->AddItem(markUnreadItem);
+
+        menu->AddItem(new BMenuItem(B_TRANSLATE("Move to Trash"),
+            new BMessage('edel')));  // MSG_DELETE_EMAIL
+        
+        // Convert to screen coordinates
+        if (fContentView != NULL)
+            fContentView->ConvertToScreen(&where);
+        else
+            ConvertToScreen(&where);
+        
+        menu->SetTargetForItems(fTarget);
+        menu->Go(where, true, true, true);
+        return;
+    }
+    
     // Normal view: full context menu.
     // Message constants use raw 'xxxx' values instead of MSG_* symbols to
     // avoid including EmailViews.h, which would create a circular dependency.
@@ -2818,6 +2921,8 @@ EmailListView::_ShowContextMenu(BPoint where)
     
     menu->AddItem(new BMenuItem(B_TRANSLATE("Move to Trash"),
         new BMessage('edel')));  // MSG_DELETE_EMAIL
+    menu->AddItem(new BMenuItem(B_TRANSLATE("Mark as spam"),
+        new BMessage('mspm')));  // MSG_MARK_SPAM
     
     menu->AddSeparatorItem();
     
@@ -3126,6 +3231,20 @@ void
 EmailListView::SetShowingTrash(bool showingTrash)
 {
     fShowingTrash = showingTrash;
+}
+
+
+void
+EmailListView::SetShowingSpam(bool showingSpam)
+{
+    fShowingSpam = showingSpam;
+}
+
+
+void
+EmailListView::SetSpamBlocklist(const std::set<BString>& blocklist)
+{
+    fSpamBlocklist = blocklist;
 }
 
 
@@ -3460,10 +3579,10 @@ EmailListView::CompareItems(const EmailItem* a, const EmailItem* b,
 void
 #if B_HAIKU_VERSION > B_HAIKU_VERSION_1_BETA_5
 EmailListView::StartQuery(const char* predicate, BObjectList<BVolume, true>* volumes,
-                          bool showTrash, bool attachmentsOnly)
+                          bool showTrash, bool showSpam, bool attachmentsOnly)
 #else
 EmailListView::StartQuery(const char* predicate, BObjectList<BVolume>* volumes,
-                          bool showTrash, bool attachmentsOnly)
+                          bool showTrash, bool showSpam, bool attachmentsOnly)
 #endif
 {
     // Stop any existing query
@@ -3479,6 +3598,7 @@ EmailListView::StartQuery(const char* predicate, BObjectList<BVolume>* volumes,
     // Store query parameters
     fQueryPredicate = predicate;
     fQueryShowTrash = showTrash;
+    fQueryShowSpam = showSpam;
     fQueryAttachmentsOnly = attachmentsOnly;
     fLoadedCount = 0;
     fTotalCount = 0;
@@ -3526,7 +3646,9 @@ EmailListView::StartQuery(const char* predicate, BObjectList<BVolume>* volumes,
     data->messenger = BMessenger(this);
     data->predicate = predicate;
     data->showTrash = showTrash;
+    data->showSpam = showSpam;
     data->attachmentsOnly = attachmentsOnly;
+    data->spamBlocklist = fSpamBlocklist;
     data->stopFlag = fCurrentStopFlag;
     data->currentQueryId = &fCurrentQueryId;
     data->cutoffTime = cutoffTime;
@@ -3585,6 +3707,7 @@ EmailListView::_LoaderThread(void* data)
     BMessenger messenger = loaderData->messenger;
     BString basePredicate = loaderData->predicate;
     bool showTrash = loaderData->showTrash;
+    bool showSpam = loaderData->showSpam;
     bool attachmentsOnly = loaderData->attachmentsOnly;
     volatile bool* stopFlag = loaderData->stopFlag.get();
     volatile int32* currentQueryId = loaderData->currentQueryId;
@@ -3662,6 +3785,58 @@ EmailListView::_LoaderThread(void* data)
             if (showTrash && !inTrash)
                 continue;
             if (!showTrash && inTrash)
+                continue;
+            
+            // Check spam classification attribute
+            BNode node(&ref);
+            BString classification;
+            bool isSpam = (node.InitCheck() == B_OK
+                && node.ReadAttrString("MAIL:classification", &classification) == B_OK
+                && classification.ICompare("Spam") == 0);
+
+            // Auto-tag emails from blocked senders
+            if (!isSpam && !loaderData->spamBlocklist.empty()
+                && node.InitCheck() == B_OK) {
+                char fromBuf[256] = "";
+                node.ReadAttr("MAIL:from", B_STRING_TYPE, 0, fromBuf,
+                    sizeof(fromBuf) - 1);
+                if (fromBuf[0] != '\0') {
+                    BString fromStr(fromBuf);
+                    BString addr;
+                    int32 open = fromStr.FindFirst('<');
+                    int32 close = fromStr.FindFirst('>', open);
+                    if (open >= 0 && close > open) {
+                        fromStr.CopyInto(addr, open + 1, close - open - 1);
+                    } else {
+                        addr = fromStr;
+                    }
+                    addr.Trim();
+                    addr.ToLower();
+
+                    bool blocked = (loaderData->spamBlocklist.count(addr) > 0);
+                    if (!blocked) {
+                        int32 at = addr.FindFirst('@');
+                        if (at >= 0) {
+                            BString domain;
+                            addr.CopyInto(domain, at, addr.Length() - at);
+                            blocked = (loaderData->spamBlocklist.count(domain) > 0);
+                        }
+                    }
+                    if (blocked) {
+                        BString spam("Spam");
+                        node.WriteAttrString("MAIL:classification", &spam);
+                        isSpam = true;
+                    }
+                }
+            }
+
+            // Filter by spam mode:
+            // - Spam view: show only spam
+            // - Trash view: show everything in trash (including spam)
+            // - All other views: exclude spam
+            if (showSpam && !isSpam)
+                continue;
+            if (!showSpam && !showTrash && isSpam)
                 continue;
             
             // Create EmailRef - disk I/O happens here in background thread

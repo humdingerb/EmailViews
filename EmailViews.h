@@ -43,6 +43,7 @@
 #include <MenuField.h>
 #include <PopUpMenu.h>
 #include <vector>
+#include <set>
 #include <utility>
 #include <MenuBar.h>
 #include <Menu.h>
@@ -155,6 +156,8 @@ const uint32 MSG_PREV_EMAIL = 'pvem';
 const uint32 MSG_SELECT_ALL_EMAILS = 'sall';
 const uint32 MSG_FOCUS_SEARCH = 'fsrc';
 const uint32 MSG_UNDO_DELETE = 'undl';
+const uint32 MSG_MARK_SPAM = 'mspm';
+const uint32 MSG_UNMARK_SPAM = 'uspm';
 
 // Tracker scripting constants (for Mail Next/Previous navigation)
 const uint32 kNextSpecifier = 'snxt';
@@ -281,6 +284,8 @@ private:
     
     BMenuItem* fMarkReadMenuItem;
     BMenuItem* fMarkUnreadMenuItem;
+    BMenuItem* fMarkSpamMenuItem;
+    BMenuItem* fUnmarkSpamMenuItem;
     BMenuItem* fAddFromQueryMenuItem;
     BMenuItem* fAddToQueryMenuItem;
     BMenuItem* fAddAccountQueryMenuItem;
@@ -298,7 +303,9 @@ private:
 #endif
     BackgroundQueryHandler* fBackgroundQueryHandler;  // Handler for background query messages
     bool fShowTrashOnly;
+    bool fShowSpamOnly;
     volatile bool fTrashLoaderStop;
+    bool fEmptyingTrash;
     bool fAttachmentsOnly;
     bool fShowInDeskbar;
     node_ref fQueriesDirRef;
@@ -373,6 +380,14 @@ private:
     void SaveVolumeSelection();
     bool IsVolumeSelected(dev_t device) const;
     void SetVolumeSelected(dev_t device, bool selected);
+    
+    // Spam sender blocklist
+    void LoadSpamBlocklist();
+    void SaveSpamBlocklist();
+    void AddToSpamBlocklist(const char* address);
+    void RemoveFromSpamBlocklist(const char* address);
+    bool IsSenderBlocked(const char* fromField) const;
+    std::set<BString> fSpamBlocklist;  // lowercase addresses and @domains
 };
 
 class EmailViewsApp : public BApplication {

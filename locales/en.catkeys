@@ -1,4 +1,4 @@
-1	English	application/x-vnd.EmailViews	2348483962
+1	English	application/x-vnd.EmailViews	2728492662
 Open attachment	ContentView		Open attachment
 Attach	Toolbar	As short as possible	Attach
 Cancel	QueryNameDialog		Cancel
@@ -17,6 +17,7 @@ Only files can be added as attachments.	EnclosuresView		Only files can be added 
 Date	EmailColumnHeader		Date
 Sorry	EmailReaderWindow		Sorry
 [Message truncated...]	EmailViewsWindow		[Message truncated...]
+Mark as spam	EmailListView		Mark as spam
 Open attachment	EnclosuresView		Open attachment
 New	Toolbar	As short as possible	New
 Unread emails	EmailViewsWindow		Unread emails
@@ -36,6 +37,7 @@ Copy to new	EmailReaderWindow		Copy to new
 1 new email	DeskbarReplicant		1 new email
 Forward	EmailViewsWindow		Forward
 [The draft has no body text to display]	EmailViewsWindow		[The draft has no body text to display]
+Blocked senders and domains:	Preferences		Blocked senders and domains:
 To	EmailColumnHeader		To
 Warn unencodable:	Preferences		Warn unencodable:
 About %app%…	DeskbarReplicant		About %app%…
@@ -137,9 +139,9 @@ Outgoing encoding:	Preferences		Outgoing encoding:
 -3 months	TimeRangeSlider	Time range slider label - keep as short as possible	-3 months
 To	SearchBarView		To
 Signature:	SignatureWindow		Signature:
+View	EmailReaderWindow		View
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
 Subject	EmailColumnHeader	Email list column header	Subject
-View	EmailReaderWindow		View
 About EmailViews…	EmailViewsWindow		About EmailViews…
 No emails match your search.	EmailViewsWindow		No emails match your search.
 A query named '%name%' already exists.	EmailViewsWindow		A query named '%name%' already exists.
@@ -167,8 +169,8 @@ Reply preamble:	Preferences		Reply preamble:
 Unknown	HeaderView		Unknown
 Send message	EmailReaderWindow		Send message
 Restore email	EmailViewsWindow		Restore email
--5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 years
 Show raw message	EmailReaderWindow		Show raw message
+-5 years	TimeRangeSlider	Time range slider label - keep as short as possible	-5 years
 Remove attachment	EnclosuresView		Remove attachment
 Don't send	EmailReaderWindow		Don't send
 Permanently delete 1 email?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email?\n\nThis cannot be undone.
@@ -203,6 +205,7 @@ Mark as unread	EmailListView		Mark as unread
 Subject:	HeaderView		Subject:
 Couldn't open this signature. Sorry.	SignatureWindow		Couldn't open this signature. Sorry.
 Attachment: %name% (Type: %type%)	ContentView	Don't translate the variables %name% and %type%.	Attachment: %name% (Type: %type%)
+Mark as spam	EmailViewsWindow		Mark as spam
 Signature	SignatureWindow		Signature
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.
 Backup in progress…	SearchBarView		Backup in progress…
@@ -224,6 +227,7 @@ Encoding	EmailReaderWindow		Encoding
 File	EmailReaderWindow		File
 Colored quotes:	Preferences		Colored quotes:
 (Date unavailable)	EmailReaderWindow		(Date unavailable)
+Add	Preferences		Add
 To:	EmailViewsWindow		To:
 OK	EnclosuresView		OK
 OK	EmailReaderWindow		OK
@@ -240,6 +244,7 @@ OK	AboutWindow		OK
 Edit signatures…	EmailReaderWindow		Edit signatures…
 Unread emails	QueryListView		Unread emails
 Select search operator	SearchBarView		Select search operator
+Spam (%ld)	EmailViewsWindow		Spam (%ld)
 Email accounts…	DeskbarReplicant		Email accounts…
 From	SearchBarView		From
 -2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 years
@@ -259,14 +264,15 @@ Remove	AttachmentStripView		Remove
 OK	SignatureWindow		OK
 Print	Toolbar	As short as possible	Print
 View HTML version	EmailReaderWindow		View HTML version
--2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 months
-Email preferences…	EmailReaderWindow		Email preferences…
 Show header	EmailReaderWindow		Show header
+Email preferences…	EmailReaderWindow		Email preferences…
+-2 months	TimeRangeSlider	Time range slider label - keep as short as possible	-2 months
 Could not open email file.	EmailViewsWindow		Could not open email file.
 Add 'Account' query	EmailViewsWindow		Add 'Account' query
 Redo	EmailReaderWindow		Redo
 Subject	EmailColumnHeader		Subject
 (Name unavailable)	EmailReaderWindow		(Name unavailable)
+Not spam	EmailListView		Not spam
 Failed to create query file.	EmailViewsWindow		Failed to create query file.
 Save as draft	EmailReaderWindow		Save as draft
 Attachment	EmailColumnHeader		Attachment
@@ -298,6 +304,7 @@ Move to Trash	EmailViewsWindow		Move to Trash
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
 Don't save	EmailReaderWindow		Don't save
 Email accounts…	EmailReaderWindow		Email accounts…
+Spam	EmailViewsWindow		Spam
 Error	EmailViewsWindow		Error
 Show icons only	Preferences		Show icons only
 Status	EmailColumnHeader	Email list column header	Status
@@ -320,11 +327,13 @@ To:	HeaderView		To:
 Button bar:	Preferences		Button bar:
 Create Person file for	EmailListView		Create Person file for
 On	Preferences		On
+Remove	Preferences		Remove
 OK	EmailViewsWindow		OK
 Reply account:	Preferences		Reply account:
 Delete	EmailViewsWindow		Delete
 Find	FindWindow		Find
 No matches	ContentView		No matches
+Not spam	EmailViewsWindow		Not spam
 Delete permanently	EmailListView		Delete permanently
 Copy	EmailReaderWindow		Copy
 Next message	EmailReaderWindow		Next message
@@ -337,6 +346,7 @@ Email accounts…	EmailViewsWindow		Email accounts…
 Unread	Toolbar	As short as possible	Unread
 Cancel	EmailReaderWindow		Cancel
 Open this link	ContentView		Open this link
+Spam filtering	Preferences		Spam filtering
 Next	Toolbar	As short as possible	Next
 Account	SearchBarView		Account
 Need Tracker to move items to trash	EmailReaderWindow		Need Tracker to move items to trash
