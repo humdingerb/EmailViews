@@ -787,7 +787,7 @@ EmailViewsWindow::EmailViewsWindow()
     }
     
     // Create menu bar
-    BMenuBar* menuBar = new BMenuBar("menubar");
+    fMenuBar = new BMenuBar("menubar");
     
     // Create EmailViews menu
     BMenu* mailViewerMenu = new BMenu(B_TRANSLATE_SYSTEM_NAME(kAppName));
@@ -804,7 +804,7 @@ EmailViewsWindow::EmailViewsWindow()
     mailViewerMenu->AddItem(fDeskbarMenuItem);
     mailViewerMenu->AddSeparatorItem();
     mailViewerMenu->AddItem(new BMenuItem(B_TRANSLATE("Quit"), new BMessage(MSG_QUIT), 'Q'));
-    menuBar->AddItem(mailViewerMenu);
+    fMenuBar->AddItem(mailViewerMenu);
     
     // Create Messages menu
     BMenu* messagesMenu = new BMenu(B_TRANSLATE("Messages"));
@@ -821,7 +821,9 @@ EmailViewsWindow::EmailViewsWindow()
     fMarkUnreadMenuItem->SetEnabled(false);
     messagesMenu->AddItem(fMarkUnreadMenuItem);
     messagesMenu->AddSeparatorItem();
-    messagesMenu->AddItem(new BMenuItem(B_TRANSLATE("Move to Trash"), new BMessage(MSG_DELETE_EMAIL)));
+    BMenuItem* item = new BMenuItem(B_TRANSLATE("Move to Trash"), new BMessage(MSG_DELETE_EMAIL));
+    item->SetEnabled(false);
+    messagesMenu->AddItem(item);
     fMarkSpamMenuItem = new BMenuItem(B_TRANSLATE("Mark as spam"), new BMessage(MSG_MARK_SPAM));
     fMarkSpamMenuItem->SetEnabled(false);
     messagesMenu->AddItem(fMarkSpamMenuItem);
@@ -832,26 +834,35 @@ EmailViewsWindow::EmailViewsWindow()
     fUndoMenuItem = new BMenuItem(B_TRANSLATE("Undo Move to Trash"), new BMessage(MSG_UNDO_DELETE), 'Z');
     fUndoMenuItem->SetEnabled(false);
     messagesMenu->AddItem(fUndoMenuItem);
-    menuBar->AddItem(messagesMenu);
-    
+    fMenuBar->AddItem(messagesMenu);
+
+    // Create Filter menu
+    BMenu* filterMenu = new BMenu(B_TRANSLATE("Filter"));
+    filterMenu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Sender'"), new BMessage(MSG_FILTER_EXACT_SENDER)));
+    filterMenu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Recipient'"), new BMessage(MSG_FILTER_EXACT_RECIPIENT)));
+    filterMenu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Subject'"), new BMessage(MSG_FILTER_EXACT_SUBJECT)));
+    filterMenu->AddItem(new BMenuItem(B_TRANSLATE("Filter by 'Account'"), new BMessage(MSG_FILTER_EXACT_ACCOUNT)));
+    filterMenu->AddSeparatorItem();
+    filterMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear filter"), new BMessage(MSG_SEARCH_CLEAR)));
+    filterMenu->AddSeparatorItem();
+    fTimeRangeMenuItem = new BMenuItem(B_TRANSLATE("Show time range"),
+        new BMessage(MSG_TOGGLE_TIME_RANGE), 'T', B_SHIFT_KEY);
+    fTimeRangeMenuItem->SetMarked(true);
+    filterMenu->AddItem(fTimeRangeMenuItem);
+    fMenuBar->AddItem(filterMenu);
+
     // Create Queries menu
     BMenu* queriesMenu = new BMenu(B_TRANSLATE("Queries"));
-    fAddFromQueryMenuItem = new BMenuItem(B_TRANSLATE("Add 'From' query"), new BMessage(MSG_FILTER_BY_SENDER));
-    fAddFromQueryMenuItem->SetEnabled(false);
-    queriesMenu->AddItem(fAddFromQueryMenuItem);
-    fAddToQueryMenuItem = new BMenuItem(B_TRANSLATE("Add 'To' query"), new BMessage(MSG_FILTER_BY_RECIPIENT));
-    fAddToQueryMenuItem->SetEnabled(false);
-    queriesMenu->AddItem(fAddToQueryMenuItem);
-    fAddAccountQueryMenuItem = new BMenuItem(B_TRANSLATE("Add 'Account' query"), new BMessage(MSG_FILTER_BY_ACCOUNT));
-    fAddAccountQueryMenuItem->SetEnabled(false);
-    queriesMenu->AddItem(fAddAccountQueryMenuItem);
+    queriesMenu->AddItem(new BMenuItem(B_TRANSLATE("Add 'From' query"), new BMessage(MSG_FILTER_BY_SENDER)));
+    queriesMenu->AddItem(new BMenuItem(B_TRANSLATE("Add 'To' query"), new BMessage(MSG_FILTER_BY_RECIPIENT)));
+    queriesMenu->AddItem(new BMenuItem(B_TRANSLATE("Add 'Account' query"), new BMessage(MSG_FILTER_BY_ACCOUNT)));
     queriesMenu->AddSeparatorItem();
     queriesMenu->AddItem(new BMenuItem(B_TRANSLATE("Open queries folder"), new BMessage(MSG_OPEN_QUERIES_FOLDER)));
-    menuBar->AddItem(queriesMenu);
-    
+    fMenuBar->AddItem(queriesMenu);
+
     // Create Volumes menu (will be populated by BuildVolumeMenu)
     fVolumeMenu = new BMenu(B_TRANSLATE("Volumes"));
-    menuBar->AddItem(fVolumeMenu);
+    fMenuBar->AddItem(fVolumeMenu);
     
     // Helper function to load HVIF icon from app resources by numeric ID
     auto LoadIconById = [](int32 id) -> BBitmap* {
@@ -890,22 +901,17 @@ EmailViewsWindow::EmailViewsWindow()
     fToolBar->AddAction(MSG_CHECK_EMAIL, this, LoadIconById(kIconCheckEmail), NULL, B_TRANSLATE_COMMENT("Check email", "As short as possible"));
     fToolBar->AddAction(MSG_NEW_EMAIL, this, LoadIconById(kIconNewEmail), NULL, B_TRANSLATE_COMMENT("New email", "As short as possible"));
     fToolBar->AddAction(MSG_REPLY, this, LoadIconById(kIconReply), NULL, B_TRANSLATE_COMMENT("Reply", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_REPLY, false);
     fToolBar->AddAction(MSG_FORWARD, this, LoadIconById(kIconForward), NULL, B_TRANSLATE_COMMENT("Forward", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_FORWARD, false);
     fToolBar->AddAction(MSG_MARK_READ, this, LoadIconById(kIconMarkRead), NULL, B_TRANSLATE_COMMENT("Mark read", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_MARK_READ, false);
     fToolBar->AddAction(MSG_MARK_UNREAD, this, LoadIconById(kIconMarkUnread), NULL, B_TRANSLATE_COMMENT("Mark unread", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
     fToolBar->AddAction(MSG_DELETE_EMAIL, this, LoadIconById(kIconDelete), NULL, B_TRANSLATE_COMMENT("Trash", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
     fToolBar->AddSeparator();
     const int32 kIconNext = 1013;
     const int32 kIconPrevious = 1012;
     fToolBar->AddAction(MSG_NEXT_EMAIL, this, LoadIconById(kIconNext), NULL, B_TRANSLATE_COMMENT("Next", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
     fToolBar->AddAction(MSG_PREV_EMAIL, this, LoadIconById(kIconPrevious), NULL, B_TRANSLATE_COMMENT("Previous", "As short as possible"));
-    fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
+    _DisableToolBarIcons();
+
     fToolBar->AddGlue();  // Glue at end like reader window
     #undef B_TRANSLATION_CONTEXT
     #define B_TRANSLATION_CONTEXT "EmailViewsWindow"
@@ -1093,6 +1099,7 @@ EmailViewsWindow::EmailViewsWindow()
     // Apply initial visibility based on preference
     if (gReaderSettings != NULL && !gReaderSettings->ShowTimeRange()) {
         fTimeRangeGroup->Hide();
+        fTimeRangeMenuItem->SetMarked(false);
     }
     
     // Create email list group (search bar + time range + list card view)
@@ -1126,7 +1133,7 @@ EmailViewsWindow::EmailViewsWindow()
     // for a clean edge-to-edge appearance (no double border). Bottom stays 0
     // to preserve the preview pane's bottom border above the window edge.
     BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
-        .Add(menuBar)
+        .Add(fMenuBar)
         .Add(fToolBar)
         .Add(new BSeparatorView(B_HORIZONTAL, B_PLAIN_BORDER))
         .AddGroup(B_VERTICAL, 0)
@@ -1971,11 +1978,9 @@ void EmailViewsWindow::ApplySearchFilter()
     if (fEmailListCardView != NULL)
         fEmailListCardView->CardLayout()->SetVisibleItem((int32)1);
     
-    fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-    fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-    fMarkReadMenuItem->SetEnabled(false);
-    fMarkUnreadMenuItem->SetEnabled(false);
-    
+    // Clear the preview pane when switching folders
+    ClearPreviewPane();
+
     // Execute the query via the new EmailListView component
     fEmailList->SetSpamBlocklist(fSpamBlocklist);
     fEmailList->StartQuery(fullQuery.String(), &fSelectedVolumes, fShowTrashOnly, fShowSpamOnly, fAttachmentsOnly);
@@ -2416,10 +2421,20 @@ void EmailViewsWindow::ClearPreviewPane()
     if (fAttachmentStrip)
         fAttachmentStrip->ClearAttachments();
     
-    // Disable navigation buttons (no selection)
+    // Disable navigation buttons and menu items (no selection)
     _UpdateNavigationButtons();
-    
-    // Show the empty preview message with default message
+    _DisableToolBarIcons();
+    _UpdateMenuItemStates(false);
+
+    BMenuItem* item = fMenuBar->FindItem(MSG_DELETE_EMAIL);
+    if (item != NULL)
+        item->SetEnabled(false);
+
+    fMarkSpamMenuItem->SetEnabled(false);
+    fMarkReadMenuItem->SetEnabled(false);
+    fMarkUnreadMenuItem->SetEnabled(false);
+
+ // Show the empty preview message with default message
     ShowEmptyPreviewMessage(B_TRANSLATE("Select an email to preview its contents."));
 }
 
@@ -2432,6 +2447,32 @@ void EmailViewsWindow::_UpdateNavigationButtons()
 
     fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, hasNext);
     fToolBar->SetActionEnabled(MSG_PREV_EMAIL, hasPrev);
+}
+
+void EmailViewsWindow::_UpdateMenuItemStates(bool state)
+{
+    static const uint32 which[] {
+        MSG_REPLY, MSG_REPLY_ALL, MSG_FORWARD,
+        MSG_FILTER_EXACT_SENDER, MSG_FILTER_EXACT_RECIPIENT, MSG_FILTER_EXACT_SUBJECT, MSG_FILTER_EXACT_ACCOUNT,
+        MSG_FILTER_BY_SENDER, MSG_FILTER_BY_RECIPIENT, MSG_FILTER_BY_ACCOUNT
+    };
+
+    for (int32 i = 0; i < sizeof(which) / sizeof(which[0]); i++) {
+        BMenuItem* item = fMenuBar->FindItem(which[i]);
+        if (item != NULL)
+            item->SetEnabled(state);
+    }
+}
+
+void EmailViewsWindow::_DisableToolBarIcons()
+{
+    fToolBar->SetActionEnabled(MSG_MARK_READ, false);
+    fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
+    fToolBar->SetActionEnabled(MSG_REPLY, false);
+    fToolBar->SetActionEnabled(MSG_FORWARD, false);
+    fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
+    fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
+    fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
 }
 
 void EmailViewsWindow::_UpdateToolBar()
@@ -3215,7 +3256,6 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
         if (_HandleSetSelection(message))
             return;
     }
-    
     switch (message->what) {
         case B_COLORS_UPDATED: {
             // System colors changed - update preview pane text color
@@ -3267,21 +3307,9 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                     fSearchField->SetHasResults(false);
                     fIsSearchActive = false;
                     
-                    // Clear the preview pane and disable action buttons when switching folders
+                    // Clear the preview pane when switching folders
                     ClearPreviewPane();
-                    fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-                    fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-                    fMarkReadMenuItem->SetEnabled(false);
-                    fMarkUnreadMenuItem->SetEnabled(false);
-                    fToolBar->SetActionEnabled(MSG_REPLY, false);
-                    fToolBar->SetActionEnabled(MSG_FORWARD, false);
-                    fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
-                    fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
-                    fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
-                    fAddFromQueryMenuItem->SetEnabled(false);
-                    fAddToQueryMenuItem->SetEnabled(false);
-                    fAddAccountQueryMenuItem->SetEnabled(false);
-                    
+
                     // Show blank card while loading (empty string preserves backup button state)
                     ShowEmptyListMessage("");
                     
@@ -3330,15 +3358,20 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                             
                             if (isDraftView || isUnreadView) {
                                 // Always hide for Draft and Unread views
-                                if (!fTimeRangeGroup->IsHidden())
+                                if (!fTimeRangeGroup->IsHidden()) {
                                     fTimeRangeGroup->Hide();
-                            } else {
+                                    fTimeRangeMenuItem->SetMarked(false);
+                                }
+                           } else {
                                 // Respect user preference for other views
                                 bool shouldShow = (gReaderSettings == NULL || gReaderSettings->ShowTimeRange());
-                                if (shouldShow && fTimeRangeGroup->IsHidden())
+                                if (shouldShow && fTimeRangeGroup->IsHidden()) {
                                     fTimeRangeGroup->Show();
-                                else if (!shouldShow && !fTimeRangeGroup->IsHidden())
+                                    fTimeRangeMenuItem->SetMarked(true);
+                                } else if (!shouldShow && !fTimeRangeGroup->IsHidden()) {
                                     fTimeRangeGroup->Hide();
+                                    fTimeRangeMenuItem->SetMarked(false);
+                                }
                             }
                         }
                         
@@ -3380,20 +3413,8 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             fSearchField->SetHasResults(false);
             fIsSearchActive = false;
             
-            // Clear the preview pane and disable action buttons
+            // Clear the preview pane
             ClearPreviewPane();
-            fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-            fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-            fMarkReadMenuItem->SetEnabled(false);
-            fMarkUnreadMenuItem->SetEnabled(false);
-            fToolBar->SetActionEnabled(MSG_REPLY, false);
-            fToolBar->SetActionEnabled(MSG_FORWARD, false);
-            fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
-            fToolBar->SetActionEnabled(MSG_NEXT_EMAIL, false);
-            fToolBar->SetActionEnabled(MSG_PREV_EMAIL, false);
-            fAddFromQueryMenuItem->SetEnabled(false);
-            fAddToQueryMenuItem->SetEnabled(false);
-            fAddAccountQueryMenuItem->SetEnabled(false);
             
             // Disable backup in trash view
             fSearchField->SetViewHasContent(false);
@@ -3407,8 +3428,10 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             fCurrentViewItem = NULL;
             
             // Always hide time range slider for Trash view
-            if (fTimeRangeGroup && !fTimeRangeGroup->IsHidden())
+            if (fTimeRangeGroup && !fTimeRangeGroup->IsHidden()) {
                 fTimeRangeGroup->Hide();
+            fTimeRangeMenuItem->SetMarked(false);
+            }
             
             // Load trash emails by scanning trash directories directly
             LoadTrashEmails();
@@ -3459,11 +3482,13 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             fUnmarkSpamMenuItem->SetEnabled(hasSelection && fShowSpamOnly);
             // Next/Previous enabled based on position in list
             _UpdateNavigationButtons();
-            // Query menu items need a selection
-            fAddFromQueryMenuItem->SetEnabled(hasSelection);
-            fAddToQueryMenuItem->SetEnabled(hasSelection);
-            fAddAccountQueryMenuItem->SetEnabled(hasSelection);
-            
+            // Filter and query and reply/forward menu items need a single email selected
+            _UpdateMenuItemStates(selectionCount == 1);
+            // Move to Trash works on multiple selected emails
+            BMenuItem* item = fMenuBar->FindItem(MSG_DELETE_EMAIL);
+            if (item != NULL)
+                item->SetEnabled(hasSelection);
+
             // Show email list content if we have results
             ShowEmailListContent();
             
@@ -5033,7 +5058,7 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             }
             break;
         }
-        
+
         case MSG_EDIT_QUERY: {
             // Get the currently selected item in the left pane
             int32 selection = fQueryList->CurrentSelection();
@@ -6031,6 +6056,7 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                 
                 if (show) {
                     fTimeRangeGroup->Show();
+                    fTimeRangeMenuItem->SetMarked(true);
                 } else {
                     // Check if filtering was active before resetting
                     bool wasFiltering = !fTimeRangeSlider->IsFullRange();
@@ -6039,12 +6065,13 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                     fTimeRangeSlider->SetLeftValue(0.0f);
                     fTimeRangeSlider->SetRightValue(1.0f);
                     fTimeRangeGroup->Hide();
+                    fTimeRangeMenuItem->SetMarked(false);
                     
                     // Reload emails only if filtering was active
                     if (wasFiltering) {
                         ApplyTimeRangeFilter();
                     }
-                }
+               }
             }
             break;
         }
@@ -6216,9 +6243,10 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             // Update time range slider visibility
             if (gReaderSettings != NULL && fTimeRangeGroup != NULL) {
                 bool show = gReaderSettings->ShowTimeRange();
-                if (show && fTimeRangeGroup->IsHidden())
+                if (show && fTimeRangeGroup->IsHidden()) {
                     fTimeRangeGroup->Show();
-                else if (!show && !fTimeRangeGroup->IsHidden()) {
+                    fTimeRangeMenuItem->SetMarked(true);
+                } else if (!show && !fTimeRangeGroup->IsHidden()) {
                     // Check if filtering was active before hiding
                     bool wasFiltering = !fTimeRangeSlider->IsFullRange();
                     
@@ -6227,7 +6255,8 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
                     fTimeRangeSlider->SetRightValue(1.0f);
                     
                     fTimeRangeGroup->Hide();
-                    
+                    fTimeRangeMenuItem->SetMarked(false);
+                   
                     // Refresh email list only if filtering was active
                     if (wasFiltering && fCurrentViewItem != NULL) {
                         ResolveBaseQuery(fCurrentViewItem);
@@ -6664,19 +6693,9 @@ bool EmailViewsWindow::SelectBuiltInQueryByName(const char* name)
                 fSearchField->SetHasResults(false);
                 fIsSearchActive = false;
                 
-                // Clear the preview pane and disable action buttons
+                // Clear the preview pane
                 ClearPreviewPane();
-                fToolBar->SetActionEnabled(MSG_MARK_READ, false);
-                fToolBar->SetActionEnabled(MSG_MARK_UNREAD, false);
-                fMarkReadMenuItem->SetEnabled(false);
-                fMarkUnreadMenuItem->SetEnabled(false);
-                fToolBar->SetActionEnabled(MSG_REPLY, false);
-                fToolBar->SetActionEnabled(MSG_FORWARD, false);
-                fToolBar->SetActionEnabled(MSG_DELETE_EMAIL, false);
-                fAddFromQueryMenuItem->SetEnabled(false);
-                fAddToQueryMenuItem->SetEnabled(false);
-                fAddAccountQueryMenuItem->SetEnabled(false);
-                
+
                 // Show empty list message for this view
                 ShowEmptyListMessage(B_TRANSLATE("No emails found."));
                 
