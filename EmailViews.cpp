@@ -2102,18 +2102,43 @@ void EmailViewsWindow::RemoveCustomQuery(QueryItem* item)
     if (!item || !item->IsCustomQuery())
         return;
     
-    // Delete the query file using the stored path
+    // Get the leaf name before deleting
+    BPath itemPath(item->GetPath());
+    if (itemPath.InitCheck() != B_OK)
+        return;
+    const char* leaf = itemPath.Leaf();
+    
+    // Delete the query file
     BEntry entry(item->GetPath());
-    if (entry.Exists()) {
+    if (entry.Exists())
         entry.Remove();
-    }
     
-    // Reload queries to update the list
-    LoadQueries();
-    
-    // Select "All Emails" after removal
-    if (fQueryList->CountItems() > 0) {
-        fQueryList->Select(0);
+    // Remove the item from the sidebar
+    _RemoveQueryItemByName(leaf);
+}
+
+
+void EmailViewsWindow::_RemoveQueryItemByName(const char* leafName)
+{
+    for (int32 i = 0; i < fQueryList->CountItems(); i++) {
+        QueryItem* item = dynamic_cast<QueryItem*>(fQueryList->ItemAt(i));
+        if (item == NULL || !item->IsCustomQuery())
+            continue;
+        BPath itemPath(item->GetPath());
+        if (itemPath.InitCheck() != B_OK
+            || strcmp(itemPath.Leaf(), leafName) != 0)
+            continue;
+
+        bool wasSelected = (fQueryList->CurrentSelection() == i);
+
+        fQueryList->SetSelectionMessage(NULL);
+        fQueryList->RemoveItem(i);
+        fQueryList->SetSelectionMessage(new BMessage(MSG_QUERY_SELECTED));
+        delete item;
+
+        if (wasSelected && fQueryList->CountItems() > 0)
+            fQueryList->Select(0);
+        return;
     }
 }
 
@@ -5245,10 +5270,15 @@ void EmailViewsWindow::MessageReceived(BMessage* message)
             }
             
             // Handle all filesystem events for our watched queries directory
-            if (opcode == B_ENTRY_CREATED || opcode == B_ENTRY_REMOVED || opcode == B_ENTRY_MOVED) {
-                // If we get this message, it's likely from our watched queries folder.
+            if (opcode == B_ENTRY_REMOVED) {
+                // Remove just the deleted query item (handles Tracker
+                // deletions; in-app deletions are already handled by
+                // RemoveCustomQuery so this is a no-op in that case)
+                const char* name;
+                if (message->FindString("name", &name) == B_OK)
+                    _RemoveQueryItemByName(name);
+            } else if (opcode == B_ENTRY_CREATED || opcode == B_ENTRY_MOVED) {
                 delete fQueryReloadRunner;
-                
                 BMessage reload(MSG_RELOAD_QUERIES_DEBOUNCED);
                 fQueryReloadRunner = new BMessageRunner(BMessenger(this), &reload, 200000, 1);
             }

@@ -236,6 +236,7 @@ private:
     void UpdateQueryCounts();
     void AddCustomQuery(const char* name, const char* query, const char* menuSelection, const char* searchText, bool selectIt = true);
     void RemoveCustomQuery(QueryItem* item);
+    void _RemoveQueryItemByName(const char* leafName);
     void DeleteEmail(const char* emailPath);
     
     static status_t _InitBackgroundQueriesThread(void* data);
