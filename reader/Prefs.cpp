@@ -84,7 +84,7 @@ enum P_MESSAGES {
 	P_ACCOUNT, P_REPLYTO, P_REPLY_PREAMBLE,
 	P_COLORED_QUOTES, P_MARK_READ, P_SHOW_TIME_RANGE,
 	P_USE_SYSTEM_FONT_SIZE,
-	P_BLOCK_ADD, P_BLOCK_REMOVE, P_BLOCK_SELECTION
+	P_BLOCK_ADD, P_BLOCK_REMOVE, P_BLOCK_SELECTION, P_BLOCK_FILTER
 };
 
 
@@ -185,6 +185,10 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 	fBlocklistScrollView = new BScrollView("blocklist_scroll",
 		fBlocklistView, 0, false, true);
 
+	fBlockFilterField = new BTextControl("blockFilter", NULL, "", NULL);
+	fBlockFilterField->SetModificationMessage(new BMessage(P_BLOCK_FILTER));
+	fBlockFilterField->TextView()->SetMaxBytes(256);
+
 	fBlockAddressField = new BTextControl("blockAddress", NULL,
 		"", NULL);
 	fBlockAddressField->SetExplicitMinSize(BSize(200, B_SIZE_UNSET));
@@ -199,6 +203,10 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 		.SetInsets(B_USE_DEFAULT_SPACING)
 		.Add(new BStringView("blockLabel",
 			B_TRANSLATE("Blocked senders and domains:")))
+		.AddGroup(B_HORIZONTAL, B_USE_HALF_ITEM_SPACING)
+			.Add(new BStringView("filterLabel", B_TRANSLATE("Filter:")))
+			.Add(fBlockFilterField)
+		.End()
 		.Add(fBlocklistScrollView, 1.0f)
 		.AddGroup(B_HORIZONTAL)
 			.Add(fBlockAddressField)
@@ -350,6 +358,7 @@ TPrefsWindow::TPrefsWindow(BPoint leftTop, BFont* font, int32* level,
 			.SetInsets(B_USE_WINDOW_SPACING, B_USE_DEFAULT_SPACING,
 				B_USE_WINDOW_SPACING, 0)
 		.End();
+
 }
 
 
@@ -359,6 +368,21 @@ TPrefsWindow::~TPrefsWindow()
 	msg.AddInt32("kind", PREFS_WINDOW);
 	msg.AddPoint("window pos", Frame().LeftTop());
 	be_app->PostMessage(&msg);
+}
+
+
+void
+TPrefsWindow::DispatchMessage(BMessage* message, BHandler* handler)
+{
+	if (message->what == B_KEY_DOWN) {
+		const char* bytes;
+		if (message->FindString("bytes", &bytes) == B_OK
+			&& bytes[0] == B_ESCAPE) {
+			PostMessage(P_CANCEL);
+			return;
+		}
+	}
+	BWindow::DispatchMessage(message, handler);
 }
 
 
@@ -630,20 +654,18 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 			if (address.Length() == 0)
 				break;
 
-			// Check for duplicates
+			// Check for duplicates in backing data
 			bool found = false;
-			for (int32 i = 0; i < fBlocklistView->CountItems(); i++) {
-				BStringItem* existing = dynamic_cast<BStringItem*>(
-					fBlocklistView->ItemAt(i));
-				if (existing != NULL
-					&& BString(existing->Text()).ICompare(address) == 0) {
+			for (int32 i = 0; i < fBlocklistData.CountStrings(); i++) {
+				if (fBlocklistData.StringAt(i).ICompare(address) == 0) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				fBlocklistView->AddItem(new BStringItem(address.String()));
+				fBlocklistData.Add(address);
 				fBlockAddressField->SetText("");
+				_RefreshBlocklistView();
 			}
 			break;
 		}
@@ -652,8 +674,19 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 		{
 			int32 selected = fBlocklistView->CurrentSelection();
 			if (selected >= 0) {
-				BListItem* item = fBlocklistView->RemoveItem(selected);
-				delete item;
+				BStringItem* item = dynamic_cast<BStringItem*>(
+					fBlocklistView->ItemAt(selected));
+				if (item != NULL) {
+					// Remove from backing data
+					BString text(item->Text());
+					for (int32 i = 0; i < fBlocklistData.CountStrings(); i++) {
+						if (fBlocklistData.StringAt(i).ICompare(text) == 0) {
+							fBlocklistData.Remove(i);
+							break;
+						}
+					}
+				}
+				_RefreshBlocklistView();
 				fRemoveBlockButton->SetEnabled(
 					fBlocklistView->CurrentSelection() >= 0);
 			}
@@ -663,6 +696,10 @@ TPrefsWindow::MessageReceived(BMessage* msg)
 		case P_BLOCK_SELECTION:
 			fRemoveBlockButton->SetEnabled(
 				fBlocklistView->CurrentSelection() >= 0);
+			break;
+
+		case P_BLOCK_FILTER:
+			_RefreshBlocklistView();
 			break;
 
 		default:
@@ -1047,6 +1084,36 @@ TPrefsWindow::_BuildShowTimeRangeMenu(bool showTimeRange)
 
 
 void
+TPrefsWindow::_RefreshBlocklistView()
+{
+	// Clear list view
+	while (fBlocklistView->CountItems() > 0)
+		delete fBlocklistView->RemoveItem(int32(0));
+
+	// Get filter text
+	BString filter(fBlockFilterField->Text());
+	filter.Trim();
+	filter.ToLower();
+
+	// Repopulate with matching entries from backing data
+	for (int32 i = 0; i < fBlocklistData.CountStrings(); i++) {
+		BString entry = fBlocklistData.StringAt(i);
+		if (filter.Length() == 0) {
+			fBlocklistView->AddItem(new BStringItem(entry.String()));
+		} else {
+			BString lower(entry);
+			lower.ToLower();
+			if (lower.FindFirst(filter) >= 0)
+				fBlocklistView->AddItem(new BStringItem(entry.String()));
+		}
+	}
+
+	fRemoveBlockButton->SetEnabled(
+		fBlocklistView->CurrentSelection() >= 0);
+}
+
+
+void
 TPrefsWindow::_LoadBlocklist()
 {
 	BPath path;
@@ -1063,6 +1130,7 @@ TPrefsWindow::_LoadBlocklist()
 		BString entry(line);
 		entry.Trim();
 		if (entry.Length() > 0 && entry.ByteAt(0) != '#') {
+			fBlocklistData.Add(entry);
 			fBlocklistView->AddItem(new BStringItem(entry.String()));
 			fOriginalBlocklist.Add(entry);
 		}
@@ -1091,11 +1159,8 @@ TPrefsWindow::_SaveBlocklist()
 	if (f == NULL)
 		return;
 
-	for (int32 i = 0; i < fBlocklistView->CountItems(); i++) {
-		BStringItem* item = dynamic_cast<BStringItem*>(
-			fBlocklistView->ItemAt(i));
-		if (item != NULL)
-			fprintf(f, "%s\n", item->Text());
+	for (int32 i = 0; i < fBlocklistData.CountStrings(); i++) {
+		fprintf(f, "%s\n", fBlocklistData.StringAt(i).String());
 	}
 	fclose(f);
 }
@@ -1106,14 +1171,10 @@ TPrefsWindow::_UnclassifyRemovedSenders()
 {
 	// Build set of current entries for fast lookup
 	BStringList currentList;
-	for (int32 i = 0; i < fBlocklistView->CountItems(); i++) {
-		BStringItem* item = dynamic_cast<BStringItem*>(
-			fBlocklistView->ItemAt(i));
-		if (item != NULL) {
-			BString entry(item->Text());
-			entry.ToLower();
-			currentList.Add(entry);
-		}
+	for (int32 i = 0; i < fBlocklistData.CountStrings(); i++) {
+		BString entry = fBlocklistData.StringAt(i);
+		entry.ToLower();
+		currentList.Add(entry);
 	}
 
 	// Find entries that were in the original but are no longer present

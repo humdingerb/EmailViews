@@ -80,6 +80,8 @@ public:
 	virtual						~TPrefsWindow();
 
 	virtual	void				MessageReceived(BMessage* message);
+	virtual	void				DispatchMessage(BMessage* message,
+									BHandler* handler);
 
 private:
 			BPopUpMenu*			_BuildFontMenu(BFont*);
@@ -107,8 +109,10 @@ private:
 			void				_LoadBlocklist();
 			void				_SaveBlocklist();
 			void				_UnclassifyRemovedSenders();
+			void				_RefreshBlocklistView();
 
 			BStringList			fOriginalBlocklist;
+			BStringList			fBlocklistData;
 
 			bool*				fNewWrap;
 			bool				fWrap;
@@ -164,6 +168,7 @@ private:
 
 			BListView*			fBlocklistView;
 			BScrollView*		fBlocklistScrollView;
+			BTextControl*		fBlockFilterField;
 			BTextControl*		fBlockAddressField;
 			BButton*			fAddBlockButton;
 			BButton*			fRemoveBlockButton;

@@ -413,6 +413,7 @@ TReaderSettings::ShowPrefsWindow()
 			&fWarnAboutUnencodableCharacters, &fStartWithSpellCheckOn,
 			&fAutoMarkRead, &fShowToolBar, &fShowTimeRange,
 			&fUseSystemFontSize);
+		fPrefsWindow->SetFeel(B_MODAL_APP_WINDOW_FEEL);
 		
 		if (fPrefsWindowPos.x <= 0 || fPrefsWindowPos.y <= 0) {
 			fPrefsWindow->CenterOnScreen();
