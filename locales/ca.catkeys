@@ -142,7 +142,7 @@ Failed to start backup thread.	EmailViewsWindow		Ha fallat iniciar el fil de cò
 Forward	EmailViewsWindow		Reenvia
 HTML message	EmailViewsWindow		Missatge HTML
 Mark as read	EmailViewsWindow		Marca com a llegit
-Mark as spam	EmailViewsWindow		Mark as spam
+Mark as spam	EmailViewsWindow		Marca com a brossa
 Mark as unread	EmailViewsWindow		Marca com a no llegit
 Messages	EmailViewsWindow		Missatges
 Move to Trash	EmailViewsWindow		Mou a la paperera
@@ -150,7 +150,7 @@ New email	EmailViewsWindow		Missatge nou
 No emails found.	EmailViewsWindow		No s'ha trobat cap missatge.
 No emails in Trash.	EmailViewsWindow		No hi ha missatges a la paperera.
 No emails match your search.	EmailViewsWindow		No hi ha cap missatge que coincideixi amb la cerca.
-Not spam	EmailViewsWindow		Not spam
+Not spam	EmailViewsWindow		No és brossa
 OK	EmailViewsWindow		D'acord
 Open queries folder	EmailViewsWindow		Obre la carpeta de consultes
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Voleu suprimir permanentment %count% missatges de la paperera?\n\nAixò no es pot desfer.
@@ -169,8 +169,8 @@ Select folder	EmailViewsWindow		Seleccioneu la carpeta
 Sent emails	EmailViewsWindow		Missatges enviats
 Show in Deskbar	EmailViewsWindow		Mostra a la barra d'escriptori
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Perdoneu, no s'ha trobat cap aplicació que admeti el tipus de dades de persona.
-Spam	EmailViewsWindow		Spam
-Spam (%ld)	EmailViewsWindow		Spam (%ld)
+Spam	EmailViewsWindow		Brossa
+Spam (%ld)	EmailViewsWindow		Brossa (%ld)
 Starred emails	EmailViewsWindow		Missatges destacats
 Subject:	EmailViewsWindow		Assumpte:
 There are no emails in the Trash.	EmailViewsWindow		No hi ha cap missatge a la paperera.
@@ -191,12 +191,12 @@ You are trying to restore 1 message that belongs to an account that is not confi
 %n - Full name	Preferences		%n - Nom complet
 <no account found>	Preferences		<no s'ha trobat cap compte>
 Account from mail	Preferences		Compte del missatge
-Add	Preferences		Add
+Add	Preferences		Afegeix
 Attach attributes:	Preferences		Atributs de l'adjunt:
 Auto signature:	Preferences		Signatura automàtica:
 Automatically mark mail as read:	Preferences		Marca automàticament el missatge com a llegit:
 Beginner	Preferences		Principiant
-Blocked senders and domains:	Preferences		Blocked senders and domains:
+Blocked senders and domains:	Preferences		Remitents i dominis blocats:
 Button bar:	Preferences		Barra de botons:
 Cancel	Preferences		Cancel·la
 Colored quotes:	Preferences		Citacions acolorides:
@@ -213,14 +213,14 @@ Off	Preferences		Deactivat
 OK	Preferences		D'acord
 On	Preferences		Activat
 Outgoing encoding:	Preferences		Codificació de sortida:
-Remove	Preferences		Remove
+Remove	Preferences		Suprimeix
 Reply account:	Preferences		Compte de resposta:
 Reply preamble:	Preferences		Preàmbul de la resposta:
 Revert	Preferences		Reverteix
 Show icons & labels	Preferences		Mostra les icones i les etiquetes
 Show icons only	Preferences		Mostra només icones
 Size:	Preferences		Mida:
-Spam filtering	Preferences		Spam filtering
+Spam filtering	Preferences		Filtratge de correu brossa
 Text wrapping:	Preferences		Embolcall del text:
 Time range slider:	Preferences		Control lliscant de l'interval de temps:
 Use default account	Preferences		Usa el compte predeterminat
@@ -299,11 +299,11 @@ Filter by 'Sender'	EmailListView		Filtra per remitent
 Filter by 'Subject'	EmailListView		Filtra per assumpte
 Forward	EmailListView		Reenvia
 Mark as read	EmailListView		Marca com a llegit
-Mark as spam	EmailListView		Mark as spam
+Mark as spam	EmailListView		Marca com a brossa
 Mark as unread	EmailListView		Marca com a no llegit
 Move to Trash	EmailListView		Mou a la paperera
 New email to sender	EmailListView		Missatge nou per al remitent
-Not spam	EmailListView		Not spam
+Not spam	EmailListView		No és brossa
 Reply	EmailListView		Respon
 Reply all	EmailListView		Respon a tothom
 Restore	EmailListView		Restaura

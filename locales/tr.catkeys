@@ -142,7 +142,7 @@ Failed to start backup thread.	EmailViewsWindow		Yedek ileti dizisi başlatılam
 Forward	EmailViewsWindow		İlet
 HTML message	EmailViewsWindow		HTML iletisi
 Mark as read	EmailViewsWindow		Okundu olarak imle
-Mark as spam	EmailViewsWindow		Mark as spam
+Mark as spam	EmailViewsWindow		İstenmeyen olarak imle
 Mark as unread	EmailViewsWindow		Okunmamış olarak imle
 Messages	EmailViewsWindow		İletiler
 Move to Trash	EmailViewsWindow		Çöpe taşı
@@ -150,7 +150,7 @@ New email	EmailViewsWindow		Yeni ileti
 No emails found.	EmailViewsWindow		Bulunan ileti yok.
 No emails in Trash.	EmailViewsWindow		Çöpte ileti yok.
 No emails match your search.	EmailViewsWindow		Aramanızla eşleşen ileti yok.
-Not spam	EmailViewsWindow		Not spam
+Not spam	EmailViewsWindow		İstenmeyen değil
 OK	EmailViewsWindow		Tamam
 Open queries folder	EmailViewsWindow		Sorgular klasörünü aç
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Çöpten %count% ileti kalıcı olarak silinsin mi?\n\nBu işlem geri alınamaz.
@@ -169,8 +169,8 @@ Select folder	EmailViewsWindow		Klasör seç
 Sent emails	EmailViewsWindow		Gönderilmiş iletiler
 Show in Deskbar	EmailViewsWindow		Masaüstü Çubuğu’nda göster
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Üzgünüm, “Person” (Kişi) veri türünü destekleyen bir uygulama bulunamadı.
-Spam	EmailViewsWindow		Spam
-Spam (%ld)	EmailViewsWindow		Spam (%ld)
+Spam	EmailViewsWindow		İstenmeyen
+Spam (%ld)	EmailViewsWindow		İstenmeyen (%ld)
 Starred emails	EmailViewsWindow		Yıldızlı iletiler
 Subject:	EmailViewsWindow		Konu:
 There are no emails in the Trash.	EmailViewsWindow		Çöpte ileti yok.
@@ -185,18 +185,18 @@ Volumes	EmailViewsWindow		Ciltler
 With attachments	EmailViewsWindow		Ek ile
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		Sisteminizde yapılandırılmış olmayan bir hesaba ait %count% iletiyi geri yüklemeye çalışıyorsunuz. Bu iletileri geri yüklemek istediğiniz klasörü seçin.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Sisteminizde yapılandırılmış olmayan bir hesaba ait 1 iletiyi geri yüklemeye çalışıyorsunuz. Bu iletileri geri yüklemek istediğiniz klasörü seçin.
-\\n - Line break	Preferences		\\n - Line break
+\\n - Line break	Preferences		\\n — Yeni satır
 %d - Date	Preferences		%d — Tarih
-%e - Email address	Preferences		%e - Email address
+%e - Email address	Preferences		%e — E-posta adresi
 %n - Full name	Preferences		%n — Tam ad
 <no account found>	Preferences		<bulunan hesap yok>
 Account from mail	Preferences		Postadan hesap
-Add	Preferences		Add
+Add	Preferences		Ekle
 Attach attributes:	Preferences		İliştirme öznitelikleri:
 Auto signature:	Preferences		Otomatik imza:
 Automatically mark mail as read:	Preferences		İletiyi kendiliğinden okundu olarak imle:
 Beginner	Preferences		Acemi
-Blocked senders and domains:	Preferences		Blocked senders and domains:
+Blocked senders and domains:	Preferences		Engelli göndericiler ve etki alanları:
 Button bar:	Preferences		Düğme çubuğu:
 Cancel	Preferences		Vazgeç
 Colored quotes:	Preferences		Renkli alıntılar:
@@ -213,21 +213,21 @@ Off	Preferences		Kapalı
 OK	Preferences		Tamam
 On	Preferences		Açık
 Outgoing encoding:	Preferences		Giden ileti kodlaması:
-Remove	Preferences		Remove
+Remove	Preferences		Kaldır
 Reply account:	Preferences		Yanıtlama hesabı:
 Reply preamble:	Preferences		Yanıt önsözü:
 Revert	Preferences		Geri al
 Show icons & labels	Preferences		Simgeleri ve etiketleri göster
 Show icons only	Preferences		Yalnızca simgeleri göster
 Size:	Preferences		Boyut:
-Spam filtering	Preferences		Spam filtering
+Spam filtering	Preferences		İstenmeyen süzme
 Text wrapping:	Preferences		Metin kaydırma:
 Time range slider:	Preferences		Zaman erimi sürgüsü:
 Use default account	Preferences		Saptanmış hesabı kullan
 Use system font size	Preferences		Sistem yazıtipi puntosunu kullan
 User interface	Preferences		Kullanıcı arayüzü
 Warn unencodable:	Preferences		Kodlanamayanda uyar
-\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\n%d tarihinde %n şunları yazdı:\\n
 None	ReaderSettings		Yok
 %count% new emails	DeskbarReplicant		%count% yeni ileti
 1 new email	DeskbarReplicant		1 yeni ileti
@@ -299,11 +299,11 @@ Filter by 'Sender'	EmailListView		Şuna göre süz: “Gönderen”
 Filter by 'Subject'	EmailListView		Şuna göre süz: “Konu”
 Forward	EmailListView		İlet
 Mark as read	EmailListView		Okundu olarak imle
-Mark as spam	EmailListView		Mark as spam
+Mark as spam	EmailListView		İstenmeyen olarak imle
 Mark as unread	EmailListView		Okunmamış olarak imle
 Move to Trash	EmailListView		Çöpe taşı
 New email to sender	EmailListView		Gönderene yeni ileti
-Not spam	EmailListView		Not spam
+Not spam	EmailListView		İstenmeyen değil
 Reply	EmailListView		Yanıtla
 Reply all	EmailListView		Tümünü yanıtla
 Restore	EmailListView		Geri yükle
@@ -344,7 +344,7 @@ Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow	
 Credits:	AboutWindow		Emeği geçenler:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews, Haiku için hızlı ve hafif bir e-posta görüntüleyicisidir. E-postalarınızı efektif olarak organize etmek ve taramanıza olanak tanımak adına Haiku’nun sorgular sistemini kullanır.
 Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Posta uygulaması, Haiku Projesi tarafından.\nSimgeler, Haiku ve Zumi simge kümelerinden alınmıştır.
-Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger; fikirler, sınama, hata raporları ve kod katkıları için.
 OK	AboutWindow		Tamam
 Sources of inspiration:	AboutWindow		Esinlenmeler:
 Special thanks:	AboutWindow		Özel teşekkürler:

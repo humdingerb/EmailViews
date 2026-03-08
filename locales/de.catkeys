@@ -142,7 +142,7 @@ Failed to start backup thread.	EmailViewsWindow		Sicherungs-Thread konnte nicht 
 Forward	EmailViewsWindow		Weiterleiten
 HTML message	EmailViewsWindow		HTML Nachricht
 Mark as read	EmailViewsWindow		Als gelesen markieren
-Mark as spam	EmailViewsWindow		Mark as spam
+Mark as spam	EmailViewsWindow		Als Spam markieren
 Mark as unread	EmailViewsWindow		Als ungelesen markieren
 Messages	EmailViewsWindow		Nachrichten
 Move to Trash	EmailViewsWindow		In den Papierkorb verschieben
@@ -150,7 +150,7 @@ New email	EmailViewsWindow		Neue Email
 No emails found.	EmailViewsWindow		Keine Emails gefunden.
 No emails in Trash.	EmailViewsWindow		Keine Emails im Papierkorb.
 No emails match your search.	EmailViewsWindow		Keine Emails entsprechen den Suchkriterien.
-Not spam	EmailViewsWindow		Not spam
+Not spam	EmailViewsWindow		Kein Spam
 OK	EmailViewsWindow		OK
 Open queries folder	EmailViewsWindow		Query-Ordner öffnen
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		%count% Emails im Papierkorb endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden.
@@ -191,12 +191,12 @@ You are trying to restore 1 message that belongs to an account that is not confi
 %n - Full name	Preferences		%n - Voller Name
 <no account found>	Preferences		<kein Konto gefunden>
 Account from mail	Preferences		Konto der Nachricht
-Add	Preferences		Add
+Add	Preferences		Hinzufügen
 Attach attributes:	Preferences		Attribute von Anhängen
 Auto signature:	Preferences		Automatische Signatur:
 Automatically mark mail as read:	Preferences		Nachrichten automatisch als gelesen markieren:
 Beginner	Preferences		Anfänger
-Blocked senders and domains:	Preferences		Blocked senders and domains:
+Blocked senders and domains:	Preferences		Blockierte Absender und Domänen:
 Button bar:	Preferences		Werkzeugleiste:
 Cancel	Preferences		Abbrechen
 Colored quotes:	Preferences		Farbige Zitate:
@@ -213,17 +213,17 @@ Off	Preferences		Aus
 OK	Preferences		OK
 On	Preferences		Ein
 Outgoing encoding:	Preferences		Zeichenkodierung:
-Remove	Preferences		Remove
+Remove	Preferences		Entfernen
 Reply account:	Preferences		Konto zum Beantworten:
 Reply preamble:	Preferences		Einleitung bei Antworten:
 Revert	Preferences		Anfangswerte
 Show icons & labels	Preferences		Icons und Beschriftung anzeigen
 Show icons only	Preferences		Nur Icons zeigen
 Size:	Preferences		Größe:
-Spam filtering	Preferences		Spam filtering
+Spam filtering	Preferences		Spamfilter
 Text wrapping:	Preferences		Zeilenumbruch:
 Time range slider:	Preferences		Zeitraum Schieberegler:
-Use default account	Preferences		Standardkonto:
+Use default account	Preferences		Standardkonto
 Use system font size	Preferences		System-Schriftgröße verwenden
 User interface	Preferences		Programmoberfläche
 Warn unencodable:	Preferences		Warnung bei nicht-kodierbaren Zeichen:
@@ -299,11 +299,11 @@ Filter by 'Sender'	EmailListView		Nach 'Absender' filtern
 Filter by 'Subject'	EmailListView		Nach 'Betreff' filtern
 Forward	EmailListView		Weiterleiten
 Mark as read	EmailListView		Als gelesen markieren
-Mark as spam	EmailListView		Mark as spam
+Mark as spam	EmailListView		Als Spam markieren
 Mark as unread	EmailListView		Als ungelesen markieren
 Move to Trash	EmailListView		In den Papierkorb verschieben
 New email to sender	EmailListView		Neue Email an den Absender
-Not spam	EmailListView		Not spam
+Not spam	EmailListView		Kein Spam
 Reply	EmailListView		Antworten
 Reply all	EmailListView		Allen antworten
 Restore	EmailListView		Wiederherstellen

@@ -142,7 +142,7 @@ Failed to start backup thread.	EmailViewsWindow		No se ha podido iniciar el subp
 Forward	EmailViewsWindow		Adelante
 HTML message	EmailViewsWindow		Mensaje HTML
 Mark as read	EmailViewsWindow		Marcar como leído
-Mark as spam	EmailViewsWindow		Mark as spam
+Mark as spam	EmailViewsWindow		Marcar como basura
 Mark as unread	EmailViewsWindow		Marcar como no leído
 Messages	EmailViewsWindow		Mensajes
 Move to Trash	EmailViewsWindow		Mover a la papelera
@@ -150,7 +150,7 @@ New email	EmailViewsWindow		Nuevo correo electrónico
 No emails found.	EmailViewsWindow		No se han encontrado correos electrónicos.
 No emails in Trash.	EmailViewsWindow		No hay correos electrónicos en la papelera.
 No emails match your search.	EmailViewsWindow		No hay correos electrónicos que coincidan con tu búsqueda.
-Not spam	EmailViewsWindow		Not spam
+Not spam	EmailViewsWindow		No es basura
 OK	EmailViewsWindow		Aceptar
 Open queries folder	EmailViewsWindow		Abrir carpeta de consultas
 Permanently delete %count% emails from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Consultas abiertas ¿Desea eliminar definitivamente %count% correos electrónicos de la Papelera?\n\nEsta acción no se puede deshacer.
@@ -169,8 +169,8 @@ Select folder	EmailViewsWindow		Seleccionar carpeta
 Sent emails	EmailViewsWindow		Correos electrónicos enviados
 Show in Deskbar	EmailViewsWindow		Mostrar en la barra de escritorio
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Lo sentimos, no se ha encontrado ninguna aplicación que admita el tipo de datos «Persona».
-Spam	EmailViewsWindow		Spam
-Spam (%ld)	EmailViewsWindow		Spam (%ld)
+Spam	EmailViewsWindow		Correo basura
+Spam (%ld)	EmailViewsWindow		Correo basura (%ld)
 Starred emails	EmailViewsWindow		Correos electrónicos destacados
 Subject:	EmailViewsWindow		Asunto
 There are no emails in the Trash.	EmailViewsWindow		No hay correos electrónicos en la Papelera.
@@ -185,18 +185,18 @@ Volumes	EmailViewsWindow		Volúmenes
 With attachments	EmailViewsWindow		Con archivos adjuntos
 You are trying to restore %count% messages that belong to an account that is not configured in your system. Please select the destination folder where you want to restore those emails.	EmailViewsWindow		Está intentando restaurar %count% mensajes que pertenecen a una cuenta que no está configurada en su sistema. Seleccione la carpeta de destino donde desea restaurar esos correos electrónicos.
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		Está intentando restaurar un mensaje que pertenece a una cuenta que no está configurada en su sistema. Seleccione la carpeta de destino donde desea restaurar este correo electrónico.
-\\n - Line break	Preferences		\\n - Line break
+\\n - Line break	Preferences		\\n - Salto de línea
 %d - Date	Preferences		%d - Fecha
-%e - Email address	Preferences		%e - Email address
+%e - Email address	Preferences		%e - Dirección de correo electrónico
 %n - Full name	Preferences		%n - Nombre completo
 <no account found>	Preferences		<no se ha encontrado ninguna cuenta>
 Account from mail	Preferences		Cuenta desde el correo electrónico
-Add	Preferences		Add
+Add	Preferences		Añadir
 Attach attributes:	Preferences		Adjuntar atributos:
 Auto signature:	Preferences		Firma automática:
 Automatically mark mail as read:	Preferences		Marcar automáticamente el correo como leído:
 Beginner	Preferences		Principiante
-Blocked senders and domains:	Preferences		Blocked senders and domains:
+Blocked senders and domains:	Preferences		Remitentes y dominios bloqueados:
 Button bar:	Preferences		Barra de botones:
 Cancel	Preferences		Cancelar
 Colored quotes:	Preferences		Citas en color:
@@ -213,21 +213,21 @@ Off	Preferences		Desactivado
 OK	Preferences		Aceptar
 On	Preferences		Activado
 Outgoing encoding:	Preferences		Codificación de salida:
-Remove	Preferences		Remove
+Remove	Preferences		Eliminar
 Reply account:	Preferences		Cuenta de respuesta:
 Reply preamble:	Preferences		Preámbulo de la respuesta:
 Revert	Preferences		Revertir
 Show icons & labels	Preferences		Mostrar iconos y etiquetas
 Show icons only	Preferences		Mostrar solo iconos
 Size:	Preferences		Tamaño:
-Spam filtering	Preferences		Spam filtering
+Spam filtering	Preferences		Filtrado de basura
 Text wrapping:	Preferences		Ajustar texto:
 Time range slider:	Preferences		Control deslizante de intervalo de tiempo:
 Use default account	Preferences		Usar cuenta predeterminada
 Use system font size	Preferences		Usar el tamaño de fuente del sistema
 User interface	Preferences		Interfaz de usuario
 Warn unencodable:	Preferences		Advertencia no codificable:
-\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nOn %d %n wrote:\\n
+\\n\\nOn %d %n wrote:\\n	ReaderSettings		\\n\\nEl %d %n escribió:\\n
 None	ReaderSettings		Ninguno
 %count% new emails	DeskbarReplicant		%count% correos electrónicos nuevos
 1 new email	DeskbarReplicant		1 correo electrónico nuevo
@@ -299,11 +299,11 @@ Filter by 'Sender'	EmailListView		Filtrar por «Remitente»
 Filter by 'Subject'	EmailListView		Filtrar por «Asunto»
 Forward	EmailListView		Adelante
 Mark as read	EmailListView		Marcar como leído
-Mark as spam	EmailListView		Mark as spam
+Mark as spam	EmailListView		Marcar como basura
 Mark as unread	EmailListView		Marcar como no leído
 Move to Trash	EmailListView		Mover a la papelera
 New email to sender	EmailListView		Nuevo correo electrónico al remitente
-Not spam	EmailListView		Not spam
+Not spam	EmailListView		No es basura
 Reply	EmailListView		Responder
 Reply all	EmailListView		Responder a todos
 Restore	EmailListView		Restaurar
@@ -339,15 +339,15 @@ Only files can be added as attachments.	EnclosuresView		Solo se pueden añadir a
 Open attachment	EnclosuresView		Abrir archivo adjunto
 Remove attachment	EnclosuresView		Quitar archivo adjunto
 Removing attachments from a forwarded mail is not yet implemented!\nIt will not yet work correctly.	EnclosuresView		¡Quitar los archivos adjuntos de un correo reenviado aún no está implementado!\nTodavía no funcionará correctamente.
-Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.
+Beam by Oliver Tappe (attribute search UI, drag-and-drop handling, attachment caching).\nQuickLaunch by Humdinger (Deskbar replicant integration).\nTracker by the Haiku Project.	AboutWindow		Beam, de Oliver Tappe (interfaz de usuario para búsqueda por atributos, gestión de arrastrar y soltar, almacenamiento en caché de archivos adjuntos).\nQuickLaunch, de Humdinger (integración de replicante en la barra de escritorio).\nTracker, del Proyecto Haiku.
 Created with the assistance of AI tools.\nMaintained by Jorge Mare.	AboutWindow		Creado con la ayuda de herramientas de IA.\nMantenido por Jorge Mare.
-Credits:	AboutWindow		Credits:
+Credits:	AboutWindow		Créditos:
 EmailViews is a fast, lightweight email viewer for Haiku that uses live queries to organize and explore your emails effortlessly.	AboutWindow		EmailViews es un visor de correo electrónico rápido y ligero para Haiku que utiliza consultas en tiempo real para organizar y explorar tus correos electrónicos sin esfuerzo.
-Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.
-Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, for ideas, testing, bug reports, and code contributions.
+Haiku Mail application by the Haiku Project.\nIcons from Haiku and Zumi icon sets.	AboutWindow		Aplicación Haiku Mail del Proyecto Haiku. Iconos de los conjuntos de Haiku y Zumi.
+Humdinger, for ideas, testing, bug reports, and code contributions.	AboutWindow		Humdinger, por sus ideas, pruebas, informes de errores y contribuciones al código.
 OK	AboutWindow		Aceptar
-Sources of inspiration:	AboutWindow		Sources of inspiration:
-Special thanks:	AboutWindow		Special thanks:
+Sources of inspiration:	AboutWindow		Fuentes de inspiración:
+Special thanks:	AboutWindow		Agradecimiento especial:
 Cancel	QueryNameDialog		Cancelar
 Save	QueryNameDialog		Guardar
 Delete emails in Trash	TrashItemView		Eliminar correos electrónicos de la Papelera
