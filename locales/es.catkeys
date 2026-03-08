@@ -1,4 +1,4 @@
-1	Spanish	application/x-vnd.EmailViews	2728492662
+1	Spanish	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	 Leer 
 Attach	Toolbar	As short as possible	Adjuntar
 Check email	Toolbar	As short as possible	Revisar correo
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		Todos los correos electrónicos
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		¿Está seguro de que deseas mover %count% correos electrónicos a la Papelera?
 Backup failed	EmailViewsWindow		Error en la copia de seguridad
 Cancel	EmailViewsWindow		Cancelar
+Clear filter	EmailViewsWindow		Clear filter
 Could not get email reference.	EmailViewsWindow		No se ha podido obtener la referencia del correo electrónico.
 Could not open email file.	EmailViewsWindow		No se ha podido abrir el archivo de correo electrónico.
 Create anyway	EmailViewsWindow		Crear de todos modos
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		Preferencias de correo electrónico...
 Error	EmailViewsWindow		Error
 Failed to create query file.	EmailViewsWindow		No se ha podido crear el archivo de consulta.
 Failed to start backup thread.	EmailViewsWindow		No se ha podido iniciar el subproceso de copia de seguridad.
+Filter	EmailViewsWindow		Filter
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Forward	EmailViewsWindow		Adelante
 HTML message	EmailViewsWindow		Mensaje HTML
 Mark as read	EmailViewsWindow		Marcar como leído
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		Mover a la papelera
 New email	EmailViewsWindow		Nuevo correo electrónico
 No emails found.	EmailViewsWindow		No se han encontrado correos electrónicos.
 No emails in Trash.	EmailViewsWindow		No hay correos electrónicos en la papelera.
+No emails match this query.	EmailViewsWindow		No emails match this query.
 No emails match your search.	EmailViewsWindow		No hay correos electrónicos que coincidan con tu búsqueda.
+No spam emails.	EmailViewsWindow		No spam emails.
 Not spam	EmailViewsWindow		No es basura
 OK	EmailViewsWindow		Aceptar
 Open queries folder	EmailViewsWindow		Abrir carpeta de consultas
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		Seleccione un correo 
 Select folder	EmailViewsWindow		Seleccionar carpeta
 Sent emails	EmailViewsWindow		Correos electrónicos enviados
 Show in Deskbar	EmailViewsWindow		Mostrar en la barra de escritorio
+Show time range	EmailViewsWindow		Show time range
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Lo sentimos, no se ha encontrado ninguna aplicación que admita el tipo de datos «Persona».
 Spam	EmailViewsWindow		Correo basura
 Spam (%ld)	EmailViewsWindow		Correo basura (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		Citas en color:
 Default account:	Preferences		Cuenta predeterminada:
 Email preferences	Preferences		Preferencias de correo electrónico
 Expert	Preferences		Experto
+Filter:	Preferences		Filter:
 Font:	Preferences		Fuente:
 Include file attributes in attachments	Preferences		Incluir atributos de archivo en los adjuntos
 Initial spell check mode:	Preferences		Modo inicial de revisión ortográfica:

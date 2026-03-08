@@ -1,4 +1,4 @@
-1	Catalan	application/x-vnd.EmailViews	2728492662
+1	Catalan	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	Llegit
 Attach	Toolbar	As short as possible	Adjunta
 Check email	Toolbar	As short as possible	Comprova el correu
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		Tots els missatges
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Segur que voleu moure %count% missatges a la paperera?
 Backup failed	EmailViewsWindow		La còpia de seguretat ha fallat.
 Cancel	EmailViewsWindow		Cancel·la
+Clear filter	EmailViewsWindow		Clear filter
 Could not get email reference.	EmailViewsWindow		No s'ha pogut obtenir la referència del correu electrònic.
 Could not open email file.	EmailViewsWindow		No s'ha pogut obrir el fitxer de correu electrònic.
 Create anyway	EmailViewsWindow		Crea'l tanmateix
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		Preferències de correu electrònic...
 Error	EmailViewsWindow		Error
 Failed to create query file.	EmailViewsWindow		Ha fallat crear el fitxer de consulta.
 Failed to start backup thread.	EmailViewsWindow		Ha fallat iniciar el fil de còpia de seguretat.
+Filter	EmailViewsWindow		Filter
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Forward	EmailViewsWindow		Reenvia
 HTML message	EmailViewsWindow		Missatge HTML
 Mark as read	EmailViewsWindow		Marca com a llegit
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		Mou a la paperera
 New email	EmailViewsWindow		Missatge nou
 No emails found.	EmailViewsWindow		No s'ha trobat cap missatge.
 No emails in Trash.	EmailViewsWindow		No hi ha missatges a la paperera.
+No emails match this query.	EmailViewsWindow		No emails match this query.
 No emails match your search.	EmailViewsWindow		No hi ha cap missatge que coincideixi amb la cerca.
+No spam emails.	EmailViewsWindow		No spam emails.
 Not spam	EmailViewsWindow		No és brossa
 OK	EmailViewsWindow		D'acord
 Open queries folder	EmailViewsWindow		Obre la carpeta de consultes
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		Seleccioneu un missat
 Select folder	EmailViewsWindow		Seleccioneu la carpeta
 Sent emails	EmailViewsWindow		Missatges enviats
 Show in Deskbar	EmailViewsWindow		Mostra a la barra d'escriptori
+Show time range	EmailViewsWindow		Show time range
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Perdoneu, no s'ha trobat cap aplicació que admeti el tipus de dades de persona.
 Spam	EmailViewsWindow		Brossa
 Spam (%ld)	EmailViewsWindow		Brossa (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		Citacions acolorides:
 Default account:	Preferences		Compte predeterminat:
 Email preferences	Preferences		Preferències del correu
 Expert	Preferences		Expert
+Filter:	Preferences		Filter:
 Font:	Preferences		Lletra:
 Include file attributes in attachments	Preferences		Inclou els atributs dels fitxers als adjunts
 Initial spell check mode:	Preferences		Mode de correcció ortogràfica inicial:

@@ -1,4 +1,4 @@
-1	French	application/x-vnd.EmailViews	2728492662
+1	French	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	Lu
 Attach	Toolbar	As short as possible	Joindre
 Check email	Toolbar	As short as possible	Relever
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		Tous les courriels
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Êtes-vous certain de vouloir déplacer %count% courriels vers la corbeille ?
 Backup failed	EmailViewsWindow		Échec de la sauvegarde
 Cancel	EmailViewsWindow		Annuler
+Clear filter	EmailViewsWindow		Clear filter
 Could not get email reference.	EmailViewsWindow		Impossible d'obtenir la référence du courriel.
 Could not open email file.	EmailViewsWindow		Impossible d'ouvrir le fichier courriel.
 Create anyway	EmailViewsWindow		Créer quand même
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		Préférences de courriels…
 Error	EmailViewsWindow		Erreur
 Failed to create query file.	EmailViewsWindow		Échec de la création du fichier requête.
 Failed to start backup thread.	EmailViewsWindow		Échec au démarrage du fil de sauvegarde.
+Filter	EmailViewsWindow		Filter
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Forward	EmailViewsWindow		Transmettre
 HTML message	EmailViewsWindow		Message HTML
 Mark as read	EmailViewsWindow		Marquer comme lu
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		Déplacer vers la corbeille
 New email	EmailViewsWindow		Nouveau courriel
 No emails found.	EmailViewsWindow		Aucun courriel trouvé.
 No emails in Trash.	EmailViewsWindow		Aucun courriel dans la corbeille.
+No emails match this query.	EmailViewsWindow		No emails match this query.
 No emails match your search.	EmailViewsWindow		Aucun courriel correspond à votre recherche.
+No spam emails.	EmailViewsWindow		No spam emails.
 Not spam	EmailViewsWindow		Non-pourriel
 OK	EmailViewsWindow		D'accord
 Open queries folder	EmailViewsWindow		Ouvrir le dossier des requêtes
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		Sélectionner un cour
 Select folder	EmailViewsWindow		Sélectionner un dossier
 Sent emails	EmailViewsWindow		Courriels envoyés
 Show in Deskbar	EmailViewsWindow		Afficher dans la Deskbar
+Show time range	EmailViewsWindow		Show time range
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Désolé, impossible de trouver une application gérant le type de données 'Personne'.
 Spam	EmailViewsWindow		Pourriel
 Spam (%ld)	EmailViewsWindow		Pourriel (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		Citations en couleurs :
 Default account:	Preferences		Compte par défaut :
 Email preferences	Preferences		Préférences de courriels
 Expert	Preferences		Expert
+Filter:	Preferences		Filter:
 Font:	Preferences		Police :
 Include file attributes in attachments	Preferences		Inclure les attributs de fichier des pièces jointes
 Initial spell check mode:	Preferences		Mode de vérification orthographique initial :

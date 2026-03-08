@@ -1,4 +1,4 @@
-1	English (Canada)	application/x-vnd.EmailViews	2728492662
+1	English (Canada)	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	 Read 
 Attach	Toolbar	As short as possible	Attach
 Check email	Toolbar	As short as possible	Check email
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		All emails
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Are you sure you want to move %count% emails to Trash?
 Backup failed	EmailViewsWindow		Backup failed
 Cancel	EmailViewsWindow		Cancel
+Clear filter	EmailViewsWindow		Clear filter
 Could not get email reference.	EmailViewsWindow		Could not get email reference.
 Could not open email file.	EmailViewsWindow		Could not open email file.
 Create anyway	EmailViewsWindow		Create anyway
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		Email preferences…
 Error	EmailViewsWindow		Error
 Failed to create query file.	EmailViewsWindow		Failed to create query file.
 Failed to start backup thread.	EmailViewsWindow		Failed to start backup thread.
+Filter	EmailViewsWindow		Filter
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Forward	EmailViewsWindow		Forward
 HTML message	EmailViewsWindow		HTML message
 Mark as read	EmailViewsWindow		Mark as read
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		Move to Trash
 New email	EmailViewsWindow		New email
 No emails found.	EmailViewsWindow		No emails found.
 No emails in Trash.	EmailViewsWindow		No emails in Trash.
+No emails match this query.	EmailViewsWindow		No emails match this query.
 No emails match your search.	EmailViewsWindow		No emails match your search.
+No spam emails.	EmailViewsWindow		No spam emails.
 Not spam	EmailViewsWindow		Not spam
 OK	EmailViewsWindow		Alright
 Open queries folder	EmailViewsWindow		Open queries folder
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		Select an email to pr
 Select folder	EmailViewsWindow		Select folder
 Sent emails	EmailViewsWindow		Sent emails
 Show in Deskbar	EmailViewsWindow		Show in Deskbar
+Show time range	EmailViewsWindow		Show time range
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Sorry, could not find an application that supports the 'Person' data type.
 Spam	EmailViewsWindow		Spam
 Spam (%ld)	EmailViewsWindow		Spam (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		Coloured quotes:
 Default account:	Preferences		Default account:
 Email preferences	Preferences		Email preferences
 Expert	Preferences		Expert
+Filter:	Preferences		Filter:
 Font:	Preferences		Font:
 Include file attributes in attachments	Preferences		Include file attributes in attachments
 Initial spell check mode:	Preferences		Initial spell check mode:

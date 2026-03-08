@@ -1,4 +1,4 @@
-1	Japanese	application/x-vnd.EmailViews	2728492662
+1	Japanese	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	既読
 Attach	Toolbar	As short as possible	添付
 Check email	Toolbar	As short as possible	更新
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		全メール
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		%count%通のメールをごみ箱に移動してもよろしいですか?
 Backup failed	EmailViewsWindow		バックアップは失敗しました
 Cancel	EmailViewsWindow		中止
+Clear filter	EmailViewsWindow		フィルターを外す
 Could not get email reference.	EmailViewsWindow		メールの参照を取得できませんでした。
 Could not open email file.	EmailViewsWindow		メールファイルを開けませんでした。
 Create anyway	EmailViewsWindow		それでも作成する
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		メール環境設定…
 Error	EmailViewsWindow		エラー
 Failed to create query file.	EmailViewsWindow		クエリー作成は失敗しました。
 Failed to start backup thread.	EmailViewsWindow		バックアップ処理を開始できませんでした。
+Filter	EmailViewsWindow		フィルター
+Filter by 'Account'	EmailViewsWindow		「アカウント」属性でフィルター
+Filter by 'Recipient'	EmailViewsWindow		「宛先」属性でフィルター
+Filter by 'Sender'	EmailViewsWindow		「差出人」属性でフィルター
+Filter by 'Subject'	EmailViewsWindow		「件名」属性でフィルター
 Forward	EmailViewsWindow		転送
 HTML message	EmailViewsWindow		HTML メッセージ
 Mark as read	EmailViewsWindow		既読にする
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		ごみ箱に移動
 New email	EmailViewsWindow		新規メール
 No emails found.	EmailViewsWindow		メールは見つかりませんでした。
 No emails in Trash.	EmailViewsWindow		ごみ箱にメールはありません。
+No emails match this query.	EmailViewsWindow		このクエリーに一致するメールはありあせん。
 No emails match your search.	EmailViewsWindow		検索条件に一致するメールはありません。
+No spam emails.	EmailViewsWindow		迷惑メールはありません。
 Not spam	EmailViewsWindow		迷惑メールではない
 OK	EmailViewsWindow		OK
 Open queries folder	EmailViewsWindow		クエリーフォルダーを開く
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		メールを選択し
 Select folder	EmailViewsWindow		フォルダー選択
 Sent emails	EmailViewsWindow		送信済メール
 Show in Deskbar	EmailViewsWindow		Deskbar に表示
+Show time range	EmailViewsWindow		対象期間スライダーを表示
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Person ファイルタイプを扱うアプリケーションは見つかりません。
 Spam	EmailViewsWindow		迷惑メール
 Spam (%ld)	EmailViewsWindow		迷惑メール (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		カラー引用:
 Default account:	Preferences		デフォルトアカウント:
 Email preferences	Preferences		メール環境設定
 Expert	Preferences		エキスパート
+Filter:	Preferences		フィルター:
 Font:	Preferences		フォント:
 Include file attributes in attachments	Preferences		添付ファイルの属性を含む
 Initial spell check mode:	Preferences		スペルチェック設定:

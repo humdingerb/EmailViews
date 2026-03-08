@@ -1,4 +1,4 @@
-1	English	application/x-vnd.EmailViews	2728492662
+1	English	application/x-vnd.EmailViews	2432148189
 Open attachment	ContentView		Open attachment
 Attach	Toolbar	As short as possible	Attach
 Cancel	QueryNameDialog		Cancel
@@ -27,6 +27,8 @@ Reply to sender	EmailReaderWindow		Reply to sender
 Cut	EmailReaderWindow		Cut
 Signatures	SignatureWindow		Signatures
 Date	EmailColumnHeader	Email list column header	Date
+Filter:	Preferences		Filter:
+No spam emails.	EmailViewsWindow		No spam emails.
 Sent emails	EmailViewsWindow		Sent emails
 Star	EmailColumnHeader		Star
 Add 'To' query	EmailViewsWindow		Add 'To' query
@@ -46,6 +48,7 @@ All people	AddressTextControl		All people
 Email preferences…	EmailViewsWindow		Email preferences…
 View HTML version	EmailViewsWindow		View HTML version
 Delete	SignatureWindow		Delete
+Show time range	EmailViewsWindow		Show time range
 matches	SearchBarView		matches
 Failed to start backup thread.	EmailViewsWindow		Failed to start backup thread.
 Don't save	SignatureWindow		Don't save
@@ -63,6 +66,7 @@ Queries	EmailViewsWindow		Queries
 Use default account	Preferences		Use default account
 An error occurred trying to save this signature.	SignatureWindow		An error occurred trying to save this signature.
 Composer	EmailReaderWindow		Composer
+Filter	EmailViewsWindow		Filter
 Undo	SignatureWindow		Undo
 The subject is empty. Do you want to send anyway?	EmailReaderWindow		The subject is empty. Do you want to send anyway?
 There is no installed handler for URL links.	ContentView		There is no installed handler for URL links.
@@ -108,6 +112,7 @@ Reply all	EmailViewsWindow		Reply all
 Copy link location	ContentView		Copy link location
 Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.	EmailReaderWindow		Your main text contains %ld unencodable characters. Perhaps a different character set would work better? Hit Send to send it anyway (a substitute character will be used in place of the unencodable ones), or choose Cancel to go back and try fixing it up.
 Clear search box	SearchBarView		Clear search box
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
 Mailing	Preferences		Mailing
 No new emails	DeskbarReplicant		No new emails
 Previous	Toolbar	As short as possible	Previous
@@ -148,10 +153,11 @@ A query named '%name%' already exists.	EmailViewsWindow		A query named '%name%' 
 Create query based on search criteria	SearchBarView		Create query based on search criteria
 Add signature	EmailReaderWindow		Add signature
 No emails found.	EmailViewsWindow		No emails found.
-Reply	EmailListView		Reply
 Increase quote level	EmailReaderWindow		Increase quote level
+Reply	EmailListView		Reply
 Resend	EmailReaderWindow		Resend
 Send	EmailReaderWindow		Send
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Subject	SearchBarView		Subject
 Filter by 'Sender'	EmailListView		Filter by 'Sender'
 Mark as unread	EmailViewsWindow		Mark as unread
@@ -196,6 +202,7 @@ Sorry, could not find an application that supports the 'Person' data type.	Email
 Show icons & labels	Preferences		Show icons & labels
 No emails in Trash.	EmailViewsWindow		No emails in Trash.
 %n - Full name	Preferences		%n - Full name
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
 Reply	Toolbar	As short as possible	Reply
 Quit	EmailViewsWindow		Quit
 Automatic	EmailReaderWindow		Automatic
@@ -246,6 +253,7 @@ Unread emails	QueryListView		Unread emails
 Select search operator	SearchBarView		Select search operator
 Spam (%ld)	EmailViewsWindow		Spam (%ld)
 Email accounts…	DeskbarReplicant		Email accounts…
+No emails match this query.	EmailViewsWindow		No emails match this query.
 From	SearchBarView		From
 -2 years	TimeRangeSlider	Time range slider label - keep as short as possible	-2 years
 %s emails	EmailViewsWindow		%s emails
@@ -285,11 +293,12 @@ Send as attachment	EmailListView		Send as attachment
 Font:	Preferences		Font:
 Unread emails	DeskbarReplicant		Unread emails
 This message is HTML formatted.\nClick below to open it in the default browser.	EmailViewsWindow		This message is HTML formatted.\nClick below to open it in the default browser.
-Unstar	EmailListView		Unstar
 Find…	EmailReaderWindow		Find…
+Unstar	EmailListView		Unstar
 Default account:	Preferences		Default account:
 Save	EmailReaderWindow		Save
 Could not get email reference.	EmailViewsWindow		Could not get email reference.
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
 Auto signature:	Preferences		Auto signature:
 Really delete this signature? This cannot be undone.	SignatureWindow		Really delete this signature? This cannot be undone.
 Previous message	EmailReaderWindow		Previous message
@@ -297,9 +306,9 @@ Revert	Preferences		Revert
 From:	HeaderView		From:
 Permanently delete 1 email from Trash?\n\nThis cannot be undone.	EmailViewsWindow		Permanently delete 1 email from Trash?\n\nThis cannot be undone.
 Forward without attachments	EmailReaderWindow		Forward without attachments
-Send/Receive email	DeskbarReplicant		Send/Receive email
-Check email	Toolbar	As short as possible	Check email
 Move to Trash	EmailViewsWindow		Move to Trash
+Check email	Toolbar	As short as possible	Check email
+Send/Receive email	DeskbarReplicant		Send/Receive email
 -1 week	TimeRangeSlider	Time range slider label - keep as short as possible	-1 week
 You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.	EmailViewsWindow		You are trying to restore 1 message that belongs to an account that is not configured in your system. Please select the destination folder where you want to restore this email.
 Don't save	EmailReaderWindow		Don't save
@@ -321,6 +330,7 @@ Add 'From' query	EmailListView		Add 'From' query
 Unread emails (%ld)	EmailViewsWindow		Unread emails (%ld)
 Cc:	EmailReaderWindow		Cc:
 1 email	EmailViewsWindow		1 email
+Clear filter	EmailViewsWindow		Clear filter
 Open	AttachmentStripView		Open
 Save	SignatureWindow		Save
 To:	HeaderView		To:
@@ -353,8 +363,8 @@ Need Tracker to move items to trash	EmailReaderWindow		Need Tracker to move item
 Cancel	EmailViewsWindow		Cancel
 %d emails selected.	EmailViewsWindow		%d emails selected.
 Send this message before closing?	EmailReaderWindow		Send this message before closing?
-Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
 Find again	EmailReaderWindow		Find again
+Undo Move to Trash	EmailViewsWindow		Undo Move to Trash
 Send	Toolbar	As short as possible	Send
 Special thanks:	AboutWindow		Special thanks:
 Previous message, keep status	EmailReaderWindow		Previous message, keep status

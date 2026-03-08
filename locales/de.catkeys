@@ -1,4 +1,4 @@
-1	German	application/x-vnd.EmailViews	2728492662
+1	German	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	Gelesen
 Attach	Toolbar	As short as possible	Anhang
 Check email	Toolbar	As short as possible	Emails abrufen
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		Alle Emails
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		Sollen tatsächlich %count% Emails in den Papierkorb verschoben werden?
 Backup failed	EmailViewsWindow		Sicherung fehlgeschlagen
 Cancel	EmailViewsWindow		Abbrechen
+Clear filter	EmailViewsWindow		Clear filter
 Could not get email reference.	EmailViewsWindow		Keine Email-Referenz bekommen.
 Could not open email file.	EmailViewsWindow		Email-Datei konnte nicht geöffnet werden.
 Create anyway	EmailViewsWindow		Trotzdem erzeugen
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		Email-Einstellungen …
 Error	EmailViewsWindow		Fehler
 Failed to create query file.	EmailViewsWindow		Query-Datei konnte nicht erzeugt werden.
 Failed to start backup thread.	EmailViewsWindow		Sicherungs-Thread konnte nicht erzeugt werden.
+Filter	EmailViewsWindow		Filter
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Forward	EmailViewsWindow		Weiterleiten
 HTML message	EmailViewsWindow		HTML Nachricht
 Mark as read	EmailViewsWindow		Als gelesen markieren
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		In den Papierkorb verschieben
 New email	EmailViewsWindow		Neue Email
 No emails found.	EmailViewsWindow		Keine Emails gefunden.
 No emails in Trash.	EmailViewsWindow		Keine Emails im Papierkorb.
+No emails match this query.	EmailViewsWindow		No emails match this query.
 No emails match your search.	EmailViewsWindow		Keine Emails entsprechen den Suchkriterien.
+No spam emails.	EmailViewsWindow		No spam emails.
 Not spam	EmailViewsWindow		Kein Spam
 OK	EmailViewsWindow		OK
 Open queries folder	EmailViewsWindow		Query-Ordner öffnen
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		Email auswählen, um 
 Select folder	EmailViewsWindow		Ordner auswählen
 Sent emails	EmailViewsWindow		Gesendete Emails
 Show in Deskbar	EmailViewsWindow		Icon in Deskbar anzeigen
+Show time range	EmailViewsWindow		Show time range
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Es konnte leider keine Anwendung gefunden werden, die den Datentyp 'Person' unterstützt.
 Spam	EmailViewsWindow		Spam
 Spam (%ld)	EmailViewsWindow		Spam (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		Farbige Zitate:
 Default account:	Preferences		Standardkonto:
 Email preferences	Preferences		Email-Einstellungen
 Expert	Preferences		Experte
+Filter:	Preferences		Filter:
 Font:	Preferences		Schriftart:
 Include file attributes in attachments	Preferences		Dateiattribute von Anhängen mitsenden
 Initial spell check mode:	Preferences		Rechtschreibprüfung:

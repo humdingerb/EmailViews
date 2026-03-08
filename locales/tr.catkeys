@@ -1,4 +1,4 @@
-1	Turkish	application/x-vnd.EmailViews	2728492662
+1	Turkish	application/x-vnd.EmailViews	2432148189
  Read 	Toolbar	As short as possible	Oku
 Attach	Toolbar	As short as possible	İliştir
 Check email	Toolbar	As short as possible	E-postayı denetle
@@ -124,6 +124,7 @@ All emails	EmailViewsWindow		Tüm e-postalar
 Are you sure you want to move %count% emails to Trash?	EmailViewsWindow		%count% iletiyi çöpe taşımak istediğinizden emin misiniz?
 Backup failed	EmailViewsWindow		Yedekleme başarısız
 Cancel	EmailViewsWindow		Vazgeç
+Clear filter	EmailViewsWindow		Clear filter
 Could not get email reference.	EmailViewsWindow		E-posta başvurusu alınamadı.
 Could not open email file.	EmailViewsWindow		E-posta dosyası açılamadı.
 Create anyway	EmailViewsWindow		Yine de oluştur
@@ -139,6 +140,11 @@ Email preferences…	EmailViewsWindow		E-posta tercihleri…
 Error	EmailViewsWindow		Hata
 Failed to create query file.	EmailViewsWindow		Sorgu dosyası oluşturulamadı.
 Failed to start backup thread.	EmailViewsWindow		Yedek ileti dizisi başlatılamadı.
+Filter	EmailViewsWindow		Filter
+Filter by 'Account'	EmailViewsWindow		Filter by 'Account'
+Filter by 'Recipient'	EmailViewsWindow		Filter by 'Recipient'
+Filter by 'Sender'	EmailViewsWindow		Filter by 'Sender'
+Filter by 'Subject'	EmailViewsWindow		Filter by 'Subject'
 Forward	EmailViewsWindow		İlet
 HTML message	EmailViewsWindow		HTML iletisi
 Mark as read	EmailViewsWindow		Okundu olarak imle
@@ -149,7 +155,9 @@ Move to Trash	EmailViewsWindow		Çöpe taşı
 New email	EmailViewsWindow		Yeni ileti
 No emails found.	EmailViewsWindow		Bulunan ileti yok.
 No emails in Trash.	EmailViewsWindow		Çöpte ileti yok.
+No emails match this query.	EmailViewsWindow		No emails match this query.
 No emails match your search.	EmailViewsWindow		Aramanızla eşleşen ileti yok.
+No spam emails.	EmailViewsWindow		No spam emails.
 Not spam	EmailViewsWindow		İstenmeyen değil
 OK	EmailViewsWindow		Tamam
 Open queries folder	EmailViewsWindow		Sorgular klasörünü aç
@@ -168,6 +176,7 @@ Select an email to preview its contents.	EmailViewsWindow		İçeriğini önizlem
 Select folder	EmailViewsWindow		Klasör seç
 Sent emails	EmailViewsWindow		Gönderilmiş iletiler
 Show in Deskbar	EmailViewsWindow		Masaüstü Çubuğu’nda göster
+Show time range	EmailViewsWindow		Show time range
 Sorry, could not find an application that supports the 'Person' data type.	EmailViewsWindow		Üzgünüm, “Person” (Kişi) veri türünü destekleyen bir uygulama bulunamadı.
 Spam	EmailViewsWindow		İstenmeyen
 Spam (%ld)	EmailViewsWindow		İstenmeyen (%ld)
@@ -203,6 +212,7 @@ Colored quotes:	Preferences		Renkli alıntılar:
 Default account:	Preferences		Saptanmış hesap:
 Email preferences	Preferences		E-posta tercihleri
 Expert	Preferences		Uzman
+Filter:	Preferences		Filter:
 Font:	Preferences		Yazıtipi:
 Include file attributes in attachments	Preferences		Eklerde dosya özniteliklerini içer
 Initial spell check mode:	Preferences		Başlangıç yazım denetimi kipi:
