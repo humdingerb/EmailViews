@@ -28,12 +28,13 @@ EmailViews was created using AI tools and is maintained by Jorge Mare.
 - **Multi-volume support** — Query and manage emails across multiple mounted volumes. Select which volumes to include via the Volumes menu.
 - **Dark theme support** — Respects Haiku's system colors and works with both light and dark themes.
 - **Localization** — The app is localization ready.
+- **Spam filter** — Basic sender-based spam filter with blocked email addresses and domain management. Right-click on a message to mark the sender as spam.
 
 ## Requirements
 
 - At least one email account configured in Haiku's E-mail preferences
 - `mail_daemon` running (starts automatically when email accounts are configured)
-- EmailViews was developed in 64-bit Haiku, but should compile and ****run on R1/beta 5 and after
+- EmailViews was developed in 64-bit Haiku, but should compile and run on R1/beta 5 and after
 
 ## Building
 
@@ -89,6 +90,7 @@ pkgman install emailviews
 | Alt+R | Reply |
 | Alt+Shift+R | Reply all |
 | Alt+Shift+F | Forward |
+| Alt+M | Mark as read |
 | Delete | Move selected email to Trash |
 | Alt+Z | Undo Move to Trash |
 | Alt+A | Select all |
@@ -99,6 +101,8 @@ pkgman install emailviews
 | Shift+Arrow | Extend selection |
 | Page Up/Down | Scroll by page |
 | Home/End | Jump to first/last email |
+| Alt+S | Focus search field |
+| Alt+, | Open Email preferences |
 
 ## Credits
 
@@ -108,8 +112,7 @@ EmailViews is built on the shoulders of Haiku's mail kit and draws inspiration f
 - **Beam** by Oliver Tappe — attribute search UI and attachment handling patterns
 - **QuickLaunch** by Humdinger — Deskbar replicant integration
 - **Tracker** by the Haiku Project — file management patterns
-
-Icons from the Haiku and Zumi icon sets.
+- **Icons** from the Haiku and Zumi icon sets.
 
 **Special thanks** to **Humdinger** for meticulous testing, detailed bug reports, valuable feature suggestions, and code contributions.
 
