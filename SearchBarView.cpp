@@ -243,11 +243,28 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 	fAttributeMenu = new BMenuField("attribute", B_TRANSLATE("Filter:"), menu);
 	fAttributeMenu->SetToolTip(B_TRANSLATE("Select attribute(s) to query"));
 
-	// Pin to the widget's own preferred width — tight but never clipped,
-	// and automatically font-size sensitive since BMenuField is font-aware.
-	float menuWidth = fAttributeMenu->PreferredSize().width;
-	fAttributeMenu->SetExplicitMinSize(BSize(menuWidth, B_SIZE_UNSET));
-	fAttributeMenu->SetExplicitMaxSize(BSize(menuWidth, B_SIZE_UNSET));
+	// Compute the minimum width that can display every menu item without
+	// clipping.  PreferredSize() only accounts for the *currently marked*
+	// item, so we derive the fixed overhead (label + divider + popup arrow +
+	// frame margins) by subtracting the marked item's string width, then add
+	// back the widest item's string width.  This is locale-safe and
+	// font-size sensitive.
+	{
+		float markedWidth = menu->FindMarked()
+			? be_plain_font->StringWidth(menu->FindMarked()->Label()) : 0;
+		float overhead = fAttributeMenu->PreferredSize().width - markedWidth;
+
+		float maxItemWidth = 0;
+		for (int32 i = 0; i < menu->CountItems(); i++) {
+			float w = be_plain_font->StringWidth(menu->ItemAt(i)->Label());
+			if (w > maxItemWidth)
+				maxItemWidth = w;
+		}
+
+		float menuWidth = ceilf(overhead + maxItemWidth);
+		fAttributeMenu->SetExplicitMinSize(BSize(menuWidth, B_SIZE_UNSET));
+		fAttributeMenu->SetExplicitMaxSize(BSize(menuWidth, B_SIZE_UNSET));
+	}
 
 	// Create operator popup menu
 	BPopUpMenu* operatorMenu = new BPopUpMenu("operator");
@@ -259,10 +276,23 @@ SearchBarView::SearchBarView(BMessage* searchMessage, BMessage* clearMessage,
 	fOperatorMenu = new BMenuField("operator", NULL, operatorMenu);
 	fOperatorMenu->SetToolTip(B_TRANSLATE("Select search operator"));
 
-	// Same approach: pin to the widget's own preferred width
-	float operatorMenuWidth = fOperatorMenu->PreferredSize().width;
-	fOperatorMenu->SetExplicitMinSize(BSize(operatorMenuWidth, B_SIZE_UNSET));
-	fOperatorMenu->SetExplicitMaxSize(BSize(operatorMenuWidth, B_SIZE_UNSET));
+	// Same technique: size to the widest operator label
+	{
+		float markedWidth = operatorMenu->FindMarked()
+			? be_plain_font->StringWidth(operatorMenu->FindMarked()->Label()) : 0;
+		float overhead = fOperatorMenu->PreferredSize().width - markedWidth;
+
+		float maxItemWidth = 0;
+		for (int32 i = 0; i < operatorMenu->CountItems(); i++) {
+			float w = be_plain_font->StringWidth(operatorMenu->ItemAt(i)->Label());
+			if (w > maxItemWidth)
+				maxItemWidth = w;
+		}
+
+		float operatorMenuWidth = ceilf(overhead + maxItemWidth);
+		fOperatorMenu->SetExplicitMinSize(BSize(operatorMenuWidth, B_SIZE_UNSET));
+		fOperatorMenu->SetExplicitMaxSize(BSize(operatorMenuWidth, B_SIZE_UNSET));
+	}
 
 	// Create text control with placeholder support
 	fTextControl = new SearchTextControl("search", searchMessage);
